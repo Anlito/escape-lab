@@ -32,7 +32,7 @@ jour après. Le brief complet est dans `docs/BRIEF-CLAUDE-CODE-escape-lab.md`.
 | 9 | Fiches mécaniques + bibliothèque de composants (contenus) | **ChatGPT** (contenu) + Claude (éditeur) | fait (`site/prof.html`) ; **recette Thomas** |
 | 10 | Labo Blocs : parcours Escape Lab, partie libre | Claude | fait ; **recette Thomas** (et validation des plans de composants) |
 | 11 | Espace professeur, évaluation, exports | Claude | fait ; **recette Thomas** |
-| 12 | Câblage v2, régie caméras (phase 2) | Claude | après décision |
+| 12 | Câblage v2, régie caméras (phase 2) | Claude | fait ; **recette Thomas** (caméras : seulement après la question 11 et l’accord de la direction) |
 | 13 | Recette | Thomas + Claude | à faire |
 
 Recettes avec Thomas après les étapes 2, 3, 5, 7 et 11.
@@ -91,8 +91,10 @@ Claude « C4 livrée » : Claude relit, intègre et met à jour ce tableau.
 | C17 Décisions à prendre (une page) | **rangée** (`docs/decisions.md`) : **à remplir par Thomas** |
 | C18 Remarques rapides de l’observation du jour J | **intégrée** (`site/donnees/observations-modeles.js`) |
 | C19 Annonces types par séance | **intégrée** (`site/donnees/annonces-modeles.js`, bouton « Reprendre » dans Pilotage) |
-| C20 Régie caméras : information et accord | **à faire** (pour l’étape 12) |
-| C21 Mode d’emploi professeur : étapes 10 et 11 | **à faire** |
+| C20 Régie caméras : information et accord | **rangée** (`docs/regie-textes.md`) : à compléter et faire approuver ; consignes reprises dans `regie.html` |
+| C21 Mode d’emploi professeur : étapes 10 et 11 | **rangée** (`docs/mode-emploi-professeur.md` remplacé) |
+| C22 Mise à jour « Bien démarrer » et mode d’emploi (étape 12) | **à faire** |
+| C23 Recette finale : étapes 10 à 12 | **à faire** (pour l’étape 13) |
 | C6 Grille d'évaluation | **intégrée** (étape 11) ; barème validé par Thomas le 23/10 |
 
 ### Tâche C4 — Relevé du matériel à remplir par Thomas au collège (brief §4, question 9)
@@ -274,11 +276,33 @@ notes privées), Évaluation (dossier personnel, grille, note /20 provisoire, ap
 Observation jour J (tablette), Exports (livret, fiches d’installation, CSV, sauvegarde) ; `prof.html` : onglet
 Synchronisation 3C2D1 (aperçu puis synchroniser). Rappeler : notes et observations dans le dossier personnel.
 
+### Tâche C22 — Mettre à jour `bien-demarrer.md` et `mode-emploi-professeur.md` (étape 12)
+`bien-demarrer.md` : la page Programmation est disponible (4 programmes, Labo Blocs) ; l’atelier de câblage a un
+schéma : glisser un composant, tirer un fil d’un point vers une broche ; le tableau reste la référence ; toujours le
+professeur avant le 12 V. `mode-emploi-professeur.md` : ajouter la régie (`site/regie.html`, code professeur : cocher
+l’accord de la direction et l’information des joueurs, allumer 1 à 4 webcams du poste, nommer, plein écran,
+« Tout arrêter », minuteur, indices de la frise à dire au talkie-walkie ; aucun enregistrement, rien n’est envoyé ;
+caméras d’autres postes non prises en charge) et le schéma dans le livret et les fiches d’installation.
+
+### Tâche C23 — Compléter `recette-finale.md` avec les étapes 10 à 12
+À partir de `docs/RECETTE.md` (sections étapes 10, 11, 12) : contrôles de la programmation (Labo Blocs, envoi dans
+l’Uno), de l’espace professeur (code, évaluation dans le dossier personnel, exports imprimés), du schéma de câblage
+(tablette au doigt et souris) et de la régie (consentement, arrêt immédiat, aucune image gardée). Même présentation
+que la version C12 ; ne rien marquer comme réussi.
+
 ## Décision de Thomas (grille C6, 23/10/2026)
 Barème validé : A à D = 0, 1, 2, 3 points ; coefficient 2 pour la fiche énigme, le câblage, le programme et le test
 croisé, 1 pour les autres critères ; **pas de rouge** (lettres A à D, sans couleur imposée).
 
 ## Journal
+- 23/10/2026 — ChatGPT : C20 (affiche joueurs, demande à la direction, fiche Game Master), C21 (mode d’emploi refait).
+- 23/10/2026 — Claude : étape 12. Atelier de câblage v2 (`site/js/schema.js`) : schéma de l’Uno ou de la micro:bit,
+  platine et rails, composants glissés depuis une palette, déplaçables, fil tiré d’un point vers une broche ou un
+  rail qui remplit le tableau (couleur du fil d’après le tableau) ; schéma repris dans le livret et les fiches
+  d’installation. Régie `site/regie.html` (code professeur) : accord de la direction et information des joueurs à
+  cocher avant d’allumer, 1 à 4 webcams du poste nommées et reliées à une énigme, plein écran, « Tout arrêter »,
+  voyant, minuteur (ambre à 5 min), indices de la frise avec la phrase talkie ; aucun enregistrement, rien
+  d’envoyé ; pas de caméras d’autres postes. Caméras réelles non testées (webcam du poste non allumée). 58 tests.
 - 23/10/2026 — Thomas valide le barème C6 (0 à 3 points, coefficients 2 sur quatre critères, sans rouge).
 - 23/10/2026 — ChatGPT : C18 (30 remarques rapides), C19 (25 annonces types).
 - 23/10/2026 — Claude : étape 11. Code professeur (même empreinte que Labo Blocs, `site/code-professeur.js`) devant

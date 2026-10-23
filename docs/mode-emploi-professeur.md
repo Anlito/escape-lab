@@ -1,122 +1,97 @@
 # Escape Lab — mode d’emploi du professeur
 
-## Page 1 sur 2 — préparer et accompagner
+Référence : suivi du 23/10/2026, étapes 1 à 11 réalisées ; essais au collège encore nécessaires.
 
-Version de référence : suivi du 23/10/2026, étapes 1 à 9 réalisées ; recettes au collège encore nécessaires.
+## Page 1 — ouvrir, accompagner et piloter
 
-### 1. Préparer les dossiers
+### Préparer et tester les dossiers
 
-Préparez un dossier partagé par classe : **ESCAPE GAME › <classe>**.
-Les équipes 3C1 et 3D2 utilisent chacune un dossier.
-L’équipe 3C2D1 utilise deux dossiers, ceux de 3C2 et de 3D1.
-Chaque élève travaille dans son dossier d’origine ; le poste professeur doit accéder aux deux.
-Le chemin affiché à l’accueil sert de repère pour la sélection.
+Préparez **ESCAPE GAME › <classe>** : un dossier pour 3C1, un pour 3D2 ; deux pour l’équipe 3C2D1, ceux de 3C2 et 3D1.
+Chaque groupe travaille dans son dossier d’origine ; votre poste doit accéder aux deux dossiers de l’équipe fusionnée.
+Ouvrez **site/test-dossier.html** sur deux postes élèves puis sur votre poste : écriture, lecture croisée, délai et copie entre deux dossiers.
+Utilisez d’abord des copies de recette et des données fictives ; ne testez pas une panne sur les sauvegardes réelles.
 
-Commencez les essais avec des copies et des personnages fictifs.
-Ne placez aucun code privé, note ou évaluation dans un dossier de classe.
+### Choisir le bon espace
 
-### 2. Tester les accès au collège
+Ouvrez **site/index.html** pour l’espace élève ; **Classe fictive** permet de découvrir 3Z9 sans enregistrer dans les dossiers réels.
+Ouvrez **site/index.html?prof** pour le suivi, le pilotage, l’évaluation et les exports.
+Ouvrez **site/prof.html** pour les fiches mécaniques, les composants et la synchronisation.
+Les deux espaces professeur demandent le même code que Labo Blocs ; ne l’écrivez pas dans un document partagé.
+Ce code est une barrière d’interface, pas une protection des fichiers auxquels les utilisateurs ont déjà accès.
 
-Ouvrez **site/test-dossier.html** sur deux postes élèves et sur votre poste.
-Essayez l’écriture, la lecture depuis l’autre poste et la visibilité des changements.
-Sur votre poste, sélectionnez les deux dossiers de l’équipe fusionnée et testez la copie.
-Notez les navigateurs, droits d’accès et délais, notamment pour une vidéo.
-La page est prête ; ces résultats restent à recueillir sur les postes réels.
+### Ce que voient les élèves
 
-### 3. Découvrir la classe fictive
+Les huit pages sont : Tableau de bord, Histoire, Frise, Bibliothèque, Mon énigme, Énigmes des autres, Programmation et Jour J.
+Les élèves modifient les contenus communs et la fiche de leur groupe ; les autres fiches sont en lecture seule.
+Les solutions et codes des autres groupes restent masqués avant « Afficher » ; journal et remarques n’y sont pas présentés.
+Après modification, enregistrer et vérifier le résultat ; en conflit, relire les contributions conservées.
+L’historique permet une restauration en créant une nouvelle version ; il ne remplace pas une copie de secours indépendante.
 
-Ouvrez **site/index.html**, puis choisissez **Classe fictive**.
-La démonstration 3Z9 permet d’essayer les écrans sans enregistrer dans un dossier.
-Elle ne vérifie pas les droits d’écriture ni les échanges entre postes.
-Pour le travail réel, utilisez Chrome ou Edge et choisissez le dossier affiché.
+### Utiliser Programmation
 
-### 4. Comprendre ce que voient les élèves
+Chaque groupe dispose de **quatre emplacements nommables**, avec choix Uno ou micro:bit à valider par le professeur.
+Labo Blocs s’ouvre en plein écran ; le programme peut être simulé puis envoyé selon la carte et le montage validés.
+Le contrôle E1 signale la présence d’au moins une entrée et une sortie ; il ne prouve pas l’utilité de l’électronique dans le jeu.
+Les autres groupes consultent les programmes en lecture seule ; ne pas déduire une compétence acquise d’un exercice libre enregistré.
+Les trois exercices guidés rédigés pour C10 restent à créer dans l’éditeur ; les quatre exercices libres sont disponibles.
 
-Les élèves voient l’histoire, la frise, la bibliothèque, leur fiche, les autres énigmes et le jour J.
-Le tableau de bord rassemble avancement, annonces, échéances et préparation du jour J.
-La page Programmation est prévue, mais son intégration reste à faire.
-Chaque groupe modifie sa fiche ; les autres la lisent et peuvent laisser un avis.
-La solution et le code restent masqués avant le clic « Afficher ».
-Le journal et les remarques du professeur ne figurent pas dans cette lecture des autres groupes.
+### Suivre et modifier les groupes
 
-L’histoire et les contenus communs acceptent les contributions de plusieurs groupes.
-En cas de conflit, conserver les contributions et relire la fusion proposée.
-L’historique permet de restaurer une version en créant une nouvelle version.
-Ces protections ne constituent pas des droits de sécurité sur les fichiers du dossier partagé.
-
-### 5. Suivre les réalisations
-
-La fiche comprend les livrables, les trois indices et leurs phrases talkie, l’installation et la remise à zéro.
-Le jour J comprend tâches, rôles, textes, planning et répétition.
-Vérifiez que chacun a un rôle et un texte personnel.
-Une réalisation déclarée prête ne vaut pas validation physique.
-
-### 6. Utiliser les fiches du professeur — disponible
-
-Ouvrez **site/prof.html** avec Chrome ou Edge.
-Choisissez la classe puis **Ouvrir le dossier de cette classe** ; répétez pour les autres dossiers.
-Pour 3C2D1, ouvrez les deux dossiers ; cochez uniquement ceux qui doivent recevoir une modification.
-**Classe fictive** permet aussi d’essayer sans enregistrer dans les dossiers réels.
-
-Dans **Fiches mécaniques** ou **Bibliothèque de composants**, consultez l’origine et l’état par dossier.
-Modifiez la fiche avec l’éditeur, puis enregistrez dans les dossiers cochés.
-Activez ou désactivez une mécanique par classe ; les fiches du dossier remplacent les ébauches du site.
-Exportez une fiche en **.json**, ou importez une fiche compatible pour la relire avant enregistrement.
-Vous pouvez joindre des ressources image, PDF, audio ou vidéo, jusqu’à 50 Mo par fichier.
-Un composant comportant une mention « ⚠️ » ne peut pas être validé.
-Les composants non validés gardent leur avertissement côté élève.
-Les sept mécaniques supplémentaires restent à vérifier avec leurs ressources.
-La protection par code n’est pas encore disponible : elle relève de l’étape 11.
+Dans **Suivi des groupes**, consultez les jalons, triez et filtrez les retards, blocages ou absences de journal.
+Ouvrez **Fiches des groupes** pour modifier une fiche, ajouter une remarque et valider un jalon physique après contrôle réel.
+Un élément déclaré prêt ou un champ rempli ne constitue pas une validation du matériel.
+Dans **Frise**, modifiez l’ordre, les liaisons, le début et la fin ; consultez l’historique des décisions.
+Dans **Pilotage**, réglez séance, durée, nombre de groupes, tailles des fichiers, mécanique, cadenas, dossier d’origine et échéances.
+Préparez les annonces, éventuellement avec **Reprendre** un modèle de séance ; relisez avant publication.
+Les notes privées de Pilotage exigent l’emplacement personnel, comme l’évaluation.
 
 <div style="break-before: page; page-break-before: always;"></div>
 
-## Page 2 sur 2 — piloter, protéger et préparer la suite
+## Page 2 — documenter, synchroniser et évaluer
 
-### 7. Régler l’ordre de la frise
+### Fiches mécaniques et composants : site/prof.html
 
-La frise montre le début, l’ordre des énigmes, les liaisons, la fin et la durée totale.
-Dans la classe fictive, **Essayer les commandes du professeur** permet de tester les changements d’ordre.
-L’historique conserve ancien ordre, nouvel ordre, auteur et note explicative.
-Le pilotage réel dans l’espace professeur reste **(étape 11, à venir)**.
+Ouvrez les dossiers concernés et cochez seulement les destinations voulues avant l’enregistrement d’une fiche.
+L’éditeur permet de modifier, activer ou désactiver les mécaniques par classe, exporter et importer des fiches **.json**.
+Les ressources image, PDF, audio ou vidéo sont limitées à **50 Mo** par fichier dans cet espace.
+Les fiches des dossiers remplacent les ébauches du site côté élève ; les ébauches supplémentaires restent à vérifier avec les ressources.
+Un composant comportant « ⚠️ » ne peut pas être validé ; une fiche composant validée ne valide pas un montage réel.
 
-### 8. Valider un jalon physique
+### Synchroniser 3C2D1 : site/prof.html
 
-La fiche affiche les états et la validation du professeur pour les réalisations physiques.
-Examinez l’objet réel, la photo et les essais ; un champ rempli ne suffit pas.
-Pour le câblage, utilisez les références et fiches techniques du matériel réellement disponible.
-Demandez les compléments nécessaires avant toute mise sous tension.
-L’action de validation dans l’espace professeur reste **(étape 11, à venir)**.
+Ouvrez les deux dossiers de l’équipe puis l’onglet **Synchronisation 3C2D1**.
+Choisissez **Aperçu** : aucune copie n’est alors effectuée ; lisez les copies prévues et les conflits.
+Lancez ensuite **Synchroniser**, puis examinez le rapport et les conflits conservés.
+Les contributions en conflit restent présentes des deux côtés ; relisez-les et organisez leur fusion avant une nouvelle synchronisation si nécessaire.
+Vérifiez les pièces jointes, l’historique et le contenu final des deux dossiers ; les groupes miroirs restent en lecture seule.
+La recette réelle à deux postes reste nécessaire même si les tests automatiques passent.
 
-### 9. Synchroniser 3C2D1
+### Évaluer dans le dossier personnel
 
-La couche de stockage et de synchronisation est réalisée et testée automatiquement.
-La recette sur les deux dossiers réels reste nécessaire ; utilisez d’abord des copies.
-L’écran de pilotage de la synchronisation reste **(étape 11, à venir)**.
+Dans **Évaluation**, choisissez votre dossier personnel, distinct des dossiers partagés de classe.
+Un dossier reconnu comme dossier de classe est refusé ; vérifiez vous-même l’emplacement et ses accès.
+La grille permet de renseigner les critères groupe et individuels, de motiver un ajustement et de reprendre les observations.
+La note sur 20 reste provisoire si la grille est incomplète ; une absence d’observation n’est pas un zéro.
+L’appréciation proposée se relit et se modifie ; exportez le CSV seulement après contrôle des résultats.
+La comparaison des classes se consulte dans cet espace ; n’exportez jamais ses données vers la bibliothèque élève.
+Le barème C6 est appliqué en attendant votre décision : points, couleurs et coefficients restent à confirmer.
 
-Procédure prévue pour cet écran : ouvrir les deux dossiers depuis le poste professeur.
-Consulter l’aperçu des copies et des conflits avant toute exécution.
-Vérifier les choix proposés, puis lancer la synchronisation.
-En cas de conflit, les deux contributions doivent rester conservées des deux côtés.
-Contrôler les pièces jointes, les historiques, le journal et l’égalité finale des contenus.
-Les groupes miroirs restent en lecture seule dans le dossier de l’autre moitié.
+### Observer le jour J sur tablette
 
-### 10. Conserver les notes à part
+Ouvrez **Observation jour J**, choisissez phase et cible, puis saisissez le niveau et la remarque correspondant au fait observé.
+Les modèles C18 sont des raccourcis à adapter ; ils ne justifient aucune observation automatique ni attribution collective aux individus.
+Notes, ajustements, remarques privées et observations restent dans le dossier personnel du professeur, jamais dans un dossier de classe.
+Une copie de secours existe dans le navigateur ; elle ne remplace pas la sauvegarde du dossier personnel.
 
-L’évaluation, les observations du jour J et les notes privées sont **(étape 11, à venir)**.
-Leur destination prévue est un emplacement personnel du professeur, jamais un dossier de classe.
-N’y joignez pas les fichiers d’évaluation dans la bibliothèque partagée.
-Le barème, les couleurs et les coefficients de la grille restent à confirmer.
-La grille et les appréciations rédigées ne constituent pas encore un écran de notation.
+### Exporter et conserver
 
-### 11. Sauvegarder et vérifier
+Dans **Exports**, préparez le livret du Game Master dans l’ordre de la frise et les fiches d’installation.
+Vérifiez l’impression noir et blanc, les champs manquants et la lisibilité avant utilisation.
+Le CSV d’avancement et la sauvegarde de classe **.json** sont aussi disponibles ; ils ne remplacent pas la sauvegarde privée des notes.
+Les fichiers joints, notamment images et vidéos, restent dans le dossier : copiez aussi ce dossier pour les conserver.
+Conservez des copies datées dans les emplacements autorisés, hors dépôt public et hors bibliothèque partagée pour les données privées.
+Après un échec réseau, gardez le brouillon et contrôlez le fichier avant de réessayer ; ne restaurez pas par écrasement aveugle.
 
-Chaque enregistrement conserve un historique ; une restauration ajoute une version.
-Après un message d’échec réseau, gardez le brouillon et vérifiez le fichier avant de réessayer.
-L’historique ne remplace pas une copie de secours indépendante des dossiers.
-Conservez des copies datées dans un emplacement autorisé, hors du dépôt public.
-N’écrasez pas les fichiers modifiés entre-temps pour revenir à une ancienne copie.
-L’export complet, les CSV et les livrets depuis l’espace professeur sont **(étape 11, à venir)**.
-
-Appuyez la recette sur **docs/RECETTE.md** et **docs/recette-finale.md**.
-Les écrans réalisés doivent encore être éprouvés sur les postes du collège.
-Les caméras restent en phase 2, après décision ; elles ne conditionnent pas le fonctionnement actuel.
+Effectuez la recette avec **docs/RECETTE.md** et **docs/recette-finale.md**.
+Les références matérielles et les plans de nouveaux composants attendent encore validation.
+Les caméras et le câblage v2 restent en phase 2 ; aucune régie n’est autorisée par ce guide.

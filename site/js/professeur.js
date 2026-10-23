@@ -570,7 +570,10 @@
   function tableauBranchements(el) {
     var b = (el.branchements || []);
     if (!b.length) return "";
-    return "<p><strong>Branchements</strong> (" + e(el.carte === "microbit" ? "micro:bit" : "Arduino Uno") + ") :</p><table><thead><tr><th>Composant</th><th>Broche du composant</th><th>Broche de la carte</th><th>Fil</th><th>Vérifié</th></tr></thead><tbody>" +
+    var connus = app().composants;
+    var schema = racine.EscapeLabSchema ? '<div class="zone-schema">' + racine.EscapeLabSchema.schemaSvg({ carte: el.carte, positions: el.positions, branchements: b,
+      composants: (el.composants || []).map(function (id) { return connus[id] || { id: id, nom: id }; }).filter(function (c) { return !/^microbit-/.test(c.id); }) }) + "</div>" : "";
+    return schema + "<p><strong>Branchements</strong> (" + e(el.carte === "microbit" ? "micro:bit" : "Arduino Uno") + ") :</p><table><thead><tr><th>Composant</th><th>Broche du composant</th><th>Broche de la carte</th><th>Fil</th><th>Vérifié</th></tr></thead><tbody>" +
       b.map(function (x) {
         var c = app().composants[x.composant];
         return "<tr><td>" + e(c ? c.nom : x.composant || "") + "</td><td>" + e(x.brocheComposant || "") + "</td><td>" + e(x.brocheCarte || "à renseigner") + "</td><td>" + e(x.fil || "") + "</td><td>" + (x.verifie ? "☑" : "☐") + "</td></tr>";

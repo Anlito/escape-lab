@@ -86,3 +86,12 @@ Avec deux postes (ou deux onglets) sur le même dossier :
 - [ ] Observation jour J sur la tablette : phase, groupe, élève, remarque rapide, niveau en un geste ; elle apparaît dans la grille (« obs. »).
 - [ ] Exports : livret du Game Master et fiches d'installation imprimés en noir et blanc (une page par énigme) ; CSV d'avancement ; sauvegarde .json.
 - [ ] `prof.html` › Synchronisation : ouvrir 3C2 et 3D1, aperçu, synchroniser ; modifier la même section des deux côtés : conflit listé, les deux textes visibles dans la section.
+
+## Étape 12 — câblage v2 et régie
+- [ ] Électronique : glisser un composant de la palette sur le schéma (souris, puis tablette au doigt), le déplacer.
+- [ ] Tirer un fil d'un point du composant vers une broche de l'Uno ou un rail : la broche apparaît dans le tableau ; le fil prend la couleur écrite dans le tableau.
+- [ ] micro:bit : le schéma montre P0, P1, P2, 3V, GND ; les capteurs intégrés ne sont pas dessinés.
+- [ ] Livret et fiche d'installation : le schéma s'imprime en noir et blanc, lisible.
+- [ ] Régie (après l'accord de la direction) : « Allumer » reste grisé tant que les deux cases ne sont pas cochées ; 1 à 4 webcams, noms, plein écran, « Tout arrêter » éteint tout (voyant ○).
+- [ ] Minuteur : démarrer, pause, remise à zéro ; ambre sous 5 minutes.
+- [ ] Indices : ouvrir le dossier de la classe ; choisir une énigme puis un niveau : la phrase talkie s'affiche en grand.

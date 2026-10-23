@@ -337,6 +337,7 @@
         html += "<p><strong>Carte :</strong> " + (carte === "microbit" ? "micro:bit V2" : "Arduino Uno") + "</p>" +
           lectureHtml({ type: "zone", libelle: "Rôle dans l'énigme" }, v.role) +
           "<h4>Composants</h4>" + (choisis.length ? "<ul>" + choisis.map(function (c) { return "<li>" + e(c.nom) + " (" + e(c.type) + ")</li>"; }).join("") + "</ul>" : '<p class="petit vide">Pas encore choisis.</p>') +
+          (choisis.length ? '<div class="zone-schema">' + racine.EscapeLabSchema.schemaSvg({ carte: carte, composants: choisis, positions: v.positions, branchements: v.branchements }) + "</div>" : "") +
           lectureHtml(colonnesBranchements(choisis), v.branchements) +
           "<p>" + (v.cableTeste ? "☑" : "☐") + " Câblé et testé · " + (v.programmeOk ? "☑" : "☐") + " Le programme fonctionne</p>";
         return html;
@@ -369,6 +370,12 @@
           (c.source && /^https?:/.test(c.source) ? '<p class="petit"><a href="' + e(c.source) + '" target="_blank" rel="noopener noreferrer">Fiche du fabricant ↗</a></p>' : "") +
           '<button data-action="retirerComposant" data-id="' + e(c.id) + '">Retirer ce composant et ses fils</button></div>';
       }).join("");
+      html += "<h4>Schéma</h4>" +
+        '<p class="petit">Glisse un composant sur le schéma, déplace-le, puis tire un fil depuis un de ses points jusqu\'à une broche de la carte ou un rail de la platine : le tableau se remplit. Le tableau reste la référence.</p>' +
+        '<div class="palette">' + proposes.filter(function (id) { return !connus[id].integre; }).map(function (id) {
+          return '<span class="puce" draggable="true" data-palette="' + e(id) + '">' + e(connus[id].nom) + "</span>";
+        }).join("") + "</div>" +
+        '<div class="zone-schema">' + racine.EscapeLabSchema.schemaSvg({ carte: carte, composants: choisis, positions: v.positions, branchements: v.branchements, interactif: true }) + "</div>";
       html += champHtml(colonnesBranchements(choisis), v);
       var controles = F.controlesCablage(carte, choisis, v.branchements || []);
       html += controles.map(function (x) {
@@ -596,17 +603,9 @@
           F.ecrireChemin(v, chemin, lignes);
           modifies[courant] = true;
         } else if (action === "ajouterComposant") {
-          var id = zone.querySelector("#f-composant").value, connus = composantsConnus();
+          var id = zone.querySelector("#f-composant").value;
           if (!id) return;
-          var ve = travail.electronique;
-          ve.composants = (ve.composants || []).concat(id);
-          if (!connus[id].integre) {
-            var broches = (connus[id].broches || []).length ? connus[id].broches : [{ nom: "" }];
-            ve.branchements = (ve.branchements || []).concat(broches.map(function (br) {
-              return { composant: id, brocheComposant: /⚠️/.test(br.nom) ? "" : br.nom, brocheCarte: "", fil: "", verifie: false };
-            }));
-          }
-          modifies.electronique = true;
+          ajouterComposant(id, null);
         } else if (action === "retirerComposant") {
           var idr = b.getAttribute("data-id"), vr = travail.electronique;
           vr.composants = (vr.composants || []).filter(function (x) { return x !== idr; });
@@ -659,6 +658,89 @@
       }
       afficher();
     });
+    // --- Atelier de câblage v2 : glisser un composant sur le schéma, tirer un fil vers une broche ---
+
+    function ajouterComposant(id, position) {
+      var connus = composantsConnus(), ve = travail.electronique;
+      if (!connus[id] || (ve.composants || []).indexOf(id) !== -1) return;
+      ve.composants = (ve.composants || []).concat(id);
+      if (!connus[id].integre) {
+        var broches = (connus[id].broches || []).length ? connus[id].broches : [{ nom: "" }];
+        ve.branchements = (ve.branchements || []).concat(broches.map(function (br) {
+          return { composant: id, brocheComposant: /⚠️/.test(br.nom) ? "" : br.nom, brocheCarte: "", fil: "", verifie: false };
+        }));
+      }
+      if (position) ve.positions = Object.assign({}, ve.positions || {}, (function () { var p = {}; p[id] = position; return p; })());
+      modifies.electronique = true;
+    }
+
+    // Coordonnées du schéma (viewBox) d'un point de l'écran.
+    function pointSchema(svg, x, y) {
+      var m = svg.getScreenCTM();
+      if (!m) return { x: x, y: y };
+      var p = svg.createSVGPoint(); p.x = x; p.y = y;
+      p = p.matrixTransform(m.inverse());
+      return { x: Math.round(p.x), y: Math.round(p.y) };
+    }
+
+    var geste = null;   // { type: "deplacer" | "fil", … } pendant un glisser sur le schéma
+    zone.addEventListener("dragstart", function (ev) {
+      var puce = ev.target.closest("[data-palette]");
+      if (puce) { ev.dataTransfer.setData("text/plain", puce.getAttribute("data-palette")); ev.dataTransfer.effectAllowed = "copy"; }
+    });
+    zone.addEventListener("dragover", function (ev) { if (ev.target.closest(".zone-schema")) ev.preventDefault(); });
+    zone.addEventListener("drop", async function (ev) {
+      var cible = ev.target.closest(".zone-schema"), id = ev.dataTransfer.getData("text/plain");
+      if (!cible || !id || lecture) return;
+      ev.preventDefault();
+      collecter();
+      var p = pointSchema(cible.querySelector("svg"), ev.clientX, ev.clientY);
+      ajouterComposant(id, { x: Math.max(0, p.x - 60), y: Math.max(0, p.y - 20) });
+      await afficher();
+    });
+    zone.addEventListener("pointerdown", function (ev) {
+      var svg = ev.target.closest(".zone-schema svg");
+      if (!svg || lecture) return;
+      var point = ev.target.closest(".schema-point"), corps = ev.target.closest(".schema-corps");
+      var depart = pointSchema(svg, ev.clientX, ev.clientY);
+      if (point) {
+        var fil = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        fil.setAttribute("class", "schema-fil-provisoire");
+        fil.setAttribute("x1", point.getAttribute("cx")); fil.setAttribute("y1", point.getAttribute("cy"));
+        fil.setAttribute("x2", point.getAttribute("cx")); fil.setAttribute("y2", point.getAttribute("cy"));
+        svg.appendChild(fil);
+        geste = { type: "fil", ligne: Number(point.getAttribute("data-ligne")), svg: svg, trait: fil };
+      } else if (corps) {
+        var g = corps.closest("[data-composant]");
+        geste = { type: "deplacer", id: g.getAttribute("data-composant"), g: g, svg: svg, depart: depart, x: Number(corps.getAttribute("x")), y: Number(corps.getAttribute("y")) };
+      } else return;
+      ev.preventDefault();
+      try { svg.setPointerCapture(ev.pointerId); } catch (err) { /* pointeur déjà relâché : le glisser continue sans capture */ }
+    });
+    zone.addEventListener("pointermove", function (ev) {
+      if (!geste) return;
+      var p = pointSchema(geste.svg, ev.clientX, ev.clientY);
+      if (geste.type === "fil") { geste.trait.setAttribute("x2", p.x); geste.trait.setAttribute("y2", p.y); }
+      else geste.g.setAttribute("transform", "translate(" + (p.x - geste.depart.x) + "," + (p.y - geste.depart.y) + ")");
+    });
+    zone.addEventListener("pointerup", async function (ev) {
+      if (!geste) return;
+      var g2 = geste; geste = null;
+      collecter();
+      var ve = travail.electronique, p = pointSchema(g2.svg, ev.clientX, ev.clientY);
+      if (g2.type === "fil") {
+        g2.trait.remove();
+        var sous = document.elementFromPoint(ev.clientX, ev.clientY), broche = sous && sous.closest && sous.closest("[data-broche]");
+        if (!broche || !ve.branchements[g2.ligne]) return;
+        ve.branchements[g2.ligne] = Object.assign({}, ve.branchements[g2.ligne], { brocheCarte: broche.getAttribute("data-broche") });
+      } else {
+        var pos = {}; pos[g2.id] = { x: Math.max(0, g2.x + p.x - g2.depart.x), y: Math.max(0, g2.y + p.y - g2.depart.y) };
+        ve.positions = Object.assign({}, ve.positions || {}, pos);
+      }
+      modifies.electronique = true;
+      await afficher();
+    });
+
     zone.addEventListener("input", function (ev) {
       if (lecture || !ev.target.closest(".fiche-onglet")) return;
       if (!modifies[courant]) { modifies[courant] = true; var bouton = zone.querySelector('[data-onglet="' + courant + '"]'); if (bouton) bouton.textContent += " *"; }

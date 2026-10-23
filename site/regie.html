@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Escape Lab — régie</title>
+<script src="js/porte-professeur.js"></script>
+<script src="code-professeur.js"></script>
+<link rel="stylesheet" href="css/charte.css">
+</head>
+<body class="regie">
+<header class="entete">
+  <div class="marque">Escape <span>LAB</span> · régie</div>
+  <p id="voyant" class="voyant" role="status">○ Caméras éteintes</p>
+  <button id="toutArreter" class="arret" disabled>■ Tout arrêter</button>
+</header>
+<main>
+  <p class="bandeau">Les images restent sur ce poste : <strong>aucun enregistrement, rien n'est envoyé</strong>. Si un joueur refuse, « Tout arrêter » et prévenir le professeur.</p>
+
+  <section class="carte" id="avant">
+    <h2>Avant d'allumer</h2>
+    <label class="case"><input type="checkbox" id="accord"> L'accord de la direction est obtenu.</label>
+    <label class="case"><input type="checkbox" id="informes"> Les joueurs sont informés (affiche posée) et peuvent demander l'arrêt.</label>
+    <div class="boutons">
+      <label>Nombre de caméras <select id="nombre"><option>1</option><option>2</option><option>3</option><option selected>4</option></select></label>
+      <button id="allumer" class="principal" disabled>Allumer les caméras</button>
+    </div>
+    <p id="messageRegie" class="ecart" role="alert" hidden></p>
+  </section>
+
+  <div class="regie-corps">
+    <section id="cameras" class="grille-cameras"></section>
+    <aside class="regie-cote">
+      <section class="carte">
+        <h2>Minuteur</h2>
+        <p id="minuteur" class="minuteur" aria-live="polite">60:00</p>
+        <div class="boutons"><button id="demarrer" class="principal">Démarrer</button><button id="pause">Pause</button><button id="zero">Remettre à zéro</button></div>
+        <label>Durée (min) <input id="duree" type="number" min="5" max="180" value="60"></label>
+      </section>
+      <section class="carte">
+        <h2>Indices</h2>
+        <p class="petit">Pour afficher les indices de la frise : ouvrir le dossier de la classe (lecture seulement).</p>
+        <div class="boutons"><button id="ouvrirClasse">Ouvrir le dossier de la classe</button><button id="demoClasse">Classe fictive</button></div>
+        <div id="indices"></div>
+      </section>
+    </aside>
+  </div>
+</main>
+<script src="js/stockage.js"></script>
+<script src="js/stockage-dossier.js"></script>
+<script src="js/outils.js"></script>
+<script src="js/regie.js"></script>
+<script src="donnees/demo.js"></script>
+</body>
+</html>

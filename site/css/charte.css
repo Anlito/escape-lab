@@ -166,6 +166,43 @@ th, td { border: 1px solid var(--bord); padding: .3em .4em; text-align: left; ve
 body.labo-ouvert { overflow: hidden; }
 .emplacement select, .emplacement input { margin-bottom: .3em; }
 
+/* Schéma de câblage (atelier v2) */
+.zone-schema { background: #f7f4ef; border-radius: 8px; padding: 6px; margin: .5em 0; overflow-x: auto; }
+.schema { width: 100%; min-width: 560px; height: auto; display: block; touch-action: none; font-family: system-ui, sans-serif; }
+.schema-carte { fill: #1f5f6b; stroke: #0e3a42; stroke-width: 2; }
+.schema-titre { fill: #fff; font-size: 22px; font-weight: 700; text-anchor: middle; }
+.schema-note { fill: #555; font-size: 13px; text-anchor: middle; }
+.schema-carte ~ .schema-note:first-of-type { fill: #dfe; }
+.schema-broche rect { fill: #222; stroke: #c9a227; }
+.schema-broche text { fill: #fff; font-size: 11px; text-anchor: middle; }
+.schema-platine { fill: #fff; stroke: #999; }
+.schema-rail line { stroke: #888; stroke-width: 6; stroke-linecap: round; }
+.schema-rail text { fill: #333; font-size: 12px; text-anchor: start; }
+.schema-fil { fill: none; stroke-width: 4; stroke-linecap: round; }
+.schema-fil-provisoire { stroke: #c9a227; stroke-width: 4; stroke-dasharray: 6 4; }
+.schema-corps { fill: #fff; stroke: #333; stroke-width: 2; cursor: grab; }
+.schema-nom { fill: #111; font-size: 13px; font-weight: 700; text-anchor: middle; pointer-events: none; }
+.schema-point { fill: #fff; stroke: #c9a227; stroke-width: 3; cursor: crosshair; }
+.schema-point.relie { fill: #c9a227; }
+.schema-etiquette { fill: #333; font-size: 11px; pointer-events: none; }
+.palette { display: flex; flex-wrap: wrap; gap: 6px; }
+.puce { border: 1px dashed var(--or); border-radius: 999px; padding: .2em .7em; font-size: .85rem; cursor: grab; }
+@media print { .zone-schema { background: none; } .schema-carte { fill: #fff; stroke: #000; } .schema-titre, .schema-broche text { fill: #000; } .schema-broche rect { fill: #fff; stroke: #000; } }
+
+/* Régie (jour J) */
+.voyant { margin: 0 0 0 auto; font-weight: 700; color: var(--texte-doux); }
+.voyant.actif { color: var(--or-clair); }
+button.arret { border-color: var(--ambre); color: var(--ambre); font-weight: 800; }
+.regie-corps { display: grid; gap: 14px; grid-template-columns: 1fr 320px; align-items: start; }
+.grille-cameras { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+.vignette { margin: 0; padding: 8px; }
+.vignette video { width: 100%; aspect-ratio: 4 / 3; background: #111; border-radius: 6px; }
+.vignette figcaption { display: grid; gap: 6px; margin-top: 6px; }
+.minuteur { font-size: 2.6rem; font-weight: 800; font-variant-numeric: tabular-nums; margin: .2em 0; }
+.talkie { font-size: 1.4rem; font-weight: 700; color: var(--or-clair); }
+.indice-affiche { border: 2px solid var(--or); border-radius: 8px; padding: .4em .8em; margin-top: .6em; }
+@media (max-width: 900px) { .regie-corps { grid-template-columns: 1fr; } }
+
 /* Espace professeur */
 button.lien { border: none; padding: 0; background: none; color: var(--or-clair); text-decoration: underline; text-align: left; }
 table.suivi td { text-align: center; white-space: nowrap; }
