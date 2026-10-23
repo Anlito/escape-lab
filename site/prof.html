@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Escape Lab — professeur</title>
+<link rel="stylesheet" href="css/charte.css">
+</head>
+<body>
+<header class="entete">
+  <div class="marque">Escape <span>LAB</span> · professeur</div>
+  <a class="connecte" href="index.html">Espace élève</a>
+</header>
+<main>
+  <p class="bandeau">Espace du professeur. La protection par code et la vue d'ensemble des groupes arrivent à l'étape 11 du projet.</p>
+
+  <section class="carte">
+    <h2>Dossiers de classe ouverts</h2>
+    <p class="petit">Une fiche enregistrée ici est copiée dans chaque dossier coché. Ouvre tous les dossiers des classes concernées
+      (pour l'équipe 3C2D1 : les deux dossiers).</p>
+    <div id="listeDossiers"></div>
+    <div class="ajout-composant">
+      <label for="choixDepot">Classe du dossier</label>
+      <select id="choixDepot"></select>
+      <button id="btnOuvrirDossier" class="principal">Ouvrir le dossier de cette classe</button>
+      <button id="btnDemoProf">Classe fictive</button>
+    </div>
+    <p id="aideDepot" class="petit"></p>
+    <p id="messageDossiers" class="ecart" role="alert" hidden></p>
+  </section>
+
+  <nav id="ongletsProf" class="onglets" hidden>
+    <button data-page="mecaniques" aria-selected="true">Fiches mécaniques</button>
+    <button data-page="composants" aria-selected="false">Bibliothèque de composants</button>
+  </nav>
+  <div id="pageProf"></div>
+</main>
+
+<script src="labo-blocs/college.js"></script>
+<script src="college.js"></script>
+<script src="js/stockage.js"></script>
+<script src="js/stockage-dossier.js"></script>
+<script src="js/outils.js"></script>
+<script src="js/fiche-regles.js"></script>
+<script src="js/referentiels.js"></script>
+<script src="js/prof.js"></script>
+<script src="donnees/equipes.js"></script>
+<script src="donnees/mecaniques.js"></script>
+<script src="donnees/composants.js"></script>
+<script src="donnees/demo.js"></script>
+</body>
+</html>

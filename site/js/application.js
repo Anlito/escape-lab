@@ -9,12 +9,25 @@
 
   racine.definirEquipes = function (r) { REGLAGES = r; };
   racine.definirJalons = function (j) { JALONS = j.jalons; };
-  racine.definirMecaniques = function (m) { m.mecaniques.forEach(function (x) { MECANIQUES[x.id] = x; }); };
+  // Ébauches du site ; les fiches enregistrées par le professeur dans le dossier les remplacent (chargerReferentiels).
+  var EBAUCHES_MECANIQUES = [], EBAUCHES_COMPOSANTS = [];
+  racine.definirMecaniques = function (m) { EBAUCHES_MECANIQUES = m.mecaniques; m.mecaniques.forEach(function (x) { MECANIQUES[x.id] = x; }); };
   racine.definirDemo = function (d) { DEMO = d; };
   var AIDES = {};
   racine.definirAides = function (a) { AIDES = a.champs || {}; };
   var COMPOSANTS = {};
-  racine.definirComposants = function (c) { c.composants.forEach(function (x) { COMPOSANTS[x.id] = x; }); };
+  racine.definirComposants = function (c) { EBAUCHES_COMPOSANTS = c.composants; c.composants.forEach(function (x) { COMPOSANTS[x.id] = x; }); };
+
+  async function chargerReferentiels() {
+    [[MECANIQUES, EBAUCHES_MECANIQUES, "mecaniques"], [COMPOSANTS, EBAUCHES_COMPOSANTS, "composants"]].forEach(function (t) {
+      Object.keys(t[0]).forEach(function (k) { delete t[0][k]; });
+      t[1].forEach(function (x) { t[0][x.id] = x; });
+    });
+    try {
+      (await etat.stockage.lister("mecaniques")).forEach(function (el) { MECANIQUES[el.id] = el.valeur; });
+      (await etat.stockage.lister("composants")).forEach(function (el) { COMPOSANTS[el.id] = el.valeur; });
+    } catch (err) { /* dossier illisible : les ébauches du site restent */ }
+  }
 
   // Messages des contrôles : ceux de donnees/messages.js (tâche C7) en priorité, sinon ceux-ci. {x} est remplacé.
   var MESSAGES = {
@@ -205,7 +218,7 @@
     $("connecte").innerHTML = "<strong>" + echapper(etat.prenom) + "</strong> · groupe " + echapper(etat.groupe) +
       " · " + echapper(etat.equipe.nom) + (demo ? " · démonstration" : "");
     if (!location.hash) location.hash = "#tableau";
-    afficherPage();
+    chargerReferentiels().then(afficherPage);
   }
 
   async function entrerDemo() {

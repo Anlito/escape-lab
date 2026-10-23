@@ -299,7 +299,12 @@
         (m.pistesElectroniques ? "<h4>Pistes électroniques</h4>" + liste(m.pistesElectroniques) : "") +
         (m.pieges ? "<h4>Pièges fréquents</h4>" + liste(m.pieges) : "") +
         (m.indicesExemple ? "<h4>Exemple d'indices aux trois niveaux</h4><ol>" + ["niveau1", "niveau2", "niveau3"].map(function (n) {
-          return "<li>" + avertir(m.indicesExemple[n] || "") + "</li>"; }).join("") + "</ol>" : "");
+          return "<li>" + avertir(m.indicesExemple[n] || "") + "</li>"; }).join("") + "</ol>" : "") +
+        ((m.ressources || []).length || (m.liens || []).length ? "<h4>Exemples et ressources</h4><ul>" +
+          (m.ressources || []).map(function (r) { return '<li><button data-action="ressource" data-nom="' + e(r.nom) + '" data-type="' + e(r.type || "") + '">' + e(r.titre || r.nomOrigine) + "</button></li>"; }).join("") +
+          (m.liens || []).filter(function (l) { return O.lienValide(l.url); }).map(function (l) {
+            return '<li><a href="' + e(l.url) + '" target="_blank" rel="noopener noreferrer">' + e(l.titre || l.url) + " ↗</a></li>"; }).join("") +
+          '</ul><div class="apercu" id="apercuRessource"></div>' : "");
       if (lecture) return html;
       return html + '<label class="case"><input type="checkbox" data-chemin="compris" data-case="1"' + (v.compris ? " checked" : "") +
         "> Nous avons compris la mécanique</label>";
@@ -350,7 +355,7 @@
         if (c.integre) return '<div class="composant"><h4>' + e(c.nom) + '</h4><p class="petit">Déjà sur la carte : pas de câblage. Compte-t-il pour E1 ? Le professeur le confirmera.</p>' +
           '<button data-action="retirerComposant" data-id="' + e(c.id) + '">Retirer</button></div>';
         // Une seule mention « à vérifier » par composant : les lignes encore vides de la fiche ne s'affichent pas.
-        var aVerifier = JSON.stringify(c).indexOf("⚠️") !== -1;
+        var aVerifier = !c.valideParProf || JSON.stringify(c).indexOf("⚠️") !== -1;
         function connu(t) { return t && !/^\s*⚠️/.test(t); }
         var broches = (c.broches || []).filter(function (b) { return connu(b.nom); });
         var cablage = (c.cablageType || []).filter(connu), precautions = (c.precautions || []).filter(connu);
@@ -554,6 +559,16 @@
         if (onglet) { courant = onglet; montrerSolution = false; }
         else if (action === "retour") { options.retour(); return; }
         else if (action === "montrerSolution") montrerSolution = true;
+        else if (action === "ressource") {
+          var contenu = await st.lireFichier("mecaniques", b.getAttribute("data-nom")), boite = zone.querySelector("#apercuRessource");
+          if (!contenu) { boite.innerHTML = '<p class="ecart">Ce fichier n\'est pas (encore) dans le dossier de la classe.</p>'; return; }
+          var adresse = URL.createObjectURL(contenu instanceof Blob ? contenu : new Blob([contenu], { type: b.getAttribute("data-type") }));
+          adresses.push(adresse);
+          var genre = O.genreDeFichier(b.getAttribute("data-type") || contenu.type);
+          boite.innerHTML = genre === "image" ? '<img src="' + adresse + '" alt="">' : genre === "pdf" ? '<iframe src="' + adresse + '" title="Ressource"></iframe>'
+            : genre === "audio" ? '<audio controls src="' + adresse + '"></audio>' : '<video controls src="' + adresse + '"></video>';
+          return;
+        }
         else if (action === "enregistrer") { b.disabled = true; await enregistrerOnglet(); }
         else if (action === "ajouterLigne" || action === "retirerLigne") {
           var chemin = b.getAttribute("data-tableau"), v = travail[courant], lignes = (F.lireChemin(v, chemin) || []).slice();

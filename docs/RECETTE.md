@@ -55,3 +55,13 @@ Avec deux postes (ou deux onglets) sur le même dossier :
 - [ ] Retirer une ligne, la retrouver dans « Lignes retirées », la remettre ; ↺ montre l'historique d'une ligne.
 - [ ] Planning : mise en place, déroulé, rangement, « tout est à sa place » ; remise à zéro de chaque énigme listée.
 - [ ] Tableau de bord : résumé Jour J (date, tâches faites, élèves sans rôle).
+
+## Étape 9 — fiches mécaniques et composants (site/prof.html)
+- [ ] Ouvrir les dossiers de 3C1, 3D2, 3C2 et 3D1 sur le poste du professeur (quatre dossiers en même temps).
+- [ ] Modifier la fiche « Morse », ajouter une image et un lien, enregistrer dans les quatre dossiers : chaque dossier affiche « modifiée le … ».
+- [ ] Côté élève (3C1), groupe à qui le Morse est attribué : « Ma mécanique » montre la fiche revue, l'image s'ouvre.
+- [ ] Choisir une lettre déjà prise : message, rien n'est enregistré.
+- [ ] Désactiver une mécanique pour une classe : la case reste décochée après réouverture.
+- [ ] Exporter une fiche (.json), la réimporter : le formulaire se remplit.
+- [ ] Composant : remplir une fiche à partir du relevé du matériel, cocher « je la valide » ; côté élève, l'avertissement « pas encore vérifiée » disparaît.
+- [ ] Un composant qui contient encore « ⚠️ à vérifier » ne peut pas être validé.

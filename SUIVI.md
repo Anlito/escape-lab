@@ -29,7 +29,7 @@ jour après. Le brief complet est dans `docs/BRIEF-CLAUDE-CODE-escape-lab.md`.
 | 6 | Bibliothèque commune | Claude | fait ; recette Thomas |
 | 7 | Fiche énigme, énigmes des autres, câblage v1 | Claude | fait ; **recette Thomas** |
 | 8 | Page jour J | Claude | fait ; **recette Thomas** |
-| 9 | Fiches mécaniques + bibliothèque de composants (contenus) | **ChatGPT** (contenu) + Claude (éditeur) | à faire |
+| 9 | Fiches mécaniques + bibliothèque de composants (contenus) | **ChatGPT** (contenu) + Claude (éditeur) | fait (`site/prof.html`) ; **recette Thomas** |
 | 10 | Labo Blocs : parcours Escape Lab, partie libre | Claude | à faire |
 | 11 | Espace professeur, évaluation, exports | Claude | à faire |
 | 12 | Câblage v2, régie caméras (phase 2) | Claude | après décision |
@@ -87,6 +87,7 @@ Claude « C4 livrée » : Claude relit, intègre et met à jour ce tableau.
 | C13 Mécaniques supplémentaires | **à faire** (pour l’étape 9) |
 | C14 Guide « Bien démarrer » élève | **à faire** |
 | C15 Mode d’emploi du professeur | **à faire** (pour l’étape 11) |
+| C16 Fiche complète de démonstration | **à faire** (pour l’étape 11) |
 | C6 Grille d'évaluation | **rangée** (`site/donnees/evaluation.js`, utilisée à l'étape 11) ; **décisions de Thomas attendues** (voir ci-dessous) |
 
 ### Tâche C4 — Relevé du matériel à remplir par Thomas au collège (brief §4, question 9)
@@ -219,12 +220,30 @@ valider un jalon physique, synchroniser 3C2D1 (aperçu puis exécution, conflits
 notes (jamais dans un dossier de classe), sauvegarde. Décrire seulement ce qui existe dans `SUIVI.md` (étapes
 faites) et marquer « (étape 11, à venir) » le reste.
 
+### Tâche C16 — Une fiche énigme entièrement remplie pour la démonstration (brief §7.6, §8.4)
+`fiche-demo-A.json` : pour le groupe A de la classe fictive 3Z9 (« Le plan des réserves », damier), tous les onglets
+remplis comme le ferait un bon groupe, au format des onglets de `site/js/fiche.js` (un objet par onglet :
+`enigme`, `fonctionnement`, `materiel`, `fabrication`, `electronique`, `indices`, `installation`, `tests` ; lire
+les `cle` des champs dans la constante `ONGLETS`). Solution et code **inventés pour la démo** et marqués comme tels
+dans le texte (« exemple fictif »). Électronique : composants `bouton` et `servomoteur` seulement, **sans aucun numéro
+de broche** (laisser `brocheCarte` vide). Sert à tester le livret du Game Master et la fiche d’installation.
+
+Pour C13 : l’espace professeur importe une fiche `.json` ; garder le format `definirMecaniques` demandé, Claude
+convertira.
+
 ## Questions à Thomas (grille C6)
 1. Barème : A–D = 0, 1, 2, 3 points (tout en C donne 13,3/20). Garder, ou celui des grilles Excel existantes ?
 2. Couleurs : le brief dit rouge / jaune / vert clair / vert foncé, la règle commune dit « jamais de rouge ». Remplacer le rouge (par ex. gris) ?
 3. Coefficients : 2 pour fiche énigme, câblage, programme, test croisé ; 1 ailleurs. D'accord ?
 
 ## Journal
+- 23/10/2026 — Claude : étape 9, `site/prof.html` (première partie de l’espace professeur). Ouvrir un ou plusieurs dossiers
+  de classe (ou la classe fictive) ; fiches mécaniques et composants : liste avec l’état par dossier (ébauche du site
+  ou modifiée le …), éditeur sans code, liens et ressources déposées (image, PDF, audio, vidéo ≤ 50 Mo), contrôles
+  (identifiant, lettre et couleur uniques, pas de validation d’un composant avec « ⚠️ »), enregistrement dans les
+  dossiers cochés, activer ou désactiver une mécanique par classe, export et import `.json`. Côté élève : les fiches du
+  dossier remplacent les ébauches ; un composant non validé par le professeur garde l’avertissement. 43 tests verts.
+  Pas encore de code professeur (étape 11).
 - 23/10/2026 — ChatGPT : C10 (3 exercices guidés + libre), C11 (6 tranches, 8 phrases par bloc), C12 (30 contrôles).
 - 23/10/2026 — Claude : étape 8, page Jour J (date, invités sans noms, accord, cours, matériel ; tâches ; rôles et
   textes en cartes, une ligne = un élément `jourj-roles/` ; contrôle « chaque élève a au moins un rôle » ; planning
