@@ -66,7 +66,44 @@ docs/                   brief, recette
 de programme, groupes non mixtes en 3C2D1, export CSV seul, aucune caméra avant la phase 2, César en secours.
 
 ## Travail pour ChatGPT
-À copier dans ChatGPT avec ce fichier et le brief. Rendre un fichier par tâche ; Claude l'intègre.
+**Comment livrer** : ChatGPT lit ce fichier et le brief dans `C:\Users\pc\Documents\EscapeLab`, puis écrit ses
+fichiers dans `EscapeLab\contributions\chatgpt\<code de la tâche>\` (jamais dans `site\` ni ailleurs dans le
+dépôt), avec un `TRANSMISSION-CLAUDE.md` court (ce qui est fait, ce qui reste à vérifier, sources). Thomas dit à
+Claude « C4 livrée » : Claude relit, intègre et met à jour ce tableau.
+
+| Tâche | État |
+|---|---|
+| C1 Fiches mécaniques | **intégrée** (`site/donnees/mecaniques.js`) ; ids et lettres de ChatGPT retenus ; **relecture de Thomas à faire** |
+| C2 Fiches composants | **rangée** (`site/donnees/composants.js`, clé `liés` → `lies`) ; 10 fiches sur 11 attendent les références réelles (C4) |
+| C3 Démonstration 3Z9 | **intégrée** (`site/donnees/demo.js`, convertie au format du stockage ; groupes g1–g5 → A–E) |
+| C4 Relevé du matériel | à faire |
+| C5 Textes d'aide des fiches | à faire |
+| C6 Grille d'évaluation | à faire |
+
+### Tâche C4 — Relevé du matériel à remplir par Thomas au collège (brief §4, question 9)
+Un document imprimable (`releve-materiel.md`) : un tableau par composant de `composants.js` avec ce que Thomas
+doit relever sur le composant réel ou sa boîte (marque, référence exacte, inscriptions, nombre de broches et leur
+nom, tension écrite, quantité disponible, lien vers la page du vendeur si connu). Une ligne « photo de l'étiquette
+prise ? ». Rien de prérempli par supposition. Ensuite, dès que Thomas fournit les références : compléter
+`composants.js` avec la fiche technique citée dans `source` (même format, même règle « ⚠️ à vérifier »).
+
+### Tâche C5 — Textes d'aide de la fiche énigme (brief §7.6, §7.3, §7.4, §7.9)
+`aides.js` au format `definirAides({ format: "escape-lab/aides", version: 1, champs: { "<idChamp>": { consigne,
+exemple, phraseACompleter } } })`. Un champ par élément de l'annexe B : histoire (titre, theme, pitch,
+personnages, lieu, deroulement, fin), liaison (donne, utilise, lieu), groupe (`enigme.titre`, `enigme.scenario`,
+`enigme.solution`, `enigme.contenuBoite`, `enigme.matiere`, `enigme.lienMatiere`, `fonctionnement`,
+`indices.n1`/`n2`/`n3` et `.talkie`, `installation.etapes`, `installation.remiseAZero`, `installation.verifs`,
+`journal`), jour J (rôles, texte à dire, planning). Règles : phrases de 15 mots maximum, vocabulaire de 3e,
+bienveillant (« il manque encore… », jamais « faux »), exemples tirés de la démo 3Z9 et jamais de la solution d'une
+vraie mécanique.
+
+### Tâche C6 — Proposition de grille d'évaluation (brief §8.5)
+`evaluation.js` au format `definirEvaluation({ format: "escape-lab/evaluation", version: 1, niveaux: [4 niveaux
+avec libellé et lettre], criteres: [{ id, bloc, intitule, portee: "groupe"|"individuel", coefficient,
+competence, descripteurs: { n1, n2, n3, n4 } }] })`. Blocs et critères du tableau §8.5. Les compétences reprennent
+**mot pour mot** les intitulés du programme de technologie du cycle 4 (BO n° 9 du 29/02/2024), avec la source
+citée ; si l'intitulé exact n'est pas trouvé : « ⚠️ à vérifier », ne rien inventer. Proposition à valider par
+Thomas.
 
 ### Tâche C1 — Fiches des 6 mécaniques (brief §5.1, §5.2, annexe A)
 Damier, Calques, Relier les points, Morse, Langue des signes, César (secours). `site/donnees/mecaniques.js`
@@ -105,6 +142,10 @@ Chaque version est d'abord copiée dans `<collection>/historique/<id>/<version>.
 (couche unique + synchronisation), `site/js/stockage-dossier.js` (accès au dossier dans Chrome/Edge).
 
 ## Journal
+- 23/10/2026 — ChatGPT : six fiches mécaniques et démonstration fictive 3Z9 ; onze fiches composants (seule la
+  documentation du clavier Grove est identifiée). Livré dans le dossier Codex de Thomas.
+- 23/10/2026 — Claude : C1 à C3 intégrées (voir tableau), démo vérifiée dans le navigateur. Tâches C4 à C6
+  préparées pour ChatGPT, livraison dans `contributions/chatgpt/`.
 - 23/10/2026 — Claude : étape 4, squelette (accueil : classe, groupe, prénom, ouverture du dossier, Reprendre ;
   en-tête « qui est connecté » ; navigation ; tableau de bord : annonces, groupes et jalons en retard en ambre,
   frise, bandeau de synchronisation pour 3C2D1 ; charte sombre or). Classe fictive pour essayer sans dossier.
