@@ -24,7 +24,7 @@ jour après. Le brief complet est dans `docs/BRIEF-CLAUDE-CODE-escape-lab.md`.
 | 1 | Plan court à valider | Claude | fait (validé le 23/10) |
 | 2 | Étape 0 : page de test du dossier partagé (2 dossiers sur le poste prof) | Claude | page prête ; **test sur les postes à la rentrée** (`site/test-dossier.html`) |
 | 3 | Couche de stockage + synchronisation 3C2D1 + tests | Claude | fait (10 tests `npm test`) ; recette Thomas |
-| 4 | Squelette : accueil, identification, tableau de bord, charte | Claude | à faire |
+| 4 | Squelette : accueil, identification, tableau de bord, charte | Claude | fait ; recette Thomas (bouton « Classe fictive ») |
 | 5 | Histoire puis Frise | Claude | à faire |
 | 6 | Bibliothèque commune | Claude | à faire |
 | 7 | Fiche énigme, énigmes des autres, câblage v1 | Claude | à faire |
@@ -43,9 +43,8 @@ Recettes avec Thomas après les étapes 2, 3, 5, 7 et 11.
 **Arborescence**
 ```
 site/
-  index.html            accueil + identification (classe, groupe, prénom)
-  equipe.html           tableau de bord, histoire, frise, bibliothèque, jour J (onglets)
-  enigme.html           fiche du groupe (onglets §7.6) + énigmes des autres
+  index.html            page unique élève : accueil, identification, puis pages #tableau, #histoire, #frise,
+                        #bibliotheque, #enigme, #autres, #programmation, #jourj (le dossier ouvert reste accessible)
   prof.html             espace professeur (code saisi à l'ouverture)
   test-dossier.html     étape 0
   js/stockage.js        couche unique : lister, lire, écrire (version attendue), historique, fichiers
@@ -53,7 +52,9 @@ site/
   js/...                un fichier par écran
   donnees/mecaniques.js definirMecaniques({...})   (contenu ChatGPT, validé Thomas)
   donnees/composants.js definirComposants({...})   (contenu ChatGPT, validé Thomas)
-  donnees/demo/         données fictives
+  donnees/equipes.js    équipes et dossiers (3C1, 3D2, 3C2D1 = 3C2 + 3D1), chemin ESCAPE GAME › <classe>
+  donnees/jalons.js     jalons par défaut (annexe C)
+  donnees/demo.js       classe fictive 3Z9 (bouton « Classe fictive », rien enregistré)
   labo-blocs/           copie de Labo Blocs (comme les autres projets)
 tests/                  node:test (stockage, conflits, synchro sans perte)
 docs/                   brief, recette
@@ -68,8 +69,9 @@ de programme, groupes non mixtes en 3C2D1, export CSV seul, aucune caméra avant
 À copier dans ChatGPT avec ce fichier et le brief. Rendre un fichier par tâche ; Claude l'intègre.
 
 ### Tâche C1 — Fiches des 6 mécaniques (brief §5.1, §5.2, annexe A)
-Damier, Calques, Relier les points, Morse, Langue des signes, César (secours). Pour chacune, un objet dans
-`mecaniques.js` au format :
+Damier, Calques, Relier les points, Morse, Langue des signes, César (secours). `site/donnees/mecaniques.js`
+existe déjà avec `id`, `nom`, `lettre`, `couleur` : **garder ces quatre champs tels quels** et compléter chaque
+objet au format :
 ```js
 definirMecaniques({ version: 1, mecaniques: [
   { id: "morse", nom: "Morse", couleur: "#…", lettre: "M",
@@ -103,6 +105,10 @@ Chaque version est d'abord copiée dans `<collection>/historique/<id>/<version>.
 (couche unique + synchronisation), `site/js/stockage-dossier.js` (accès au dossier dans Chrome/Edge).
 
 ## Journal
+- 23/10/2026 — Claude : étape 4, squelette (accueil : classe, groupe, prénom, ouverture du dossier, Reprendre ;
+  en-tête « qui est connecté » ; navigation ; tableau de bord : annonces, groupes et jalons en retard en ambre,
+  frise, bandeau de synchronisation pour 3C2D1 ; charte sombre or). Classe fictive pour essayer sans dossier.
+  Vérifié dans le navigateur (serveur local `npm start`, port 8080). Les pages suivantes affichent « bientôt ».
 - 23/10/2026 — Claude : étape 3, couche de stockage (version attendue, refus sans écrasement, historique,
   restauration, anciens fichiers lisibles) et synchronisation de deux dossiers (aperçu, copie, conflit gardé des
   deux côtés, journal). 10 tests `node:test` verts. Test réel sur les postes reporté à la rentrée (vacances).

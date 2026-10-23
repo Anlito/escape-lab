@@ -3,6 +3,7 @@
   "private": true,
   "description": "Escape Lab : outil collaboratif de conception d'escape game (3e)",
   "scripts": {
+    "start": "node tools/serve.js",
     "test": "node --test tests/*.test.js"
   }
 }

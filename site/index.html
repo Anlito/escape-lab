@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Escape Lab</title>
+<link rel="stylesheet" href="css/charte.css">
+</head>
+<body>
+
+<section id="accueil" class="accueil">
+  <div class="carte">
+    <h1>Escape <span style="color:var(--or)">LAB</span></h1>
+    <p class="slogan">Créer. Coder. Jouer.</p>
+    <p>Choisis ta classe et ton groupe, écris ton prénom, puis ouvre le dossier de ta classe.</p>
+
+    <label for="choixClasse">Ta classe</label>
+    <select id="choixClasse"></select>
+    <p id="aideChemin" class="petit"></p>
+
+    <label for="choixGroupe">Ton groupe</label>
+    <select id="choixGroupe"></select>
+
+    <label for="prenom">Ton prénom</label>
+    <input id="prenom" autocomplete="off" maxlength="30" placeholder="Prénom seulement">
+
+    <p id="messageAccueil" class="ecart" role="alert" hidden></p>
+    <div class="boutons">
+      <button id="btnOuvrir" class="principal">Ouvrir le dossier de la classe</button>
+      <button id="btnReprendre" hidden></button>
+    </div>
+  </div>
+  <p class="petit">Pour découvrir l'outil sans dossier : <button id="btnDemo">Classe fictive</button>
+    (rien n'est enregistré). Escape Lab fonctionne avec Chrome ou Edge.</p>
+</section>
+
+<div id="espace" hidden>
+  <header class="entete">
+    <div class="marque">Escape <span>LAB</span></div>
+    <div id="connecte" class="connecte"></div>
+    <button id="btnQuitter">Changer</button>
+  </header>
+  <nav id="navigation" class="navigation" aria-label="Pages de l'équipe"></nav>
+  <main id="contenu"></main>
+</div>
+
+<!-- Ordre de chargement : réglages du collège, stockage, application, puis les données (definirXxx). -->
+<script src="labo-blocs/college.js"></script>
+<script src="college.js"></script>
+<script src="js/stockage.js"></script>
+<script src="js/stockage-dossier.js"></script>
+<script src="js/application.js"></script>
+<script src="donnees/equipes.js"></script>
+<script src="donnees/jalons.js"></script>
+<script src="donnees/mecaniques.js"></script>
+<script src="donnees/demo.js"></script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+/* Charte Escape LAB — « Créer. Coder. Jouer. » (brief §12) : fond anthracite, texte clair, or en accent,
+   écarts en ambre (jamais en rouge), jamais la couleur seule, texte ≥ 13 px. */
+:root {
+  --fond: #2f2f2f;
+  --fond-carte: #3b3b3b;
+  --fond-champ: #262626;
+  --bord: #555;
+  --texte: #f7f4ef;
+  --texte-doux: #c9c4bb;
+  --or: #c9a227;
+  --or-clair: #e2c15a;
+  --ambre: #f0a030;
+  --vert: #7cc47c;
+  --rayon: 10px;
+}
+
+* { box-sizing: border-box; }
+html { font-size: 16px; }
+body { margin: 0; background: var(--fond); color: var(--texte); font: 1rem/1.5 system-ui, "Segoe UI", sans-serif; }
+a { color: var(--or-clair); }
+h1, h2, h3 { line-height: 1.25; margin: 0 0 .5em; }
+h1 { font-size: 1.6rem; }
+h2 { font-size: 1.25rem; color: var(--or-clair); }
+h3 { font-size: 1.05rem; }
+.petit { font-size: .875rem; color: var(--texte-doux); }
+[hidden] { display: none !important; }
+
+/* Boutons et champs */
+button, .bouton {
+  font: inherit; cursor: pointer; padding: .5em 1em; border-radius: 8px;
+  border: 2px solid var(--or); background: transparent; color: var(--texte); text-decoration: none;
+}
+button.principal { background: var(--or); color: #1d1d1d; font-weight: 600; }
+button:disabled { opacity: .5; cursor: default; }
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid var(--or-clair); outline-offset: 2px; }
+label { display: block; margin: .75em 0 .25em; font-weight: 600; }
+input, select, textarea {
+  font: inherit; width: 100%; padding: .5em .6em; border-radius: 6px;
+  border: 1px solid var(--bord); background: var(--fond-champ); color: var(--texte);
+}
+
+/* En-tête et navigation */
+.entete {
+  display: flex; flex-wrap: wrap; align-items: center; gap: .5em 1em;
+  padding: .6em 16px; border-bottom: 2px solid var(--or); background: #262626;
+}
+.marque { font-weight: 800; font-size: 1.2rem; letter-spacing: .02em; }
+.marque span { color: var(--or); }
+.connecte { margin-left: auto; font-size: .9rem; color: var(--texte-doux); }
+.connecte strong { color: var(--texte); }
+.navigation { display: flex; flex-wrap: wrap; gap: .25em; padding: .4em 16px; background: #292929; }
+.navigation a {
+  padding: .35em .75em; border-radius: 6px; text-decoration: none; color: var(--texte); font-size: .95rem;
+  border: 1px solid transparent;
+}
+.navigation a[aria-current="page"] { border-color: var(--or); color: var(--or-clair); font-weight: 600; }
+
+main { max-width: 1100px; margin: 0 auto; padding: 16px; }
+.carte { background: var(--fond-carte); border-radius: var(--rayon); padding: 14px 16px; margin: 0 0 14px; }
+.grille { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+
+/* Messages : écart en ambre, avec un symbole (jamais la couleur seule) */
+.ecart { color: var(--ambre); }
+.ecart::before { content: "! "; font-weight: 800; }
+.bandeau { border-left: 4px solid var(--or); padding: .5em .8em; background: #353535; border-radius: 6px; margin: 0 0 14px; }
+.bandeau.ecart { border-left-color: var(--ambre); }
+
+/* Accueil */
+.accueil { max-width: 592px; margin: 32px auto; padding: 0 16px; }
+.accueil .slogan { color: var(--or-clair); margin-top: -.3em; }
+.boutons { display: flex; flex-wrap: wrap; gap: .5em; margin-top: 1em; }
+
+/* Pastille de mécanique : couleur + lettre */
+.pastille {
+  display: inline-flex; align-items: center; justify-content: center; width: 1.7em; height: 1.7em;
+  border-radius: 50%; font-weight: 800; font-size: .85rem; color: #1d1d1d; background: var(--texte-doux);
+  border: 2px solid var(--texte);
+}
+
+/* Carte de groupe */
+.groupe h3 { display: flex; align-items: center; gap: .5em; }
+.barre { height: 10px; background: var(--fond-champ); border-radius: 5px; overflow: hidden; margin: .4em 0; }
+.barre > div { height: 100%; background: var(--or); }
+.etiquette { display: inline-block; font-size: .8rem; padding: .1em .5em; border: 1px solid var(--bord); border-radius: 999px; }
+
+/* Aperçu de la frise */
+.frise { display: flex; flex-wrap: wrap; align-items: center; gap: .4em; }
+.frise .etape { padding: .35em .7em; border: 1px solid var(--or); border-radius: 6px; font-size: .9rem; }
+.frise .fleche { color: var(--texte-doux); }
+
+@media (max-width: 600px) {
+  .connecte { margin-left: 0; width: 100%; }
+  .frise { flex-direction: column; align-items: flex-start; }
+}
+
+/* Impression : noir et blanc, bordures plutôt que couleurs */
+@media print {
+  body { background: #fff; color: #000; }
+  .entete, .navigation, button { display: none !important; }
+  .carte { background: none; border: 1px solid #000; break-inside: avoid; }
+  h2, .ecart, a { color: #000; }
+  .barre > div { background: #000; }
+}
