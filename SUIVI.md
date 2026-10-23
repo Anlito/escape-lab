@@ -89,6 +89,8 @@ Claude « C4 livrée » : Claude relit, intègre et met à jour ce tableau.
 | C15 Mode d’emploi du professeur | **rangée** (`docs/mode-emploi-professeur.md`) ; **à mettre à jour** : écrit avant l’étape 9 (`prof.html` existe maintenant), à revoir après l’étape 11 |
 | C16 Fiche complète de démonstration | **intégrée** (groupe A de la démo : `fiches/A-<onglet>`, jalons recalculés) |
 | C17 Décisions à prendre (une page) | **rangée** (`docs/decisions.md`) : **à remplir par Thomas** |
+| C18 Remarques rapides de l’observation du jour J | **à faire** (pour l’étape 11) |
+| C19 Annonces types par séance | **à faire** (pour l’étape 11) |
 | C6 Grille d'évaluation | **rangée** (`site/donnees/evaluation.js`, utilisée à l'étape 11) ; **décisions de Thomas attendues** (voir ci-dessous) |
 
 ### Tâche C4 — Relevé du matériel à remplir par Thomas au collège (brief §4, question 9)
@@ -241,6 +243,19 @@ Classer par urgence : avant la rentrée, avant la séance 3, avant le jour J.
 
 Pour C15 : mettre à jour `mode-emploi-professeur.md` avec l’étape 9 (`site/prof.html` : ouvrir plusieurs dossiers,
 fiches mécaniques et composants, activer, exporter, importer).
+
+### Tâche C18 — Remarques rapides pour la fiche d’observation du jour J (brief §8.5)
+`observations-modeles.js` au format `definirObservations({ format: "escape-lab/observations", version: 1,
+phases: { miseEnPlace: [...], jeu: [...], rangement: [...] } })` : pour chaque phase, 8 à 10 remarques courtes que le
+professeur touche sur la tablette en un geste (`{ id, texte, sens: "positif" | "a-ameliorer" }`), observables
+(« installe son poste sans aide », « attend des consignes »), 8 mots au plus, sans prénom, jamais blessantes. Les
+rattacher aux critères Jour J de `site/donnees/evaluation.js` (`critere: "<id>"`).
+
+### Tâche C19 — Annonces types du professeur, séance par séance (annexe C du brief)
+`annonces-modeles.js` au format `definirAnnoncesModeles({ format: "escape-lab/annonces-modeles", version: 1,
+seances: [{ seance: 1, annonces: ["…"] }, …] })` : pour les séances 1 à 10, deux ou trois annonces courtes (20 mots
+au plus) tirées des jalons de `site/donnees/jalons.js` (« Aujourd’hui : scénario, solution et cadenas »), un rappel
+de sécurité aux séances d’électronique, ton encourageant, sans reproche.
 
 ## Questions à Thomas (grille C6)
 1. Barème : A–D = 0, 1, 2, 3 points (tout en C donne 13,3/20). Garder, ou celui des grilles Excel existantes ?
