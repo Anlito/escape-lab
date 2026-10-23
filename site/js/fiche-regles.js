@@ -118,6 +118,7 @@
     (branchements || []).forEach(function (b) {
       var broche = normaliserBroche(b.brocheCarte);
       if (!broche) return;
+      if (/^RAIL/.test(broche)) return;   // rails + et − de la platine
       if (liste.indexOf(broche) === -1) resultats.push({ id: "brocheIndisponible", broche: b.brocheCarte });
       if (ALIMENTATIONS.indexOf(broche) !== -1) return;
       (parBroche[broche] = parBroche[broche] || []).push(b.composant);
@@ -199,7 +200,86 @@
     return { entrees: e, sorties: s, vide: !e.length && !s.length, e1: e.length > 0 && s.length > 0 };
   }
 
+  // --- Fils de chaque composant et leurs couleurs (règles de Thomas, 23/10/2026) ---
+  // Un composant se branche par son ou ses signaux, le GND et parfois le VCC (5 V). GND en noir, VCC en blanc.
+  // Signal d'une LED ou d'un bouton : de la couleur de la LED ou du bouton. Trois fils : VCC blanc (ou rouge), GND noir
+  // (ou marron), signal orange (ou gris). Quatrième fil : violet (ou jaune). Les autres fils : des couleurs différentes.
+  // La fiche du composant validée par le professeur peut donner sa propre liste (champ « fils ») : elle passe avant.
+
+  var COULEURS_FILS = ["noir", "blanc", "rouge", "marron", "orange", "gris", "violet", "jaune", "vert", "bleu"];
+  var S = function (nom) { return { nom: nom, role: "signal" }; };
+  var GND = { nom: "GND", role: "gnd" }, VCC = { nom: "VCC (5 V)", role: "vcc" };
+  var FILS_PAR_DEFAUT = {
+    led: [S("signal"), GND], bouton: [S("signal"), GND], "buzzer-passif": [S("signal"), GND], ils: [S("signal"), GND],
+    servomoteur: [VCC, GND, S("signal")], potentiometre: [VCC, GND, S("signal")], relais: [VCC, GND, S("signal")],
+    lcd: [VCC, GND, S("signal 1"), S("signal 2")], "clavier-grove": [VCC, GND, S("RX"), S("TX")],
+    "clavier-membrane": ["L1", "L2", "L3", "L4", "C1", "C2", "C3"].map(S),
+    electroaimant: []   // jamais sur la carte : il est alimenté par le relais et l'alimentation 12 V séparée
+  };
+  var COULEUR_SIGNAL_LED = { led: "de la couleur de la LED", bouton: "de la couleur du bouton" };
+
+  function filsDuComposant(composant) {
+    var c = composant || {};
+    if (Array.isArray(c.fils) && c.fils.length) return c.fils.map(function (f) { return { nom: f.nom, role: String(f.role || "signal").trim().toLowerCase() }; });
+    if (FILS_PAR_DEFAUT[c.id]) return FILS_PAR_DEFAUT[c.id].slice();
+    return [S("signal"), GND];
+  }
+
+  // Lignes du tableau des branchements pour un composant : GND vers GND, VCC vers 5 V (3 V sur la micro:bit), signaux
+  // à choisir par l'élève ; couleurs proposées en évitant celles déjà prises par d'autres fils de signal.
+  function lignesDuComposant(composant, carte, existantes) {
+    var fils = filsDuComposant(composant);
+    var prises = (existantes || []).filter(function (b) { return b.role === "signal" && b.fil; }).map(function (b) { return b.fil; });
+    var preferees = (fils.length >= 3 ? ["orange", "violet", "jaune", "gris"] : []).concat(["vert", "bleu", "jaune", "violet", "orange", "gris"]);
+    var rang = 0;
+    return fils.map(function (f) {
+      var ligne = { composant: composant.id, brocheComposant: f.nom, role: f.role, brocheCarte: "", fil: "", verifie: false };
+      if (f.role === "gnd") { ligne.brocheCarte = "GND"; ligne.fil = "noir"; }
+      else if (f.role === "vcc") { ligne.brocheCarte = carte === "microbit" ? "3V" : "5V"; ligne.fil = "blanc"; }
+      else {
+        var couleur = preferees.filter(function (x) { return prises.indexOf(x) === -1; })[0];
+        if (fils.length >= 4 && rang === 1) couleur = prises.indexOf("violet") === -1 ? "violet" : couleur;
+        ligne.fil = couleur || "";
+        if (couleur) prises.push(couleur);
+        rang++;
+      }
+      return ligne;
+    });
+  }
+
+  function couleurDe(texte) {
+    var t = String(texte || "").toLowerCase();
+    return COULEURS_FILS.filter(function (c) { return t.indexOf(c) !== -1; })[0] || "";
+  }
+
+  // Contrôles bienveillants sur les fils (jamais bloquants).
+  function controlesFils(composantsChoisis, branchements) {
+    var r = [], b = branchements || [];
+    composantsChoisis.forEach(function (c) {
+      if (c.integre || c.id === "electroaimant") return;
+      var siens = b.filter(function (x) { return x.composant === c.id; });
+      var gnd = siens.filter(function (x) { return x.role === "gnd" || normaliserBroche(x.brocheCarte) === "GND"; });
+      if (siens.length && !gnd.some(function (x) { return normaliserBroche(x.brocheCarte) === "GND"; })) r.push({ id: "filGndManquant", composant: c.nom || c.id });
+      siens.filter(function (x) { return x.role === "vcc" && !normaliserBroche(x.brocheCarte); }).forEach(function () { r.push({ id: "filVccManquant", composant: c.nom || c.id }); });
+      siens.filter(function (x) { return x.role === "signal" && !normaliserBroche(x.brocheCarte); }).forEach(function (x) { r.push({ id: "filSignalManquant", composant: c.nom || c.id, fil: x.brocheComposant }); });
+    });
+    b.forEach(function (x) {
+      var couleur = couleurDe(x.fil);
+      if (x.role === "gnd" && couleur && couleur !== "noir" && couleur !== "marron") r.push({ id: "couleurGnd", couleur: couleur });
+      if (x.role === "vcc" && couleur && couleur !== "blanc" && couleur !== "rouge") r.push({ id: "couleurVcc", couleur: couleur });
+    });
+    var parCouleur = {};
+    b.filter(function (x) { return x.role === "signal" && couleurDe(x.fil); }).forEach(function (x) {
+      var c = couleurDe(x.fil);
+      (parCouleur[c] = parCouleur[c] || []).push(x);
+    });
+    Object.keys(parCouleur).forEach(function (c) { if (parCouleur[c].length > 1) r.push({ id: "memeCouleur", couleur: c }); });
+    return r;
+  }
+
   var EscapeLabFiche = {
+    COULEURS_FILS: COULEURS_FILS, COULEUR_SIGNAL_LED: COULEUR_SIGNAL_LED, filsDuComposant: filsDuComposant,
+    lignesDuComposant: lignesDuComposant, controlesFils: controlesFils, couleurDe: couleurDe,
     analyserProgramme: analyserProgramme,
     prenomsDe: prenomsDe, elevesSansRole: elevesSansRole, etatJourJ: etatJourJ,
     lireChemin: lireChemin, ecrireChemin: ecrireChemin, fusionner: fusionner, calculerJalons: calculerJalons,

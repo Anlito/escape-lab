@@ -31,6 +31,7 @@
     if (!ID.test(c.id || "")) p.push("Identifiant : minuscules, chiffres et tirets (2 à 31 signes), par exemple « capteur-ultrason ».");
     if (!String(c.nom || "").trim()) p.push("Il manque le nom du composant.");
     if (TYPES_COMPOSANT.indexOf(c.type) === -1) p.push("Choisis le type : capteur, actionneur, afficheur ou saisie.");
+    (c.fils || []).forEach(function (fil) { if (["signal", "gnd", "vcc"].indexOf(String(fil.role || "").trim().toLowerCase()) === -1) p.push("Le fil « " + (fil.nom || "?") + " » : rôle signal, gnd ou vcc."); });
     if (c.valideParProf && JSON.stringify(c).indexOf("⚠️") !== -1) p.push("La fiche contient encore « ⚠️ à vérifier » : complète-la avant de la valider.");
     return p;
   }

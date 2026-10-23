@@ -54,6 +54,7 @@
       { chemin: "cartes.uno", type: "case", libelle: "Utilisable avec l'Arduino Uno" },
       { chemin: "cartes.microbit", type: "case", libelle: "Utilisable avec la micro:bit" },
       { chemin: "broches", type: "tableau", libelle: "Broches du composant et leur rôle", colonnes: [{ cle: "nom", libelle: "Broche" }, { cle: "role", libelle: "Rôle" }] },
+      { chemin: "fils", type: "tableau", libelle: "Fils à brancher, dans l'ordre (rôle : signal, gnd ou vcc). Vide : la règle générale s'applique (signal + GND, et VCC pour un servo, un potentiomètre, un module).", colonnes: [{ cle: "nom", libelle: "Nom du fil" }, { cle: "role", libelle: "Rôle (signal, gnd, vcc)" }] },
       { chemin: "tension", type: "texte", libelle: "Tension (relevée sur la fiche technique)" },
       { chemin: "cablageType", type: "liste", libelle: "Câblage type, en phrases courtes (une par ligne)" },
       { chemin: "precautions", type: "liste", libelle: "Précautions (une par ligne)" },

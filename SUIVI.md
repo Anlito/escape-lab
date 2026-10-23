@@ -101,7 +101,7 @@ Claude « C4 livrée » : Claude relit, intègre et met à jour ce tableau.
 | C27 Guides : nouvelle frise et histoire en images | **rangée** (`docs/bien-demarrer.md`, `docs/mode-emploi-professeur.md`) |
 | C28 Guides : flèches de la frise, nouvelle page Jour J | **rangée** (`docs/bien-demarrer.md`, `docs/mode-emploi-professeur.md`) |
 | C29 Liste de rentrée pour Thomas | **rangée** (`docs/liste-rentree.md`) |
-| Suite de C4 | **en attente** : quand Thomas a rempli `docs/releve-materiel.md`, compléter `site/donnees/composants.js` (même règle : fiche technique citée, sinon « ⚠️ à vérifier ») |
+| Suite de C4 | **en attente** : quand Thomas a rempli `docs/releve-materiel.md`, compléter `site/donnees/composants.js` (même règle : fiche technique citée, sinon « ⚠️ à vérifier »), **avec pour chaque composant son champ `fils`** : `[{ nom, role: "signal" | "gnd" | "vcc" }]` dans l’ordre du connecteur réel |
 | C6 Grille d'évaluation | **intégrée** (étape 11) ; barème validé par Thomas le 23/10 |
 
 ### Tâche C4 — Relevé du matériel à remplir par Thomas au collège (brief §4, question 9)
@@ -350,6 +350,12 @@ Barème validé : A à D = 0, 1, 2, 3 points ; coefficient 2 pour la fiche énig
 croisé, 1 pour les autres critères ; **pas de rouge** (lettres A à D, sans couleur imposée).
 
 ## Journal
+- 23/10/2026 — Thomas : règles de câblage (signal(s) + GND + parfois VCC 5 V ; GND noir, VCC blanc ; signal d’une LED ou
+  d’un bouton de sa couleur ; 3 fils : VCC blanc/rouge, GND noir/marron, signal orange/gris ; 4e fil violet/jaune ;
+  autres fils de couleurs différentes). Claude : chaque composant ajouté arrive avec tous ses fils et des couleurs
+  proposées, couleur en liste, contrôles (fil GND/VCC/signal oublié, couleur inhabituelle, deux signaux de même
+  couleur), bouton « Ajouter les fils manquants », champ « fils » dans la fiche composant ; rails de la platine plus
+  signalés à tort. 63 tests.
 - 23/10/2026 — ChatGPT : C29 (liste de rentrée) ; rangée dans `docs/`. Prochaine tâche ChatGPT : suite de C4, après le relevé du matériel.
 - 23/10/2026 — ChatGPT : C28 (guides : flèches de la frise, page Jour J) ; rangée. Tâche C29.
 - 23/10/2026 — Claude : page Jour J remise en page (chiffres clés, parties en pastilles, planning avant / pendant / après,

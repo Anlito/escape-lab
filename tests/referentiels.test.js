@@ -40,3 +40,8 @@ test("export puis import d'une fiche", () => {
   assert.ok(R.importer("pas du json", "mecanique").erreur);
   assert.deepEqual(R.importer(JSON.stringify(morse), "mecanique").fiche, morse); // fiche seule acceptée
 });
+
+test("composant : chaque fil déclaré a un rôle signal, gnd ou vcc", () => {
+  assert.deepEqual(R.verifierComposant({ id: "led", nom: "LED", type: "actionneur", fils: [{ nom: "anode", role: "signal" }, { nom: "cathode", role: "gnd" }] }), []);
+  assert.equal(R.verifierComposant({ id: "led", nom: "LED", type: "actionneur", fils: [{ nom: "patte", role: "masse" }] }).length, 1);
+});

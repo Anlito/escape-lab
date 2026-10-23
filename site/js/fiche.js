@@ -266,8 +266,10 @@
       });
       zone.querySelectorAll(".fiche-onglet [data-tableau]").forEach(function (table) {
         if (table.tagName !== "TABLE") return;
-        var lignes = [].map.call(table.querySelectorAll("tbody tr"), function (tr) {
-          var ligne = {};
+        // Les champs qui ne sont pas des colonnes (le rôle d'un fil…) sont gardés.
+        var anciennes = F.lireChemin(v, table.getAttribute("data-tableau")) || [];
+        var lignes = [].map.call(table.querySelectorAll("tbody tr"), function (tr, i) {
+          var ligne = Object.assign({}, anciennes[i] || {});
           tr.querySelectorAll("[data-col]").forEach(function (c) {
             ligne[c.getAttribute("data-col")] = c.type === "checkbox" ? c.checked : c.getAttribute("data-nombre") ? (c.value === "" ? null : Number(c.value)) : c.value;
           });
@@ -368,6 +370,7 @@
           (cablage.length ? "<p><strong>Câblage type :</strong></p><ul>" + cablage.map(function (t) { return "<li>" + avertir(t) + "</li>"; }).join("") + "</ul>" : "") +
           (precautions.length ? "<p><strong>Précautions :</strong></p><ul>" + precautions.map(function (t) { return "<li>" + avertir(t) + "</li>"; }).join("") + "</ul>" : "") +
           (c.source && /^https?:/.test(c.source) ? '<p class="petit"><a href="' + e(c.source) + '" target="_blank" rel="noopener noreferrer">Fiche du fabricant ↗</a></p>' : "") +
+          (filsManquants(c, v).length ? '<button data-action="completerFils" data-id="' + e(c.id) + '">Ajouter les fils manquants (' + e(filsManquants(c, v).map(function (x) { return x.brocheComposant; }).join(", ")) + ")</button> " : "") +
           '<button data-action="retirerComposant" data-id="' + e(c.id) + '">Retirer ce composant et ses fils</button></div>';
       }).join("");
       html += "<h4>Schéma</h4>" +
@@ -377,9 +380,10 @@
         }).join("") + "</div>" +
         '<div class="zone-schema">' + racine.EscapeLabSchema.schemaSvg({ carte: carte, composants: choisis, positions: v.positions, branchements: v.branchements, interactif: true }) + "</div>";
       html += champHtml(colonnesBranchements(choisis), v);
-      var controles = F.controlesCablage(carte, choisis, v.branchements || []);
+      html += '<p class="petit">Couleurs : GND en <b>noir</b>, VCC (5 V) en <b>blanc</b>. Le signal d\x27une LED ou d\x27un bouton : de sa couleur. Les autres signaux : une couleur différente chacun.</p>';
+      var controles = F.controlesCablage(carte, choisis, v.branchements || []).concat(F.controlesFils(choisis, v.branchements || []));
       html += controles.map(function (x) {
-        return '<p class="ecart' + (/^douzeVolts|^validationProf/.test(x.id) ? " securite" : "") + '">' + e(app.message(x.id, { broche: x.broche })) + "</p>";
+        return '<p class="ecart' + (/^douzeVolts|^validationProf/.test(x.id) ? " securite" : "") + '">' + e(app.message(x.id, x)) + "</p>";
       }).join("");
       html += champHtml({ cle: "tests", type: "zone", libelle: "Tests faits (ce qui marche, ce qui reste à régler)", lignes: 2 }, v) +
         champHtml({ cle: "boitier", type: "zone", libelle: "Boîtier : où va la carte, comment elle est protégée", lignes: 2 }, v) +
@@ -390,13 +394,24 @@
       return html;
     }
 
+    // Fils attendus (signal, GND, VCC) qui ne sont pas encore dans le tableau pour ce composant.
+    function filsManquants(c, v) {
+      var siens = (v.branchements || []).filter(function (b) { return b.composant === c.id; });
+      return F.lignesDuComposant(c, v.carte || "uno", v.branchements || []).filter(function (l) {
+        if (l.role === "gnd") return !siens.some(function (b) { return b.role === "gnd" || String(b.brocheCarte).toUpperCase() === "GND"; });
+        if (l.role === "vcc") return !siens.some(function (b) { return b.role === "vcc" || /^(5V|3V|3,3V)$/i.test(b.brocheCarte || ""); });
+        return siens.filter(function (b) { return b.role === "signal" || !b.role; }).length < F.lignesDuComposant(c, v.carte || "uno", []).filter(function (x) { return x.role === "signal"; }).length &&
+          !siens.some(function (b) { return b.brocheComposant === l.brocheComposant; });
+      });
+    }
+
     function colonnesBranchements(choisis) {
       var carte = (valeurDe("electronique").carte) || "uno";
       return { cle: "branchements", type: "tableau", libelle: "Tableau des branchements", colonnes: [
         { cle: "composant", libelle: "Composant", type: "choix", options: choisis.filter(function (c) { return !c.integre; }).map(function (c) { return [c.id, c.nom]; }) },
         { cle: "brocheComposant", libelle: "Broche du composant", type: "texte" },
         { cle: "brocheCarte", libelle: "→ Broche de la carte ou rail", type: "choix", options: F.BROCHES[carte].concat(["Rail + de la platine", "Rail − de la platine"]) },
-        { cle: "fil", libelle: "Couleur du fil", type: "texte" },
+        { cle: "fil", libelle: "Couleur du fil", type: "choix", options: F.COULEURS_FILS },
         { cle: "verifie", libelle: "Vérifié", type: "case" }] };
     }
 
@@ -633,6 +648,10 @@
           var id = zone.querySelector("#f-composant").value;
           if (!id) return;
           ajouterComposant(id, null);
+        } else if (action === "completerFils") {
+          var idc = b.getAttribute("data-id"), vc = travail.electronique;
+          vc.branchements = (vc.branchements || []).concat(filsManquants(composantsConnus()[idc], vc));
+          modifies.electronique = true;
         } else if (action === "retirerComposant") {
           var idr = b.getAttribute("data-id"), vr = travail.electronique;
           vr.composants = (vr.composants || []).filter(function (x) { return x !== idr; });
@@ -691,12 +710,8 @@
       var connus = composantsConnus(), ve = travail.electronique;
       if (!connus[id] || (ve.composants || []).indexOf(id) !== -1) return;
       ve.composants = (ve.composants || []).concat(id);
-      if (!connus[id].integre) {
-        var broches = (connus[id].broches || []).length ? connus[id].broches : [{ nom: "" }];
-        ve.branchements = (ve.branchements || []).concat(broches.map(function (br) {
-          return { composant: id, brocheComposant: /⚠️/.test(br.nom) ? "" : br.nom, brocheCarte: "", fil: "", verifie: false };
-        }));
-      }
+      // Tous les fils du composant : signal(s), GND et, s'il le faut, VCC, avec des couleurs proposées.
+      if (!connus[id].integre) ve.branchements = (ve.branchements || []).concat(F.lignesDuComposant(connus[id], ve.carte || "uno", ve.branchements || []));
       if (position) ve.positions = Object.assign({}, ve.positions || {}, (function () { var p = {}; p[id] = position; return p; })());
       modifies.electronique = true;
     }

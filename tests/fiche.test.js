@@ -129,3 +129,41 @@ test("programme : forme enregistrée par Labo Blocs (blocs de Blockly)", () => {
   assert.equal(F.analyserProgramme(programme).e1, true);
   assert.equal(F.analyserProgramme({ blocks: { blocks: [{ type: "demarrage" }, { type: "boucle" }] } }).vide, true);
 });
+
+// --- Fils et couleurs (règles du 23/10/2026) ---
+
+test("fils : une LED a un signal et un GND, un servomoteur VCC, GND et signal", () => {
+  assert.deepEqual(F.filsDuComposant({ id: "led" }).map((f) => f.role), ["signal", "gnd"]);
+  assert.deepEqual(F.filsDuComposant({ id: "servomoteur" }).map((f) => f.role), ["vcc", "gnd", "signal"]);
+  assert.deepEqual(F.filsDuComposant({ id: "electroaimant" }), []);
+  assert.deepEqual(F.filsDuComposant({ id: "inconnu" }).map((f) => f.role), ["signal", "gnd"]);
+  assert.deepEqual(F.filsDuComposant({ id: "led", fils: [{ nom: "anode", role: "signal" }] }), [{ nom: "anode", role: "signal" }]);
+});
+
+test("fils : GND noir sur GND, VCC blanc sur 5 V (3 V sur la micro:bit), signal à choisir", () => {
+  const l = F.lignesDuComposant({ id: "servomoteur" }, "uno", []);
+  assert.deepEqual(l.map((x) => [x.role, x.brocheCarte, x.fil]), [["vcc", "5V", "blanc"], ["gnd", "GND", "noir"], ["signal", "", "orange"]]);
+  assert.equal(F.lignesDuComposant({ id: "servomoteur" }, "microbit", [])[0].brocheCarte, "3V");
+});
+
+test("fils : les signaux de deux composants n'ont pas la même couleur", () => {
+  const led = F.lignesDuComposant({ id: "led" }, "uno", []);
+  const bouton = F.lignesDuComposant({ id: "bouton" }, "uno", led);
+  assert.notEqual(led[0].fil, bouton[0].fil);
+  assert.equal(F.lignesDuComposant({ id: "lcd" }, "uno", []).filter((x) => x.role === "signal")[1].fil, "violet");
+});
+
+test("contrôles des fils : GND ou VCC oubliés, mauvaise couleur, même couleur de signal", () => {
+  const ids = (r) => r.map((x) => x.id).sort();
+  const servo = { id: "servomoteur", nom: "Servomoteur" }, led = { id: "led", nom: "LED" };
+  assert.deepEqual(ids(F.controlesFils([servo], [
+    { composant: "servomoteur", role: "vcc", brocheCarte: "", fil: "blanc" },
+    { composant: "servomoteur", role: "gnd", brocheCarte: "", fil: "noir" },
+    { composant: "servomoteur", role: "signal", brocheCarte: "D5", fil: "orange" }])), ["filGndManquant", "filVccManquant"]);
+  assert.deepEqual(ids(F.controlesFils([led], [
+    { composant: "led", role: "signal", brocheCarte: "D3", fil: "jaune" },
+    { composant: "led", role: "gnd", brocheCarte: "GND", fil: "rouge" }])), ["couleurGnd"]);
+  assert.deepEqual(ids(F.controlesFils([led, { id: "bouton" }], [
+    { composant: "led", role: "signal", brocheCarte: "D3", fil: "vert" }, { composant: "led", role: "gnd", brocheCarte: "GND", fil: "noir" },
+    { composant: "bouton", role: "signal", brocheCarte: "D2", fil: "vert" }, { composant: "bouton", role: "gnd", brocheCarte: "GND", fil: "noir" }])), ["memeCouleur"]);
+});

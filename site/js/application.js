@@ -53,6 +53,12 @@
     masseCommune: "Aucun fil ne va à GND : les composants ont besoin d'une masse commune.",
     douzeVoltsSansRelais: "12 V : relais et alimentation séparée, jamais sur la carte ni la platine.",
     validationProfAvantTension: "Avant toute mise sous tension, le professeur vérifie et valide le montage.",
+    filGndManquant: "{composant} : il manque encore le fil GND (vers GND de la carte ou le rail −).",
+    filVccManquant: "{composant} : il manque encore le fil VCC (vers 5 V ou le rail +).",
+    filSignalManquant: "{composant} : choisis la broche de la carte pour le fil « {fil} ».",
+    couleurGnd: "Un fil GND est {couleur} : d'habitude, le GND est noir (ou marron).",
+    couleurVcc: "Un fil VCC est {couleur} : d'habitude, le VCC est blanc (ou rouge).",
+    memeCouleur: "Deux fils de signal ont la même couleur ({couleur}) : change l'un des deux pour t'y retrouver.",
     aVerifier: "Information pas encore vérifiée sur le composant réel : demande au professeur avant de brancher.",
     dureeEnigmeLongue: "Ton énigme dure plus de {minutes} min : la partie risque d'être trop longue."
   };
