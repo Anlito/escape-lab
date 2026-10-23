@@ -9,37 +9,53 @@
 <link rel="stylesheet" href="css/charte.css">
 </head>
 <body>
-<header class="entete">
-  <div class="marque">Escape <span>LAB</span> · professeur</div>
-  <a class="connecte" href="index.html?prof">Suivi, pilotage, évaluation</a>
-  <a class="bouton" href="regie.html">Régie du jour J</a>
-  <button id="btnVerrouiller">Verrouiller</button>
-</header>
-<main>
-  <p class="bandeau">Fiches mécaniques, composants et synchronisation des deux dossiers de 3C2D1. Le suivi des groupes, le pilotage, l'évaluation et les exports sont dans « Suivi, pilotage, évaluation ».</p>
-
-  <section class="carte">
-    <h2>Dossiers de classe ouverts</h2>
-    <p class="petit">Une fiche enregistrée ici est copiée dans chaque dossier coché. Ouvre tous les dossiers des classes concernées
-      (pour l'équipe 3C2D1 : les deux dossiers).</p>
-    <div id="listeDossiers"></div>
-    <div class="ajout-composant">
-      <label for="choixDepot">Classe du dossier</label>
-      <select id="choixDepot"></select>
-      <button id="btnOuvrirDossier" class="principal">Ouvrir le dossier de cette classe</button>
-      <button id="btnDemoProf">Classe fictive</button>
+<div class="mise-en-page">
+  <nav class="menu-lateral" aria-label="Pages du professeur">
+    <a class="marque" href="index.html?prof"><svg width="30" height="30" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color:var(--or)"><path d="M16 22v-6a8 8 0 0 1 16 0v6"/><rect x="10" y="22" width="28" height="20" rx="4"/><path d="M24 30v5"/></svg>ESCAPE <span>LAB</span></a>
+    <span class="badge-prof">Professeur</span>
+    <div class="menu-groupes">
+      <div class="menu-groupe" id="ongletsProf">
+        <span class="menu-titre">Référentiels</span>
+        <a class="menu-lien" href="#mecaniques" data-page="mecaniques" aria-current="page"><span class="icone" aria-hidden="true">M</span>Fiches mécaniques</a>
+        <a class="menu-lien" href="#composants" data-page="composants"><span class="icone" aria-hidden="true">C</span>Composants</a>
+        <span class="menu-titre">Équipe à deux dossiers</span>
+        <a class="menu-lien" href="#synchro" data-page="synchro"><span class="icone" aria-hidden="true">⇄</span>Synchronisation 3C2D1</a>
+      </div>
+      <div class="menu-groupe">
+        <span class="menu-titre">Autres espaces</span>
+        <a class="menu-lien" href="index.html?prof"><span class="icone" aria-hidden="true">✓</span>Suivi, pilotage, évaluation</a>
+        <a class="menu-lien" href="regie.html"><span class="icone" aria-hidden="true">◉</span>Régie du jour J</a>
+      </div>
     </div>
-    <p id="aideDepot" class="petit"></p>
-    <p id="messageDossiers" class="ecart" role="alert" hidden></p>
-  </section>
-
-  <nav id="ongletsProf" class="onglets" hidden>
-    <button data-page="mecaniques" aria-selected="true">Fiches mécaniques</button>
-    <button data-page="composants" aria-selected="false">Bibliothèque de composants</button>
-    <button data-page="synchro" aria-selected="false">Synchronisation 3C2D1</button>
+    <div class="carte-identite">
+      <strong>Professeur</strong>
+      <span class="petit" id="resumeDossiers">Aucun dossier ouvert</span>
+      <div class="boutons"><button id="btnVerrouiller">Verrouiller</button></div>
+    </div>
   </nav>
-  <div id="pageProf"></div>
-</main>
+
+  <main class="zone-principale">
+    <div>
+      <header class="tete-page"><span class="surtitre">Professeur · référentiels</span><h1 id="titrePage">Fiches mécaniques</h1></header>
+
+      <section class="carte">
+        <h2>Dossiers de classe ouverts</h2>
+        <p class="petit">Une fiche enregistrée ici est copiée dans chaque dossier coché. Ouvre tous les dossiers des classes concernées (pour l'équipe 3C2D1 : les deux dossiers).</p>
+        <div id="listeDossiers"></div>
+        <div class="ajout-composant">
+          <label for="choixDepot">Classe du dossier</label>
+          <select id="choixDepot"></select>
+          <button id="btnOuvrirDossier" class="principal">Ouvrir le dossier de cette classe</button>
+          <button id="btnDemoProf">Classe fictive</button>
+        </div>
+        <p id="aideDepot" class="petit"></p>
+        <p id="messageDossiers" class="ecart" role="alert" hidden></p>
+      </section>
+
+      <div id="pageProf"></div>
+    </div>
+  </main>
+</div>
 
 <script src="labo-blocs/college.js"></script>
 <script src="college.js"></script>

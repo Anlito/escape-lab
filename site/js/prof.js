@@ -85,7 +85,7 @@
         (d.nom.toUpperCase() !== d.depot.toUpperCase() && d.depot !== "3Z9" ? '<span class="ecart">(nom différent de la classe : vérifie)</span> ' : "") +
         '<button data-fermer="' + i + '">Fermer</button></li>';
     }).join("") + "</ul>" : '<p class="petit">Aucun dossier ouvert.</p>';
-    $("ongletsProf").hidden = !dossiers.length;
+    $("resumeDossiers").textContent = dossiers.length ? dossiers.length + " dossier" + (dossiers.length > 1 ? "s" : "") + " ouvert" + (dossiers.length > 1 ? "s" : "") + " : " + dossiers.map(function (d) { return d.depot; }).join(", ") : "Aucun dossier ouvert";
     afficherPage();
   }
 
@@ -274,8 +274,9 @@
 
   async function afficherPage() {
     var zone = $("pageProf");
-    document.querySelectorAll("#ongletsProf [data-page]").forEach(function (b) { b.setAttribute("aria-selected", String(b.getAttribute("data-page") === page)); });
-    if (!dossiers.length) { zone.innerHTML = ""; return; }
+    document.querySelectorAll("#ongletsProf [data-page]").forEach(function (b) { if (b.getAttribute("data-page") === page) b.setAttribute("aria-current", "page"); else b.removeAttribute("aria-current"); });
+    $("titrePage").textContent = { mecaniques: "Fiches mécaniques", composants: "Bibliothèque de composants", synchro: "Synchronisation 3C2D1" }[page];
+    if (!dossiers.length) { zone.innerHTML = '<p class="bandeau">Ouvre d\x27abord un dossier de classe (ou la classe fictive) pour voir et modifier les fiches.</p>'; return; }
     if (page === "synchro") return afficherSynchro(zone);
     if (edition) return afficherFormulaire(zone);
     try { await afficherListe(zone); }
@@ -331,6 +332,7 @@
     $("ongletsProf").addEventListener("click", function (ev) {
       var b = ev.target.closest("[data-page]");
       if (!b) return;
+      ev.preventDefault();
       if (edition && !confirm("Quitter la fiche sans l'enregistrer ?")) return;
       page = b.getAttribute("data-page"); edition = null; enAttente = []; message = "";
       afficherPage();

@@ -9,43 +9,55 @@
 <link rel="stylesheet" href="css/charte.css">
 </head>
 <body class="regie">
-<header class="entete">
-  <div class="marque">Escape <span>LAB</span> · régie</div>
-  <p id="voyant" class="voyant" role="status">○ Caméras éteintes</p>
-  <button id="toutArreter" class="arret" disabled>■ Tout arrêter</button>
-</header>
-<main>
-  <p class="bandeau">Les images restent sur ce poste : <strong>aucun enregistrement, rien n'est envoyé</strong>. Si un joueur refuse, « Tout arrêter » et prévenir le professeur.</p>
-
-  <section class="carte" id="avant">
-    <h2>Avant d'allumer</h2>
-    <label class="case"><input type="checkbox" id="accord"> L'accord de la direction est obtenu.</label>
-    <label class="case"><input type="checkbox" id="informes"> Les joueurs sont informés (affiche posée) et peuvent demander l'arrêt.</label>
-    <div class="boutons">
-      <label>Nombre de caméras <select id="nombre"><option>1</option><option>2</option><option>3</option><option selected>4</option></select></label>
-      <button id="allumer" class="principal" disabled>Allumer les caméras</button>
+<div class="mise-en-page">
+  <nav class="menu-lateral" aria-label="Régie">
+    <a class="marque" href="prof.html"><svg width="30" height="30" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color:var(--or)"><path d="M16 22v-6a8 8 0 0 1 16 0v6"/><rect x="10" y="22" width="28" height="20" rx="4"/><path d="M24 30v5"/></svg>ESCAPE <span>LAB</span></a>
+    <span class="badge-prof">Régie du jour J</span>
+    <section class="regie-bloc">
+      <p id="voyant" class="voyant" role="status">○ Caméras éteintes</p>
+      <button id="toutArreter" class="arret" disabled>■ Tout arrêter</button>
+    </section>
+    <section class="regie-bloc">
+      <span class="menu-titre">Minuteur</span>
+      <p id="minuteur" class="minuteur" aria-live="polite">60:00</p>
+      <div class="boutons"><button id="demarrer" class="principal">Démarrer</button><button id="pause">Pause</button><button id="zero">Zéro</button></div>
+      <label for="duree">Durée (min)</label><input id="duree" type="number" min="5" max="180" value="60">
+    </section>
+    <div class="carte-identite">
+      <strong>Professeur</strong>
+      <span class="petit">Les images restent sur ce poste.</span>
+      <div class="boutons"><a class="bouton" href="index.html?prof">Suivi</a><a class="bouton" href="prof.html">Fiches</a></div>
     </div>
-    <p id="messageRegie" class="ecart" role="alert" hidden></p>
-  </section>
+  </nav>
 
-  <div class="regie-corps">
-    <section id="cameras" class="grille-cameras"></section>
-    <aside class="regie-cote">
-      <section class="carte">
-        <h2>Minuteur</h2>
-        <p id="minuteur" class="minuteur" aria-live="polite">60:00</p>
-        <div class="boutons"><button id="demarrer" class="principal">Démarrer</button><button id="pause">Pause</button><button id="zero">Remettre à zéro</button></div>
-        <label>Durée (min) <input id="duree" type="number" min="5" max="180" value="60"></label>
+  <main class="zone-principale">
+    <div>
+      <header class="tete-page"><span class="surtitre">Jour J · régie</span><h1>Suivre la partie</h1></header>
+      <p class="bandeau">Les images restent sur ce poste : <strong>aucun enregistrement, rien n'est envoyé</strong>. Si un joueur refuse, « Tout arrêter » et prévenir le professeur.</p>
+
+      <section class="carte" id="avant">
+        <h2>Avant d'allumer</h2>
+        <label class="case"><input type="checkbox" id="accord"> L'accord de la direction est obtenu.</label>
+        <label class="case"><input type="checkbox" id="informes"> Les joueurs sont informés (affiche posée) et peuvent demander l'arrêt.</label>
+        <div class="boutons">
+          <label for="nombre" style="margin:0">Nombre de caméras</label>
+          <select id="nombre" style="width:auto"><option>1</option><option>2</option><option>3</option><option selected>4</option></select>
+          <button id="allumer" class="principal" disabled>Allumer les caméras</button>
+        </div>
+        <p id="messageRegie" class="ecart" role="alert" hidden></p>
       </section>
-      <section class="carte">
-        <h2>Indices</h2>
-        <p class="petit">Pour afficher les indices de la frise : ouvrir le dossier de la classe (lecture seulement).</p>
+
+      <section id="cameras" class="grille-cameras"></section>
+
+      <section class="carte" style="margin-top:18px">
+        <h2>Indices à dire au talkie-walkie</h2>
+        <p class="petit">Ouvre le dossier de la classe (lecture seulement) pour afficher les indices dans l'ordre de la frise.</p>
         <div class="boutons"><button id="ouvrirClasse">Ouvrir le dossier de la classe</button><button id="demoClasse">Classe fictive</button></div>
         <div id="indices"></div>
       </section>
-    </aside>
-  </div>
-</main>
+    </div>
+  </main>
+</div>
 <script src="js/stockage.js"></script>
 <script src="js/stockage-dossier.js"></script>
 <script src="js/outils.js"></script>
