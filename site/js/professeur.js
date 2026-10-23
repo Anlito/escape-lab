@@ -105,49 +105,64 @@
   // ===== Suivi des groupes (§8.1) =====
 
   app().pages.suivi = async function (zone) {
-    var c = await lireClasse(), seance = c.reglages.seanceActuelle, filtre = false, tri = "nom";
+    var c = await lireClasse(), seance = c.reglages.seanceActuelle, filtre = "tous", tri = "nom";
     var jalons = app().jalons();
+    var PHYSIQUES = jalons.filter(function (j) { return j.physique; }).map(function (j) { return j.id; });
+    var FILTRES = [["tous", "Tous les groupes"], ["retard", "En retard ou bloqués"], ["valider", "À valider"], ["journal", "Sans journal"]];
     function afficher() {
       var lignes = c.ids.map(function (id) {
         var v = c.groupes[id] ? c.groupes[id].valeur : {}, av = app().avancement(v, seance);
         var j = c.journal.filter(function (x) { return x.valeur.groupe === id; }).sort(function (a, b) { return b.le - a.le; });
         var seancesJournal = j.map(function (x) { return x.valeur.seance; });
         var sansActivite = [];
-        for (var s = 1; seance && s < seance; s++) if (seancesJournal.indexOf(s) === -1) sansActivite.push(s);
-        var bloque = j[0] && j[0].valeur.bloque;
-        return { id: id, v: v, av: av, derniere: derniereActivite(c, id), sansActivite: sansActivite, bloque: bloque };
+        for (var n = 1; seance && n < seance; n++) if (seancesJournal.indexOf(n) === -1) sansActivite.push(n);
+        var aValider = PHYSIQUES.filter(function (id2) { var x = (v.jalons || {})[id2] || {}; return x.etat === "fait" && !x.valide; });
+        return { id: id, v: v, av: av, derniere: derniereActivite(c, id), sansActivite: sansActivite, bloque: j[0] && j[0].valeur.bloque, aValider: aValider };
       });
-      if (filtre) lignes = lignes.filter(function (l) { return l.av.retard.length || l.bloque || l.sansActivite.length; });
-      lignes.sort(function (a, b) {
+      var enRetard = lignes.filter(function (l) { return l.av.retard.length || l.bloque; }).length;
+      var aValider = lignes.reduce(function (t, l) { return t + l.aValider.length; }, 0);
+      var moyenne = Math.round(lignes.reduce(function (t, l) { return t + l.av.pourcent; }, 0) / (lignes.length || 1));
+      var visibles = lignes.filter(function (l) {
+        if (filtre === "retard") return l.av.retard.length || l.bloque || l.sansActivite.length;
+        if (filtre === "valider") return l.aValider.length;
+        if (filtre === "journal") return l.sansActivite.length;
+        return true;
+      }).sort(function (a, b) {
         if (tri === "avancement") return a.av.pourcent - b.av.pourcent;
         if (tri === "activite") return a.derniere - b.derniere;
         return a.id < b.id ? -1 : 1;
       });
-      zone.innerHTML = '<section class="carte"><h2>Suivi des groupes' + (seance ? ' <span class="petit">· séance ' + seance + "</span>" : "") + "</h2>" +
-        '<div class="filtres"><label class="case"><input type="checkbox" id="filtreRetard"' + (filtre ? " checked" : "") + "> Seulement les groupes en retard, bloqués ou sans activité</label>" +
-        '<label>Trier par<select id="tri"><option value="nom">groupe</option><option value="avancement"' + (tri === "avancement" ? " selected" : "") + ">avancement (le moins avancé d'abord)</option>" +
-        '<option value="activite"' + (tri === "activite" ? " selected" : "") + ">dernière activité (la plus ancienne d'abord)</option></select></label></div>" +
-        '<p class="petit">○ à faire · ◐ en cours · ● fait · ✓ validé par le professeur · ! en retard (ambre).</p>' +
-        '<div class="defile"><table class="suivi"><thead><tr><th>Groupe</th>' + jalons.map(function (j) {
+      zone.innerHTML = '<div class="chiffres">' +
+        '<div class="chiffre' + (enRetard ? " ecart-chiffre" : "") + '"><b>' + enRetard + "</b><span>groupe" + (enRetard > 1 ? "s" : "") + " en retard ou bloqué" + (enRetard > 1 ? "s" : "") + "</span></div>" +
+        '<div class="chiffre"><b style="color:var(--or)">' + aValider + "</b><span>jalon" + (aValider > 1 ? "s" : "") + " à valider</span></div>" +
+        '<div class="chiffre"><b>' + moyenne + " %</b><span>avancement moyen" + (seance ? " · séance " + seance : "") + "</span></div></div>" +
+        '<div class="pastilles">' + FILTRES.map(function (x) {
+          return '<button class="pastille-filtre" data-filtre="' + x[0] + '" aria-pressed="' + (filtre === x[0]) + '">' + e(x[1]) + "</button>";
+        }).join("") +
+        '<label class="petit" style="margin:0 0 0 auto;display:flex;align-items:center;gap:8px;font-weight:400">Trier<select id="tri" style="width:auto"><option value="nom">par groupe</option>' +
+        '<option value="avancement"' + (tri === "avancement" ? " selected" : "") + ">le moins avancé d'abord</option>" +
+        '<option value="activite"' + (tri === "activite" ? " selected" : "") + ">l'activité la plus ancienne d'abord</option></select></label></div>" +
+        '<p class="petit">● fait · ◐ en cours · ○ à faire · ✓ validé par le professeur · ! en retard</p>' +
+        '<div class="defile"><table class="suivi"><thead><tr><th style="text-align:left">Groupe</th>' + jalons.map(function (j) {
           return '<th title="' + e(j.nom) + " (séance " + j.seance + ')">' + e(j.code || j.nom.split(" ")[0]) + '<br><span class="petit">S' + j.seance + "</span></th>";
-        }).join("") + "<th>%</th><th>Dernière activité</th><th>Séances sans journal</th><th>Bloque</th></tr></thead><tbody>" +
-        lignes.map(function (l) {
-          return '<tr><th><button class="lien" data-ouvrir="' + l.id + '">' + e(l.id + " · " + nomGroupe(c, l.id)) + "</button></th>" + jalons.map(function (j) {
+        }).join("") + "<th>%</th><th>Activité</th><th>Sans journal</th><th style=\"text-align:left\">Bloque</th></tr></thead><tbody>" +
+        (visibles.length ? visibles.map(function (l) {
+          return '<tr><th style="text-align:left"><button class="lien" data-ouvrir="' + l.id + '">' + app().pastille(l.v.mecanique) + " " + e(l.id + " · " + nomGroupe(c, l.id)) + "</button></th>" + jalons.map(function (j) {
             var x = (l.v.jalons || {})[j.id] || {}, et2 = x.etat || x || "à faire";
             if (typeof et2 !== "string") et2 = "à faire";
             var retard = seance && j.seance < seance && et2 !== "fait";
-            return '<td class="' + (retard ? "ecart-cellule" : "") + '" title="' + e(j.nom + " : " + et2 + (x.valide ? ", validé" : "") + (retard ? ", en retard" : "")) + '">' +
-              (SYMBOLES[et2] || "○") + (x.valide ? "✓" : "") + (retard ? "!" : "") + "</td>";
+            return '<td class="' + (retard ? "ecart-cellule" : et2 === "fait" ? "etat-fait" : et2 === "en cours" ? "etat-en-cours" : "etat-a-faire") + '" title="' + e(j.nom + " : " + et2 + (x.valide ? ", validé" : "") + (retard ? ", en retard" : "")) + '">' +
+              (retard ? "!" : (SYMBOLES[et2] || "○")) + (x.valide ? "✓" : "") + "</td>";
           }).join("") + "<td>" + l.av.pourcent + "</td><td>" + (l.derniere ? app().dateCourte(l.derniere) : "—") + "</td>" +
-            '<td class="' + (l.sansActivite.length ? "ecart" : "") + '">' + e(l.sansActivite.join(", ") || "—") + "</td><td>" + e(l.bloque || "") + "</td></tr>";
-        }).join("") + "</tbody></table></div></section>";
+            '<td class="' + (l.sansActivite.length ? "ecart-cellule" : "") + '">' + e(l.sansActivite.join(", ") || "—") + '</td><td style="text-align:left;white-space:normal;font-weight:400">' + e(l.bloque || "") + "</td></tr>";
+        }).join("") : '<tr><td colspan="' + (jalons.length + 5) + '" style="text-align:left;font-weight:400">Aucun groupe dans ce filtre.</td></tr>') + "</tbody></table></div>";
     }
     zone.addEventListener("change", function (ev) {
-      if (ev.target.id === "filtreRetard") filtre = ev.target.checked;
-      if (ev.target.id === "tri") tri = ev.target.value;
-      afficher();
+      if (ev.target.id === "tri") { tri = ev.target.value; afficher(); }
     });
     zone.addEventListener("click", function (ev) {
+      var p = ev.target.closest("[data-filtre]");
+      if (p) { filtre = p.getAttribute("data-filtre"); return afficher(); }
       var b = ev.target.closest("[data-ouvrir]");
       if (!b) return;
       etat().groupeAOuvrir = b.getAttribute("data-ouvrir");

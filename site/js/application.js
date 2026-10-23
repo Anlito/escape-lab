@@ -64,21 +64,24 @@
   var etat = { equipe: null, depot: "", groupe: "", prenom: "", stockage: null, adaptateur: null,
                demo: false, nomDossier: "", prof: MODE_PROF };
 
+  // Pages et leur place dans le menu (groupe pour l'élève, groupeProf pour le professeur).
   var PAGES = [
-    { id: "tableau", nom: "Tableau de bord" },
-    { id: "histoire", nom: "Histoire", etape: 5 },
-    { id: "frise", nom: "Frise", etape: 5 },
-    { id: "bibliotheque", nom: "Bibliothèque", etape: 6 },
-    { id: "enigme", nom: "Mon énigme", eleve: true },
-    { id: "autres", nom: "Énigmes des autres", nomProf: "Fiches des groupes" },
-    { id: "programmation", nom: "Programmation", etape: 10 },
-    { id: "jourj", nom: "Jour J", etape: 8 },
-    { id: "suivi", nom: "Suivi des groupes", prof: true },
-    { id: "pilotage", nom: "Pilotage", prof: true },
-    { id: "evaluation", nom: "Évaluation", prof: true },
-    { id: "observation", nom: "Observation jour J", prof: true },
-    { id: "exports", nom: "Exports", prof: true }
+    { id: "tableau", nom: "Tableau de bord", icone: "⌂", groupe: "classe", groupeProf: "classe" },
+    { id: "histoire", nom: "Histoire", icone: "H", groupe: "classe", groupeProf: "classe" },
+    { id: "frise", nom: "Frise", icone: "→", groupe: "classe", groupeProf: "classe" },
+    { id: "bibliotheque", nom: "Bibliothèque", icone: "B", groupe: "classe", groupeProf: "classe" },
+    { id: "jourj", nom: "Jour J", icone: "J", groupe: "classe", groupeProf: "classe" },
+    { id: "enigme", nom: "Mon énigme", icone: "?", groupe: "groupe", eleve: true },
+    { id: "programmation", nom: "Programmation", icone: "{}", groupe: "groupe", groupeProf: "classe" },
+    { id: "suivi", nom: "Suivi des groupes", icone: "✓", groupeProf: "suivre", prof: true },
+    { id: "autres", nom: "Énigmes des autres", nomProf: "Fiches des groupes", icone: "◎", groupe: "autres", groupeProf: "suivre" },
+    { id: "pilotage", nom: "Réglages et annonces", icone: "P", groupeProf: "piloter", prof: true },
+    { id: "evaluation", nom: "Évaluation", icone: "A", groupeProf: "evaluer", prof: true },
+    { id: "observation", nom: "Observation jour J", icone: "O", groupeProf: "evaluer", prof: true },
+    { id: "exports", nom: "Exports et livret", icone: "↓", groupeProf: "evaluer", prof: true }
   ];
+  var GROUPES_MENU = [["classe", "Ma classe"], ["groupe", "Mon groupe"], ["autres", "Les autres"]];
+  var GROUPES_MENU_PROF = [["suivre", "Suivre"], ["piloter", "Piloter"], ["evaluer", "Évaluer"], ["classe", "La classe"]];
   function pagesVisibles() {
     return PAGES.filter(function (p) { return MODE_PROF ? !p.eleve : !p.prof; });
   }
@@ -186,9 +189,24 @@
     var dernier = lireDernier();
     if (dernier && equipeDuDepot(dernier.depot)) {
       $("btnReprendre").hidden = false;
-      $("btnReprendre").textContent = MODE_PROF ? "Reprendre : " + dernier.depot : "Reprendre : " + dernier.prenom + ", groupe " + dernier.groupe + " (" + dernier.depot + ")";
+      $("separateurReprendre").hidden = false;
+      $("btnReprendre").innerHTML = '<span class="rond">' + echapper(MODE_PROF ? "P" : (dernier.prenom || "?").charAt(0).toUpperCase()) + "</span>" +
+        '<span class="textes"><small>Reprendre là où tu t\'es arrêté</small><strong>' +
+        echapper(MODE_PROF ? "Professeur · " + dernier.depot : dernier.prenom + " · groupe " + dernier.groupe + " · " + dernier.depot) + "</strong></span>";
     }
     majAideChemin();
+    dessinerTouches();
+  }
+
+  // Grandes touches de l'accueil (classe, groupe) : elles choisissent dans les listes cachées.
+  function dessinerTouches() {
+    [["choixClasse", "touchesClasse"], ["choixGroupe", "touchesGroupe"]].forEach(function (t) {
+      var liste = $(t[0]);
+      $(t[1]).innerHTML = [].filter.call(liste.options, function (o) { return o.value; }).map(function (o) {
+        return '<button type="button" class="touche" data-liste="' + t[0] + '" data-valeur="' + echapper(o.value) + '" aria-pressed="' + (o.value === liste.value) + '">' +
+          echapper(o.value) + "</button>";
+      }).join("");
+    });
   }
 
   function majAideChemin() {
@@ -246,9 +264,9 @@
     if (!demo) memoriserDernier();
     $("accueil").hidden = true;
     $("espace").hidden = false;
-    $("connecte").innerHTML = (MODE_PROF ? "<strong>Professeur</strong> · " + echapper(etat.depot)
-      : "<strong>" + echapper(etat.prenom) + "</strong> · groupe " + echapper(etat.groupe)) +
-      " · " + echapper(etat.equipe.nom) + (demo ? " · démonstration" : "");
+    $("connecte").innerHTML = (MODE_PROF ? "<strong>Professeur</strong>" : "<strong>" + echapper(etat.prenom) + "</strong>") +
+      '<br><span class="petit">' + (MODE_PROF ? "" : "Groupe " + echapper(etat.groupe) + " · ") + echapper(etat.equipe.nom) + (demo ? " · démonstration" : "") + "</span>";
+    suivreEnregistrements(etat.stockage);
     if (!location.hash) location.hash = "#tableau";
     chargerReferentiels().then(afficherPage);
   }
@@ -274,6 +292,27 @@
     remplirAccueil();
   }
 
+  // --- État d'enregistrement : chaque écriture dans le dossier met à jour l'indication du menu ---
+
+  function suivreEnregistrements(st) {
+    var enregistrer = st.enregistrer;
+    st.enregistrer = async function () {
+      var e = $("etatEnregistrement");
+      e.className = "etat-enregistrement en-cours"; e.textContent = "◐ Enregistrement…";
+      try {
+        var r = await enregistrer.apply(st, arguments);
+        e.className = "etat-enregistrement";
+        e.textContent = "● Enregistré à " + new Date().toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
+        return r;
+      } catch (err) {
+        e.className = "etat-enregistrement ecart"; e.textContent = "! Pas enregistré : vérifie le réseau";
+        throw err;
+      }
+    };
+    $("etatEnregistrement").className = "etat-enregistrement";
+    $("etatEnregistrement").textContent = etat.demo ? "Démonstration : rien n'est enregistré" : "● Dossier ouvert";
+  }
+
   // --- Navigation ---
 
   function pageCourante() {
@@ -283,8 +322,14 @@
   }
 
   function afficherNavigation(page) {
-    $("navigation").innerHTML = pagesVisibles().map(function (p) {
-      return '<a href="#' + p.id + '"' + (p === page ? ' aria-current="page"' : "") + ">" + echapper(MODE_PROF && p.nomProf || p.nom) + "</a>";
+    var visibles = pagesVisibles();
+    $("navigation").innerHTML = (MODE_PROF ? GROUPES_MENU_PROF : GROUPES_MENU).map(function (g) {
+      var liens = visibles.filter(function (p) { return (MODE_PROF ? p.groupeProf : p.groupe) === g[0]; });
+      if (!liens.length) return "";
+      return '<div class="menu-groupe"><span class="menu-titre">' + echapper(g[1]) + "</span>" + liens.map(function (p) {
+        return '<a class="menu-lien" href="#' + p.id + '"' + (p === page ? ' aria-current="page"' : "") + '><span class="icone" aria-hidden="true">' +
+          echapper(p.icone) + "</span>" + echapper(MODE_PROF && p.nomProf || p.nom) + "</a>";
+      }).join("") + "</div>";
     }).join("");
   }
 
@@ -296,6 +341,15 @@
     // Un conteneur neuf par affichage : les écouteurs d'une page quittée ne reçoivent plus rien.
     var zone = document.createElement("div");
     $("contenu").replaceChildren(zone);
+    // Titre de la page (le tableau de bord et la fiche énigme ont leur propre en-tête).
+    if (page.id !== "tableau" && page.id !== "enigme") {
+      var tete = document.createElement("header");
+      tete.className = "tete-page";
+      var groupe = (MODE_PROF ? GROUPES_MENU_PROF : GROUPES_MENU).filter(function (g) { return g[0] === (MODE_PROF ? page.groupeProf : page.groupe); })[0];
+      tete.innerHTML = '<span class="surtitre">' + echapper((groupe ? groupe[1] : "") + " · " + (etat.equipe ? etat.equipe.nom : "")) + "</span><h1>" + echapper(MODE_PROF && page.nomProf || page.nom) + "</h1>";
+      $("contenu").insertBefore(tete, zone);
+    }
+    window.scrollTo(0, 0);
     if (arreterPage) { arreterPage(); arreterPage = null; }
     if (page.id === "tableau") return afficherTableau(zone);
     if (app.pages[page.id]) { arreterPage = await app.pages[page.id](zone) || null; return; }
@@ -353,19 +407,37 @@
       '<p><a href="#jourj">Ouvrir la page Jour J</a></p></section>';
   }
 
+  // Prochaine étape d'un groupe : le jalon en retard le plus ancien, sinon le prochain à faire.
+  function prochaineEtape(valeur, seance) {
+    var jalons = (valeur && valeur.jalons) || {};
+    var restants = jalonsActuels().filter(function (j) { var e = jalons[j.id]; return !(e === "fait" || (e && e.etat === "fait")); });
+    if (!restants.length) return null;
+    restants.sort(function (a, b) { return a.seance - b.seance; });
+    var j = restants[0];
+    return { nom: j.nom, seance: j.seance, retard: !!(seance && j.seance < seance) };
+  }
+
   async function afficherTableau(zone) {
     zone.innerHTML = '<p class="petit">Lecture du dossier…</p>';
     var html = "";
     try {
       var st = etat.stockage;
       var reglages = await st.lire("equipe", "reglages");
-      var seance = reglages && reglages.valeur.seanceActuelle;
+      var r = reglages ? reglages.valeur : {};
+      var seance = r.seanceActuelle;
       var groupesLus = {};
       (await st.lister("groupes")).forEach(function (g) { groupesLus[g.id] = g; });
       var annonces = (await st.lister("annonces")).filter(function (a) { return !a.valeur.retiree; }).sort(function (a, b) {
         return (!!b.valeur.epinglee - !!a.valeur.epinglee) || (b.le - a.le);
       });
-      var frise = await st.lire("frise", "ordre");
+      var frise = await st.lire("frise", "ordre"), titre = await st.lire("histoire", "titre");
+      var ids = lettresGroupes(nombreGroupes());
+      var ordre = (frise && frise.valeur.ordre && frise.valeur.ordre.length) ? frise.valeur.ordre : ids;
+
+      html += '<header class="tete-mission"><div><span class="surtitre">Mission de la classe ' + echapper(etat.equipe.nom) + "</span><h1>" +
+        echapper((titre && titre.valeur.texte) || "Votre escape game") + "</h1></div>" +
+        (seance ? '<div class="seance"><b>' + seance + "</b><span><span>séance sur " + (r.nombreSeances || 10) + "</span>" +
+          '<span>' + echapper(jalonsActuels().filter(function (j) { return j.seance === seance; }).map(function (j) { return j.nom; }).slice(0, 2).join(" · ") || "") + "</span></span></div>" : "") + "</header>";
 
       if (etat.nomDossier && !etat.demo && etat.nomDossier.toUpperCase() !== etat.depot.toUpperCase()) {
         html += '<p class="bandeau ecart">Le dossier ouvert s\'appelle « ' + echapper(etat.nomDossier) +
@@ -377,41 +449,47 @@
           ". Le travail de l'autre moitié de l'équipe apparaît après synchronisation par le professeur.</p>";
       }
 
-      html += '<section class="carte"><h2>Annonces du professeur</h2>';
-      html += annonces.length ? annonces.map(function (a) {
-        return "<p>" + (a.valeur.epinglee ? "📌 " : "") + echapper(a.valeur.texte) + ' <span class="petit">(' + dateCourte(a.le) + ")</span></p>";
-      }).join("") : '<p class="petit">Pas encore d\'annonce.</p>';
-      html += "</section>";
+      // Ton groupe (élève) ou la classe (professeur), puis les annonces.
+      html += '<div class="duo">';
+      if (!MODE_PROF) {
+        var g = groupesLus[etat.groupe], v = g ? g.valeur : {}, m = MECANIQUES[v.mecanique], av = avancement(v, seance), p = prochaineEtape(v, seance);
+        html += '<section class="carte ton-groupe"><div class="ligne-haut"><span class="surtitre" style="margin:0">Ton groupe · ' + echapper(etat.groupe) + "</span>" +
+          '<span class="petit">' + pastille(v.mecanique) + " " + echapper(m ? m.nom : "mécanique à attribuer") + "</span></div>" +
+          "<h2>" + echapper(v.nom || "Groupe " + etat.groupe) + "</h2>" +
+          '<div><div class="petit" style="display:flex;justify-content:space-between"><span>' + av.faits + " jalon" + (av.faits > 1 ? "s" : "") + " fait" + (av.faits > 1 ? "s" : "") + " sur " + jalonsActuels().length + "</span><span>" + av.pourcent + " %</span></div>" +
+          '<div class="barre" role="img" aria-label="' + av.pourcent + ' % des jalons faits"><div style="width:' + av.pourcent + '%"></div></div></div>' +
+          (p ? '<div class="prochaine' + (p.retard ? "" : " ok") + '"><span class="symbole" aria-hidden="true">' + (p.retard ? "!" : "→") + '</span><span class="texte">' +
+            (p.retard ? "À rattraper : " : "Prochaine étape : ") + echapper(p.nom) + " (séance " + p.seance + ').</span><a class="bouton principal" href="#enigme">Y aller</a></div>'
+            : '<div class="prochaine ok"><span class="symbole" aria-hidden="true">✓</span><span class="texte">Tous les jalons sont faits. Bravo !</span></div>') + "</section>";
+      } else {
+        var enRetard = ids.filter(function (id) { return avancement(groupesLus[id] ? groupesLus[id].valeur : {}, seance).retard.length; }).length;
+        var moyenne = Math.round(ids.reduce(function (t, id) { return t + avancement(groupesLus[id] ? groupesLus[id].valeur : {}, seance).pourcent; }, 0) / (ids.length || 1));
+        html += '<section class="carte ton-groupe"><span class="surtitre" style="margin:0">La classe</span><h2>' + ids.length + " groupes · " + moyenne + " % des jalons</h2>" +
+          (enRetard ? '<div class="prochaine"><span class="symbole" aria-hidden="true">!</span><span class="texte">' + enRetard + " groupe" + (enRetard > 1 ? "s ont" : " a") + ' des jalons en retard.</span><a class="bouton principal" href="#suivi">Voir le suivi</a></div>'
+            : '<div class="prochaine ok"><span class="symbole" aria-hidden="true">✓</span><span class="texte">Aucun groupe en retard.</span><a class="bouton" href="#suivi">Voir le suivi</a></div>') + "</section>";
+      }
+      html += '<section class="carte"><h2>Annonces du professeur</h2>' + (annonces.length ? annonces.slice(0, 4).map(function (a) {
+        return '<div class="annonce"><span class="symbole" aria-hidden="true">' + (a.valeur.epinglee ? "●" : "○") + "</span><span>" + echapper(a.valeur.texte) +
+          '<br><span class="petit">' + (a.valeur.epinglee ? "épinglée · " : "") + dateCourte(a.le) + "</span></span></div>";
+      }).join("") : '<p class="petit">Pas encore d\'annonce.</p>') + "</section></div>";
 
-      html += '<section class="carte"><h2>Les groupes' + (seance ? ' <span class="petit">· séance ' + seance + "</span>" : "") + "</h2><div class=\"grille\">";
-      lettresGroupes(nombreGroupes()).forEach(function (id) {
-        var g = groupesLus[id], v = g ? g.valeur : {};
-        var av = avancement(v, seance);
-        var m = MECANIQUES[v.mecanique];
-        html += '<article class="carte groupe"><h3>' + pastille(v.mecanique) + echapper(v.nom || "Groupe " + id) + "</h3>" +
-          '<p class="petit">Groupe ' + id + " · " + echapper(m ? m.nom : "mécanique à attribuer") +
-          (id === etat.groupe ? ' · <span class="etiquette">ton groupe</span>' : "") + "</p>" +
-          '<div class="barre" role="img" aria-label="' + av.pourcent + ' % des jalons faits"><div style="width:' + av.pourcent + '%"></div></div>' +
-          "<p>" + av.faits + " jalon" + (av.faits > 1 ? "s" : "") + " fait" + (av.faits > 1 ? "s" : "") + " sur " + jalonsActuels().length + " (" + av.pourcent + " %)</p>" +
-          (av.retard.length ? '<p class="ecart">Encore à faire : ' + echapper(av.retard.join(", ")) + "</p>" : "") +
-          '<p class="petit">' + (g ? "Dernière activité : " + dateCourte(g.le) : "Pas encore commencé") + "</p></article>";
-      });
-      html += "</div></section>";
+      // La partie, énigme par énigme (ordre de la frise, sinon les groupes).
+      var durees = {};
+      ordre.forEach(function (id) { durees[id] = groupesLus[id] && groupesLus[id].valeur.enigme && groupesLus[id].valeur.enigme.duree; });
+      html += '<section class="carte"><div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;align-items:baseline"><h2>La partie, énigme par énigme</h2>' +
+        '<span class="petit">' + (frise && frise.valeur.ordre && frise.valeur.ordre.length ? "Ordre fixé par le professeur" : "Ordre pas encore fixé : le professeur le placera dans la frise") + "</span></div>" +
+        '<div class="piste">' + ordre.map(function (id, i) {
+          var gv = groupesLus[id] ? groupesLus[id].valeur : {}, ga = avancement(gv, seance);
+          return '<div class="piste-case"><div class="carte-enigme' + (id === etat.groupe && !MODE_PROF ? " moi" : "") + '">' +
+            '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px">' + pastille(gv.mecanique) + '<span class="petit">Énigme ' + (i + 1) + " · groupe " + echapper(id) + "</span></div>" +
+            '<strong>' + echapper(gv.nom || "Groupe " + id) + "</strong>" +
+            '<div class="barre" style="height:6px;margin:0" role="img" aria-label="' + ga.pourcent + ' %"><div style="width:' + ga.pourcent + '%"></div></div>' +
+            '<span class="petit">' + (id === etat.groupe && !MODE_PROF ? "Ton énigme" : ga.faits + " jalon" + (ga.faits > 1 ? "s" : "") + " sur " + jalonsActuels().length) +
+            (ga.retard.length ? ' · <span class="ecart">en retard</span>' : "") + "</span></div>" +
+            '<span class="fleche" aria-hidden="true">›</span></div>';
+        }).join("") + "</div></section>";
 
       html += await resumeJourJ(st, groupesLus);
-
-      var ordre = (frise && frise.valeur.ordre) || [];
-      html += '<section class="carte"><h2>Frise des énigmes</h2>';
-      if (ordre.length) {
-        var etapes = ['<span class="etape">Début</span>'].concat(ordre.map(function (id, i) {
-          var v = groupesLus[id] ? groupesLus[id].valeur : {};
-          return '<span class="etape">' + (i + 1) + ". " + echapper(v.nom || "Groupe " + id) + "</span>";
-        }), ['<span class="etape">Fin</span>']);
-        html += '<div class="frise">' + etapes.join('<span class="fleche" aria-hidden="true">→</span>') + "</div>";
-      } else {
-        html += '<p class="petit">Le professeur placera ici les énigmes dans l\'ordre choisi par la classe.</p>';
-      }
-      html += "</section>";
     } catch (e) {
       html = '<p class="bandeau ecart">Le dossier n\'a pas pu être lu (' + echapper(e.message) +
         "). Vérifie que tu es bien connecté au réseau du collège, puis clique sur « Changer » pour rouvrir le dossier.</p>";
@@ -465,13 +543,24 @@
     });
     if (MODE_PROF) {
       document.body.classList.add("mode-prof");
-      $("introAccueil").textContent = "Espace professeur : choisis la classe, puis ouvre le dossier de la classe.";
-      document.querySelector(".champs-eleve").hidden = true;
-      document.querySelector("label[for=choixClasse]").textContent = "Classe";
+      $("introAccueil").textContent = "Suivi des groupes, pilotage, évaluation et exports. Choisis la classe, puis ouvre son dossier.";
+      document.querySelectorAll(".champs-eleve").forEach(function (x) { x.hidden = true; });
+      $("titreClasse").innerHTML = "<b>1</b> · La classe";
+      $("titreAccueil").textContent = "Espace professeur";
+      $("lienEspaceProf").hidden = true;
+      $("badgeProf").hidden = false;
       $("btnVerrouiller").hidden = false;
       $("lienProf").hidden = false;
       $("btnVerrouiller").addEventListener("click", function () { if (racine.EscapeLabPorte) racine.EscapeLabPorte.verrouiller(); });
     }
+    $("accueil").addEventListener("click", function (ev) {
+      var t = ev.target.closest(".touche");
+      if (!t) return;
+      var liste = $(t.getAttribute("data-liste"));
+      liste.value = t.getAttribute("data-valeur");
+      liste.dispatchEvent(new Event("change"));
+      dessinerTouches();
+    });
     $("btnOuvrir").addEventListener("click", function () { var p = lireFormulaire(); if (p) ouvrirDossier(p); });
     $("btnReprendre").addEventListener("click", async function () {
       var d = lireDernier();

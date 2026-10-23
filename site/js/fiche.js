@@ -449,12 +449,14 @@
       var html = o.champs.map(function (c) { return champHtml(c, valeurDe(o.id)); }).join("");
       if (o.id === "tests") html = "<h4>Avis reçus</h4>" + avisHtml() + html;
       if (o.id === "enigme" && !lecture) {
-        var en = valeurDe("enigme");
-        if (!rempliTexte(en.solution)) html += '<p class="ecart">' + e(app.message("solutionManquante")) + "</p>";
-        if (!rempliTexte(en.matiere)) html += '<p class="ecart">' + e(app.message("matiereManquante")) + "</p>";
-        else if (String(en.lienMatiere || "").trim().length < 40) html += '<p class="ecart">' + e(app.message("lienMatiereTropCourt")) + "</p>";
-        if (!rempliTexte(en.contenuBoite)) html += '<p class="ecart">' + e(app.message("contenuBoiteManquant")) + "</p>";
-        if (en.duree > parEnigme + 3) html += '<p class="ecart">' + e(app.message("dureeEnigmeLongue", { minutes: parEnigme })) + "</p>";
+        // Un seul écart à la fois, en tête de la partie : le plus important d'abord.
+        var en = valeurDe("enigme"), manque = null;
+        if (!rempliTexte(en.solution) || !rempliTexte(en.codeCadenas)) manque = app.message("solutionManquante");
+        else if (!rempliTexte(en.matiere)) manque = app.message("matiereManquante");
+        else if (String(en.lienMatiere || "").trim().length < 40) manque = app.message("lienMatiereTropCourt");
+        else if (!rempliTexte(en.contenuBoite)) manque = app.message("contenuBoiteManquant");
+        else if (en.duree > parEnigme + 3) manque = app.message("dureeEnigmeLongue", { minutes: parEnigme });
+        if (manque) html = '<p class="bandeau ecart">' + e(manque) + "</p>" + html;
       }
       return html;
     }
@@ -468,27 +470,45 @@
       }).join("") + "</div>";
     }
 
+    function enRetardOnglet(o) {
+      return !!(seance && (o.jalons || []).some(function (id) {
+        var j = app.jalons().filter(function (x) { return x.id === id; })[0];
+        return j && j.seance < seance && etatJalon(id) !== "fait";
+      }));
+    }
+
     async function afficher() {
-      var m = app.mecaniques[g.mecanique];
-      var html = (options.retour ? '<button data-action="retour">← Toutes les énigmes</button>' : "") +
-        '<section class="carte"><h2>' + app.pastille(g.mecanique) + " " + e((fiche.enigme && fiche.enigme.titre) || g.nom || "Groupe " + groupeId) + "</h2>" +
-        '<p class="petit">Groupe ' + e(groupeId) + " · " + e(m ? m.nom : "mécanique à attribuer") + "</p>" +
+      var m = app.mecaniques[g.mecanique], calc = jalonsCalcules(), tous = app.jalons();
+      var faits = tous.filter(function (j) { return (calc[j.id] || etatJalon(j.id)) === "fait"; }).length;
+      var pourcent = tous.length ? Math.round(100 * faits / tous.length) : 0;
+      var ordre = await st.lire("frise", "ordre"), rang = ordre ? ordre.valeur.ordre.indexOf(groupeId) : -1;
+      var html = (options.retour ? '<div class="boutons" style="margin:0 0 14px"><button data-action="retour">← Toutes les énigmes</button></div>' : "") +
+        '<header class="fiche-tete">' + app.pastille(g.mecanique) + '<div class="titres"><span class="petit">Groupe ' + e(groupeId) + " · " + e(m ? m.nom : "mécanique à attribuer") +
+        (rang >= 0 ? " · énigme " + (rang + 1) + " de la frise" : "") + "</span><h1>" + e((fiche.enigme && fiche.enigme.titre) || g.nom || "Groupe " + groupeId) + "</h1></div>" +
+        '<div class="avancement"><span class="petit">' + faits + " jalon" + (faits > 1 ? "s" : "") + " fait" + (faits > 1 ? "s" : "") + " sur " + tous.length + "</span>" +
+        '<div class="barre" role="img" aria-label="' + pourcent + ' % des jalons faits"><div style="width:' + pourcent + '%"></div></div></div></header>' +
         (miroir ? '<p class="bandeau">Ce groupe travaille dans l\'autre dossier de l\'équipe : sa fiche se lit ici, elle se modifie là-bas.</p>' : "") +
         (options.autres ? '<p class="bandeau">Fiche d\'un autre groupe : lecture seule. Tu peux laisser un avis de test en bas de la page.</p>' : "") +
-        enteteJalons() + "</section>";
-      html += '<nav class="onglets" role="tablist">' + onglets.map(function (o) {
-        var s = etatOnglet(o);
-        return '<button role="tab" data-onglet="' + o.id + '" aria-selected="' + (o.id === courant) + '">' + (s ? SYMBOLES[s] + " " : "") + e(o.nom) +
-          (modifies[o.id] ? " *" : "") + (s ? '<span class="cache-visuel"> : ' + s + "</span>" : "") + "</button>";
-      }).join("") + "</nav>";
-      html += '<section class="carte fiche-onglet" role="tabpanel">' + (await contenuOnglet());
+        '<details class="jalons-detail"><summary>Voir les ' + tous.length + " jalons et leurs échéances</summary>" + enteteJalons() + "</details>";
       var o = ONGLETS.filter(function (x) { return x.id === courant; })[0];
-      if (!lecture && o.id !== "journal" && o.id !== "remarques") {
-        var el = elements[courant];
-        html += '<div class="boutons enregistrer"><button class="principal" data-action="enregistrer">Enregistrer « ' + e(o.nom) + " »</button>" +
-          (el ? '<span class="petit">Dernier enregistrement : ' + e(O.nomAuteur(el.auteur)) + ", " + app.dateCourte(el.le) + "</span>" : "") + "</div>";
-      }
-      html += '<p class="message-fiche" role="status">' + message + "</p></section>";
+      var index = onglets.indexOf(o), precedent = onglets[index - 1], suivant = onglets[index + 1];
+      html += '<div class="fiche-corps"><nav class="etapes-fiche" role="tablist" aria-label="Parties de la fiche">' + onglets.map(function (x) {
+        var etatX = etatOnglet(x), retard = enRetardOnglet(x);
+        var symbole = retard ? "!" : etatX ? SYMBOLES[etatX] : "·";
+        var libelle = modifies[x.id] ? "pas encore enregistré" : retard ? "à rattraper" : etatX || "";
+        var classe = retard || modifies[x.id] ? "etat-retard" : etatX === "fait" ? "etat-fait" : etatX === "en cours" ? "etat-en-cours" : "etat-a-faire";
+        return '<button class="etape-fiche" role="tab" data-onglet="' + x.id + '" aria-selected="' + (x.id === courant) + '"><span class="symbole ' + classe + '" aria-hidden="true">' + symbole + "</span>" +
+          '<span class="noms"><span>' + e(x.nom) + "</span>" + (libelle ? '<small class="' + classe + '">' + e(libelle) + "</small>" : "") + "</span></button>";
+      }).join("") + "</nav>";
+      html += '<section class="carte fiche-onglet" role="tabpanel"><div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px"><h2>' + e(o.nom) + "</h2>" +
+        '<span class="petit">Partie ' + (index + 1) + " sur " + onglets.length + "</span></div>" + (await contenuOnglet());
+      var el = elements[courant], peutEnregistrer = !lecture && o.id !== "journal" && o.id !== "remarques";
+      html += '<p class="message-fiche" role="status">' + message + "</p>" +
+        '<footer class="pied-fiche"><span class="petit">' + (el ? "Dernier enregistrement : " + e(O.nomAuteur(el.auteur)) + ", " + app.dateCourte(el.le) : peutEnregistrer ? "Pas encore enregistré." : "") + "</span>" +
+        '<div class="boutons">' + (precedent ? '<button data-onglet="' + precedent.id + '">← ' + e(precedent.nom) + "</button>" : "") +
+        (peutEnregistrer ? '<button data-action="enregistrer"' + (suivant ? "" : ' class="principal"') + ">Enregistrer</button>" : "") +
+        (suivant ? (peutEnregistrer ? '<button class="principal" data-action="enregistrerSuivant">Enregistrer et continuer · ' + e(suivant.nom) + " →</button>"
+          : '<button class="principal" data-onglet="' + suivant.id + '">' + e(suivant.nom) + " →</button>") : "") + "</div></footer></section></div>";
       if (options.autres) html += formulaireAvis();
       zone.innerHTML = html;
       chargerPhotos();
@@ -597,6 +617,13 @@
           return;
         }
         else if (action === "enregistrer") { b.disabled = true; await enregistrerOnglet(); }
+        else if (action === "enregistrerSuivant") {
+          b.disabled = true;
+          var actuelO = ONGLETS.filter(function (x) { return x.id === courant; })[0], suite = onglets[onglets.indexOf(actuelO) + 1];
+          await enregistrerOnglet();
+          if (suite) { courant = suite.id; montrerSolution = false; }
+          racine.scrollTo(0, 0);
+        }
         else if (action === "ajouterLigne" || action === "retirerLigne") {
           var chemin = b.getAttribute("data-tableau"), v = travail[courant], lignes = (F.lireChemin(v, chemin) || []).slice();
           if (action === "ajouterLigne") lignes.push({}); else lignes.splice(Number(b.getAttribute("data-ligne")), 1);
@@ -743,7 +770,11 @@
 
     zone.addEventListener("input", function (ev) {
       if (lecture || !ev.target.closest(".fiche-onglet")) return;
-      if (!modifies[courant]) { modifies[courant] = true; var bouton = zone.querySelector('[data-onglet="' + courant + '"]'); if (bouton) bouton.textContent += " *"; }
+      if (!modifies[courant]) {
+        modifies[courant] = true;
+        var etiquette = zone.querySelector('.etape-fiche[data-onglet="' + courant + '"] .noms');
+        if (etiquette) { var petit = etiquette.querySelector("small") || etiquette.appendChild(document.createElement("small")); petit.className = "etat-retard"; petit.textContent = "pas encore enregistré"; }
+      }
     });
 
     function avantDeQuitter(ev) {

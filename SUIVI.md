@@ -303,6 +303,12 @@ Barème validé : A à D = 0, 1, 2, 3 points ; coefficient 2 pour la fiche énig
 croisé, 1 pour les autres critères ; **pas de rouge** (lettres A à D, sans couleur imposée).
 
 ## Journal
+- 23/10/2026 — Claude : nouvelle charte et navigation (maquette validée par Thomas, https://claude.ai/artifact/X5ddttfcPeL2UmuBt2nLpX) :
+  anthracite et or, titres Space Grotesk (copiée dans `site/polices/`, licence OFL), texte Atkinson Hyperlegible
+  (celle de Labo Blocs) ; menu latéral groupé (Ma classe · Mon groupe · Les autres ; professeur : Suivre · Piloter ·
+  Évaluer · La classe) avec identité et état d’enregistrement ; accueil à grandes touches ; tableau de bord « ton
+  groupe » avec la prochaine étape ; fiche énigme en colonne d’étapes, une partie à la fois, « Enregistrer et
+  continuer », un seul écart à la fois ; suivi professeur avec chiffres clés et filtres. Tablette : menu en haut.
 - 23/10/2026 — ChatGPT : C22 (Bien démarrer et mode d’emploi à jour), C23 (recette finale complétée) ; rangées dans `docs/`.
 - 23/10/2026 — Claude : dépôt public **Anlito/escape-lab** créé et publié sur GitHub Pages :
   élèves https://anlito.github.io/escape-lab/site/ · professeur https://anlito.github.io/escape-lab/site/?prof ·
