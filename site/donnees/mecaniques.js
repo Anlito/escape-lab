@@ -30,7 +30,7 @@ definirMecaniques({
           "Cadenas adapté à la réponse."
         ],
         "fourni": [
-          "⚠️ à confirmer : attribution du matériel par Thomas."
+          "⚠️ à confirmer : attribution du matériel par le professeur."
         ]
       },
       "pistesManuelles": {
@@ -78,7 +78,7 @@ definirMecaniques({
           "Feuilles transparentes et cadenas adaptés."
         ],
         "fourni": [
-          "⚠️ à confirmer : attribution du matériel par Thomas."
+          "⚠️ à confirmer : attribution du matériel par le professeur."
         ]
       },
       "pistesManuelles": {
@@ -88,7 +88,7 @@ definirMecaniques({
       },
       "pistesElectroniques": [
         "Piste proposée : un bouton ou un capteur magnétique déclenche une révélation après manipulation.",
-        "Piste du brief : lumière intégrée à la micro:bit ; choix de carte et usage du capteur à valider."
+        "Piste : lumière intégrée à la micro:bit ; choix de carte et usage du capteur à valider."
       ],
       "pieges": [
         "Alignement trop imprécis.",
@@ -127,7 +127,7 @@ definirMecaniques({
           "Cadenas adapté à la réponse."
         ],
         "fourni": [
-          "⚠️ à confirmer : attribution du matériel par Thomas."
+          "⚠️ à confirmer : attribution du matériel par le professeur."
         ]
       },
       "pistesManuelles": {
@@ -175,7 +175,7 @@ definirMecaniques({
           "Boutons, LED ou buzzer et servomoteur : disponibilité à valider."
         ],
         "fourni": [
-          "⚠️ à confirmer : attribution du matériel par Thomas."
+          "⚠️ à confirmer : attribution du matériel par le professeur."
         ]
       },
       "pistesManuelles": {
@@ -184,7 +184,7 @@ definirMecaniques({
         "M3": "Fabriquer une boîte à cadenas avec un élément de liaison."
       },
       "pistesElectroniques": [
-        "Piste du brief : deux boutons, LED ou buzzer et servomoteur.",
+        "Piste : deux boutons, LED ou buzzer et servomoteur.",
         "Le programme reconnaît la suite court/long et déclenche une action utile au jeu. Broches et alimentation à valider."
       ],
       "pieges": [
@@ -221,10 +221,10 @@ definirMecaniques({
           "Support ou chevalet."
         ],
         "aTrouver": [
-          "Ressources de signes validées par Thomas : ⚠️ à confirmer."
+          "Ressources de signes validées par le professeur : ⚠️ à confirmer."
         ],
         "fourni": [
-          "⚠️ à confirmer : attribution du matériel par Thomas."
+          "⚠️ à confirmer : attribution du matériel par le professeur."
         ]
       },
       "pistesManuelles": {
@@ -272,7 +272,7 @@ definirMecaniques({
           "Cadenas adapté à la réponse."
         ],
         "fourni": [
-          "⚠️ à confirmer : attribution du matériel par Thomas."
+          "⚠️ à confirmer : attribution du matériel par le professeur."
         ]
       },
       "pistesManuelles": {
@@ -291,7 +291,7 @@ definirMecaniques({
       "indicesExemple": {
         "niveau1": "La première lettre contient la clé de lecture.",
         "niveau2": "Alignez les deux alphabets selon la consigne ; remplacez chaque lettre chiffrée.",
-        "niveau3": "Pour l’exemple du brief, reculez de cinq lettres. Il reste à lire les mots décodés."
+        "niveau3": "Dans l’exemple de la consigne, reculez de cinq lettres. Il reste à lire les mots décodés."
       }
     }
   ]

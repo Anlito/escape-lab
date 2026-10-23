@@ -13,6 +13,32 @@
   racine.definirDemo = function (d) { DEMO = d; };
   var AIDES = {};
   racine.definirAides = function (a) { AIDES = a.champs || {}; };
+  var COMPOSANTS = {};
+  racine.definirComposants = function (c) { c.composants.forEach(function (x) { COMPOSANTS[x.id] = x; }); };
+
+  // Messages des contrôles : ceux de donnees/messages.js (tâche C7) en priorité, sinon ceux-ci. {x} est remplacé.
+  var MESSAGES = {
+    indiceManquant1: "Il manque encore l'indice de niveau 1 : où regarder ?",
+    indiceManquant2: "Il manque encore l'indice de niveau 2 : comment s'y prendre ?",
+    indiceManquant3: "Il manque encore l'indice de niveau 3 : la dernière action à faire.",
+    talkieManquant: "Il manque la phrase à dire au talkie-walkie pour le niveau {niveau}.",
+    solutionManquante: "Il manque encore la solution : le professeur en a besoin pour vérifier.",
+    matiereManquante: "Il manque encore la matière vue en cours et le lien avec l'énigme.",
+    lienMatiereTropCourt: "Explique le lien avec la matière en deux ou trois phrases.",
+    contenuBoiteManquant: "Écris ce qui est dans la boîte : c'est ce qui passe à l'énigme suivante.",
+    memeBroche: "Deux composants sont sur la broche {broche} : choisis une autre broche pour l'un d'eux.",
+    brocheIndisponible: "La broche « {broche} » n'existe pas sur cette carte : vérifie son nom.",
+    brochesEnvoi: "D0 et D1 servent à envoyer le programme : préfère une autre broche.",
+    capteurManquant: "Il manque encore un capteur : l'énigme doit réagir à une action des joueurs.",
+    actionneurManquant: "Il manque encore un actionneur : quelque chose doit bouger, sonner ou s'allumer.",
+    masseCommune: "Aucun fil ne va à GND : les composants ont besoin d'une masse commune.",
+    douzeVoltsSansRelais: "12 V : relais et alimentation séparée, jamais sur la carte ni la platine.",
+    validationProfAvantTension: "Avant toute mise sous tension, le professeur vérifie et valide le montage.",
+    aVerifier: "Information pas encore vérifiée sur le composant réel : demande au professeur avant de brancher.",
+    dureeEnigmeLongue: "Ton énigme dure plus de {minutes} min : la partie risque d'être trop longue."
+  };
+  var MESSAGES_JALONS = {};
+  racine.definirMessages = function (m) { Object.assign(MESSAGES, m.controles || {}); MESSAGES_JALONS = m.jalons || {}; };
 
   // Personne connectée et dossier ouvert.
   // prof : commandes du professeur (ordre de la frise…), données par prof.html ou essayées en démonstration.
@@ -221,7 +247,9 @@
     var page = pageCourante();
     afficherNavigation(page);
     document.title = page.nom + " — Escape Lab";
-    var zone = $("contenu");
+    // Un conteneur neuf par affichage : les écouteurs d'une page quittée ne reçoivent plus rien.
+    var zone = document.createElement("div");
+    $("contenu").replaceChildren(zone);
     if (arreterPage) { arreterPage(); arreterPage = null; }
     if (page.id === "tableau") return afficherTableau(zone);
     if (app.pages[page.id]) { arreterPage = await app.pages[page.id](zone) || null; return; }
@@ -331,6 +359,15 @@
     jalons: function () { return JALONS; },
     // Texte d'aide d'un champ (donnees/aides.js) : { consigne, exemple, phraseACompleter }, ou {}.
     aide: function (id) { return AIDES[id] || {}; },
+    composants: COMPOSANTS,
+    // Message d'un jalon selon son état (« à faire », « en cours », « fait » ou « enRetard »).
+    messageJalon: function (id, etat) {
+      var m = MESSAGES_JALONS[id] || {};
+      return m[{ "à faire": "aFaire", "en cours": "enCours", "fait": "fait", "enRetard": "enRetard" }[etat]] || "";
+    },
+    message: function (id, valeurs) {
+      return String(MESSAGES[id] || id).replace(/\{(\w+)\}/g, function (t, cle) { return valeurs && valeurs[cle] != null ? valeurs[cle] : t; });
+    },
     nombreGroupes: function () { return REGLAGES.nombreGroupes; },
     rafraichir: afficherPage
   };

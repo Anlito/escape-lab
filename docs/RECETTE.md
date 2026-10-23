@@ -33,3 +33,16 @@ Avec deux postes (ou deux onglets) sur le même dossier :
 - [ ] Deux postes modifient le même élément : les deux textes sont réunis, rien n'est perdu.
 - [ ] Le fichier ajouté sur un poste s'ouvre sur l'autre poste (et, pour 3C2D1, après synchronisation).
 - [ ] Délai de copie d'une vidéo de 20 Mo sur le réseau du collège (question 13).
+
+## Étape 7 — fiche énigme, énigmes des autres, câblage
+- [ ] Chaque onglet a son voyant (○ à faire, ◐ en cours, ● fait) ; les jalons en retard sont en ambre.
+- [ ] Remplir « Mon énigme », enregistrer : le tableau de bord montre le nouvel avancement et le nom de l'énigme.
+- [ ] Deux membres du groupe enregistrent le même onglet depuis deux postes : les deux modifications sont gardées.
+- [ ] Indices : un message dit quel niveau ou quelle phrase talkie manque encore.
+- [ ] Électronique : ajouter un bouton et un servomoteur, les mettre sur la même broche : message en ambre.
+- [ ] Ajouter le relais : la règle 12 V et « le professeur valide » s'affichent.
+- [ ] Ajouter une photo de l'objet dans Fabrication, enregistrer, la revoir sur l'autre poste.
+- [ ] Journal : ajouter une ligne de séance.
+- [ ] Énigmes des autres : la fiche est en lecture seule, la solution et le code sont cachés (bouton « Afficher »),
+      le journal et les remarques n'y sont pas ; laisser un avis : le groupe concerné le voit dans « Tests et avis ».
+- [ ] 3C2D1 : la fiche d'un groupe de l'autre dossier est en lecture seule (« elle se modifie là-bas »).

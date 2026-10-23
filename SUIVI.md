@@ -27,7 +27,7 @@ jour après. Le brief complet est dans `docs/BRIEF-CLAUDE-CODE-escape-lab.md`.
 | 4 | Squelette : accueil, identification, tableau de bord, charte | Claude | fait ; recette Thomas (bouton « Classe fictive ») |
 | 5 | Histoire puis Frise | Claude | fait ; **recette Thomas** (`docs/RECETTE.md`) |
 | 6 | Bibliothèque commune | Claude | fait ; recette Thomas |
-| 7 | Fiche énigme, énigmes des autres, câblage v1 | Claude | à faire |
+| 7 | Fiche énigme, énigmes des autres, câblage v1 | Claude | fait ; **recette Thomas** |
 | 8 | Page jour J | Claude | à faire |
 | 9 | Fiches mécaniques + bibliothèque de composants (contenus) | **ChatGPT** (contenu) + Claude (éditeur) | à faire |
 | 10 | Labo Blocs : parcours Escape Lab, partie libre | Claude | à faire |
@@ -78,9 +78,12 @@ Claude « C4 livrée » : Claude relit, intègre et met à jour ce tableau.
 | C3 Démonstration 3Z9 | **intégrée** (`site/donnees/demo.js`, convertie au format du stockage ; groupes g1–g5 → A–E) |
 | C4 Relevé du matériel | **livré** (`docs/releve-materiel.md`) ; **Thomas le remplit au collège**, puis ChatGPT complète `composants.js` |
 | C5 Textes d'aide des fiches | **intégrée** (`site/donnees/aides.js`) : histoire et liaisons branchées ; fiche énigme et jour J aux étapes 7-8 ; relecture Thomas |
-| C7 Messages des jalons | **à faire** (pour l’étape 7) |
-| C8 Modèles du jour J | **à faire** (pour l’étape 8) |
-| C9 Rubriques du livret du Game Master | **à faire** (pour l’étape 11) |
+| C7 Messages des jalons | **intégrée** (`site/donnees/messages.js`) ; memeBroche et brocheIndisponible nomment la broche ; relecture Thomas |
+| C8 Modèles du jour J | **rangée** (`site/donnees/jourj-modeles.js`, utilisée à l’étape 8) |
+| C9 Rubriques du livret du Game Master | **rangée** (`docs/livret.md`, mise en page à l’étape 11) |
+| C10 Exercices guidés Labo Blocs | **à faire** (pour l’étape 10) |
+| C11 Appréciations générées | **à faire** (pour l’étape 11) |
+| C12 Fiche de recette finale | **à faire** (pour l’étape 13) |
 | C6 Grille d'évaluation | **rangée** (`site/donnees/evaluation.js`, utilisée à l'étape 11) ; **décisions de Thomas attendues** (voir ci-dessous) |
 
 ### Tâche C4 — Relevé du matériel à remplir par Thomas au collège (brief §4, question 9)
@@ -167,12 +170,46 @@ joueurs invités (fonction, **jamais de noms**), cours déplacés, matériel à 
 de la frise, et d’une fiche d’installation A4 par énigme, pensés pour une impression **noir et blanc** (bordures,
 lettres, cases à cocher, pas de couleur). Donner un exemple rempli avec la démo 3Z9 (sans solution inventée).
 
+### Règle pour tous les textes lus par les élèves
+Ne jamais écrire « Thomas » ni « le brief » dans un texte affiché aux élèves : écrire « le professeur ». (Corrigé
+dans `mecaniques.js` et `composants.js`.)
+
+### Tâche C10 — Trois exercices guidés de prise en main pour Labo Blocs (brief §11, point 1)
+`exercices-labo-blocs.md` : trois exercices courts sur Arduino Uno (1. allumer une LED, 2. un bouton allume la LED,
+3. un bouton fait tourner le servomoteur), puis l’exercice libre « Mon programme ». Pour chacun : titre, objectif en
+une phrase, ce que l’élève doit obtenir (comportement observable), étapes guidées (3 à 5), une aide par étape,
+une erreur fréquente et le message qui la **décrit** (jamais « tu as faux »). Règles de Labo Blocs : broche par défaut
+D2 et **les blocs ne donnent jamais la réponse** ; ne pas écrire de numéro de broche comme solution (le câblage réel
+n’est pas connu). Lire `C:UserspcDocumentslabo-blocsdocsBRIEF-LABO-BLOCS-POUR-UN-PROJET.md` pour le vocabulaire.
+
+### Tâche C11 — Appréciations générées de la grille (brief §8.5)
+`appreciations.js` au format `definirAppreciations({ format: "escape-lab/appreciations", version: 1,
+parNote: [{ min, max, texte }], parBloc: { "<bloc>": { fort, aTravailler } } })` : tranches de note /20 (5 à 6
+tranches), et pour chaque bloc de `site/donnees/evaluation.js` une phrase « point fort » et une « à travailler ».
+Ton de bulletin, bienveillant, 20 mots au plus, sans prénom, sans comparaison entre élèves.
+
+### Tâche C12 — Fiche de recette finale imprimable (brief §15 point 13, §16)
+`recette-finale.md` : une liste de vérifications à faire par Thomas au collège avec deux postes, à partir de
+`docs/RECETTE.md` et des critères de réussite du brief §16 : conditions (quels postes, quel dossier), action, résultat
+attendu, case « OK / à revoir », remarque. Inclure : deux élèves sur la même section, coupure du réseau pendant un
+enregistrement, restauration d’une version, synchronisation 3C2D1 avec modifications des deux côtés, impression noir
+et blanc, aucune donnée réelle dans le dépôt.
+
 ## Questions à Thomas (grille C6)
 1. Barème : A–D = 0, 1, 2, 3 points (tout en C donne 13,3/20). Garder, ou celui des grilles Excel existantes ?
 2. Couleurs : le brief dit rouge / jaune / vert clair / vert foncé, la règle commune dit « jamais de rouge ». Remplacer le rouge (par ex. gris) ?
 3. Coefficients : 2 pour fiche énigme, câblage, programme, test croisé ; 1 ailleurs. D'accord ?
 
 ## Journal
+- 23/10/2026 — ChatGPT : C7 (14 jalons × 4 états, 17 contrôles), C8 (7 rôles, 11 tâches, listes du jour J), C9 (plan
+  du livret et de la fiche A4, exemple 3Z9).
+- 23/10/2026 — Claude : étape 7. Fiche énigme à 11 onglets (champs guidés, voyants ○ ◐ ●, jalons calculés depuis
+  le contenu et recopiés dans `groupes/<g>`, validation du professeur affichée), un élément par onglet
+  `fiches/<g>-<onglet>` avec fusion si deux membres enregistrent ; atelier de câblage v1 (composants de la
+  bibliothèque, tableau des branchements, contrôles : même broche, broche absente, D0/D1, masse, capteur et
+  actionneur, 12 V) ; photos ; journal ; énigmes des autres en lecture seule, solution masquée, avis de test.
+  Indices « faits » seulement avec les trois phrases talkie (lecture de C7). Correction : chaque page a son
+  propre conteneur (les clics n’allaient plus à une page quittée). 34 tests verts. Tâches C10 à C12.
 - 23/10/2026 — Claude : étape 6, bibliothèque commune (notes, documents image/PDF/audio/vidéo ≤ 20 Mo par défaut,
   liens http(s) seulement ; étiquettes suggérées + libres ; recherche et filtres ; aperçu intégré ; corbeille
   restaurable ; historique ; modification simultanée réunie sans perte). 25 tests verts. Tâches C7 à C9 pour ChatGPT.

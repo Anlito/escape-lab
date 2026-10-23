@@ -264,22 +264,22 @@ definirDemo({
         ],
         "jalons": {
           "mecanique": {
-            "etat": "en cours",
+            "etat": "à faire",
             "valide": false
           },
           "scenario": {
             "etat": "en cours",
             "valide": false
           },
-          "M1": {
-            "etat": "en cours",
+          "materiel": {
+            "etat": "fait",
             "valide": false
           },
-          "M2": {
-            "etat": "à faire",
+          "matiere": {
+            "etat": "fait",
             "valide": false
           },
-          "M3": {
+          "choixE1": {
             "etat": "à faire",
             "valide": false
           },
@@ -303,12 +303,16 @@ definirDemo({
             "etat": "à faire",
             "valide": false
           },
-          "matiere": {
+          "M1": {
             "etat": "en cours",
             "valide": false
           },
-          "jourJ": {
-            "etat": "à faire",
+          "M2": {
+            "etat": "en cours",
+            "valide": false
+          },
+          "M3": {
+            "etat": "en cours",
             "valide": false
           }
         }
@@ -426,22 +430,22 @@ definirDemo({
         ],
         "jalons": {
           "mecanique": {
-            "etat": "en cours",
+            "etat": "à faire",
             "valide": false
           },
           "scenario": {
             "etat": "en cours",
             "valide": false
           },
-          "M1": {
-            "etat": "en cours",
+          "materiel": {
+            "etat": "fait",
             "valide": false
           },
-          "M2": {
-            "etat": "à faire",
+          "matiere": {
+            "etat": "fait",
             "valide": false
           },
-          "M3": {
+          "choixE1": {
             "etat": "à faire",
             "valide": false
           },
@@ -465,12 +469,16 @@ definirDemo({
             "etat": "à faire",
             "valide": false
           },
-          "matiere": {
+          "M1": {
             "etat": "en cours",
             "valide": false
           },
-          "jourJ": {
-            "etat": "à faire",
+          "M2": {
+            "etat": "en cours",
+            "valide": false
+          },
+          "M3": {
+            "etat": "en cours",
             "valide": false
           }
         }
@@ -588,22 +596,22 @@ definirDemo({
         ],
         "jalons": {
           "mecanique": {
-            "etat": "en cours",
+            "etat": "à faire",
             "valide": false
           },
           "scenario": {
             "etat": "en cours",
             "valide": false
           },
-          "M1": {
-            "etat": "en cours",
+          "materiel": {
+            "etat": "fait",
             "valide": false
           },
-          "M2": {
-            "etat": "à faire",
+          "matiere": {
+            "etat": "fait",
             "valide": false
           },
-          "M3": {
+          "choixE1": {
             "etat": "à faire",
             "valide": false
           },
@@ -627,12 +635,16 @@ definirDemo({
             "etat": "à faire",
             "valide": false
           },
-          "matiere": {
+          "M1": {
             "etat": "en cours",
             "valide": false
           },
-          "jourJ": {
-            "etat": "à faire",
+          "M2": {
+            "etat": "en cours",
+            "valide": false
+          },
+          "M3": {
+            "etat": "en cours",
             "valide": false
           }
         }
@@ -750,22 +762,22 @@ definirDemo({
         ],
         "jalons": {
           "mecanique": {
-            "etat": "en cours",
+            "etat": "à faire",
             "valide": false
           },
           "scenario": {
             "etat": "en cours",
             "valide": false
           },
-          "M1": {
-            "etat": "en cours",
+          "materiel": {
+            "etat": "fait",
             "valide": false
           },
-          "M2": {
-            "etat": "à faire",
+          "matiere": {
+            "etat": "fait",
             "valide": false
           },
-          "M3": {
+          "choixE1": {
             "etat": "à faire",
             "valide": false
           },
@@ -789,12 +801,16 @@ definirDemo({
             "etat": "à faire",
             "valide": false
           },
-          "matiere": {
+          "M1": {
             "etat": "en cours",
             "valide": false
           },
-          "jourJ": {
-            "etat": "à faire",
+          "M2": {
+            "etat": "en cours",
+            "valide": false
+          },
+          "M3": {
+            "etat": "en cours",
             "valide": false
           }
         }
@@ -912,22 +928,22 @@ definirDemo({
         ],
         "jalons": {
           "mecanique": {
-            "etat": "en cours",
+            "etat": "à faire",
             "valide": false
           },
           "scenario": {
             "etat": "en cours",
             "valide": false
           },
-          "M1": {
-            "etat": "en cours",
+          "materiel": {
+            "etat": "fait",
             "valide": false
           },
-          "M2": {
-            "etat": "à faire",
+          "matiere": {
+            "etat": "fait",
             "valide": false
           },
-          "M3": {
+          "choixE1": {
             "etat": "à faire",
             "valide": false
           },
@@ -951,12 +967,16 @@ definirDemo({
             "etat": "à faire",
             "valide": false
           },
-          "matiere": {
+          "M1": {
             "etat": "en cours",
             "valide": false
           },
-          "jourJ": {
-            "etat": "à faire",
+          "M2": {
+            "etat": "en cours",
+            "valide": false
+          },
+          "M3": {
+            "etat": "en cours",
             "valide": false
           }
         }
@@ -975,8 +995,47 @@ definirDemo({
         ]
       }
     },
-    {"collection":"bibliotheque","id":"bdemo1","valeur":{"type":"note","titre":"Ambiance sonore de la station","texte":"- Bip régulier de la balise\n- Grésillement radio quand un poste se rallume","etiquettes":["son","décor"],"groupe":""}},
-    {"collection":"bibliotheque","id":"bdemo2","valeur":{"type":"lien","titre":"Modèle d’affiche Canva","url":"https://www.canva.com/","texte":"Modèle commun pour les documents à imprimer.","etiquettes":["image","règle"],"groupe":""}},
-    {"collection":"bibliotheque","id":"bdemo3","valeur":{"type":"note","titre":"Idée de cadre pour les calques","texte":"Un cadre en carton avec deux encoches pour aligner les feuilles.","etiquettes":["technique"],"groupe":"B"}}
+    {
+      "collection": "bibliotheque",
+      "id": "bdemo1",
+      "valeur": {
+        "type": "note",
+        "titre": "Ambiance sonore de la station",
+        "texte": "- Bip régulier de la balise\n- Grésillement radio quand un poste se rallume",
+        "etiquettes": [
+          "son",
+          "décor"
+        ],
+        "groupe": ""
+      }
+    },
+    {
+      "collection": "bibliotheque",
+      "id": "bdemo2",
+      "valeur": {
+        "type": "lien",
+        "titre": "Modèle d’affiche Canva",
+        "url": "https://www.canva.com/",
+        "texte": "Modèle commun pour les documents à imprimer.",
+        "etiquettes": [
+          "image",
+          "règle"
+        ],
+        "groupe": ""
+      }
+    },
+    {
+      "collection": "bibliotheque",
+      "id": "bdemo3",
+      "valeur": {
+        "type": "note",
+        "titre": "Idée de cadre pour les calques",
+        "texte": "Un cadre en carton avec deux encoches pour aligner les feuilles.",
+        "etiquettes": [
+          "technique"
+        ],
+        "groupe": "B"
+      }
+    }
   ]
 });

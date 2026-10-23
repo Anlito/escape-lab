@@ -81,7 +81,7 @@ definirComposants({
       ],
       "precautions": [
         "⚠️ à vérifier : caractéristiques et conditions d’utilisation à relever sur la fiche technique.",
-        "Règle du brief §11.1 : alimentation 12 V séparée, commande par relais ; jamais de 12 V sur la carte ni sur la platine. Validation de Thomas avant mise sous tension. Diode, courant et protections : ⚠️ à vérifier sur les références réelles."
+        "Règle de sécurité : alimentation 12 V séparée, commande par relais ; jamais de 12 V sur la carte ni sur la platine. Le professeur valide avant toute mise sous tension. Diode, courant et protections : ⚠️ à vérifier sur les références réelles."
       ],
       "lies": [
         "electroaimant"
@@ -104,7 +104,7 @@ definirComposants({
       ],
       "precautions": [
         "⚠️ à vérifier : caractéristiques et conditions d’utilisation à relever sur la fiche technique.",
-        "Règle du brief §11.1 : alimentation 12 V séparée, commande par relais ; jamais de 12 V sur la carte ni sur la platine. Validation de Thomas avant mise sous tension. Diode, courant et protections : ⚠️ à vérifier sur les références réelles."
+        "Règle de sécurité : alimentation 12 V séparée, commande par relais ; jamais de 12 V sur la carte ni sur la platine. Le professeur valide avant toute mise sous tension. Diode, courant et protections : ⚠️ à vérifier sur les références réelles."
       ],
       "lies": [
         "relais"
@@ -127,7 +127,7 @@ definirComposants({
       ],
       "precautions": [
         "⚠️ à vérifier : caractéristiques et conditions d’utilisation à relever sur la fiche technique.",
-        "Référence 473 indiquée dans le brief ; brochage et ordre des contacts non vérifiés."
+        "Référence 473 ; brochage et ordre des contacts non vérifiés."
       ],
       "lies": [],
       "source": "⚠️ à vérifier : fiche technique du modèle réel non identifiée."
@@ -236,8 +236,8 @@ definirComposants({
         "⚠️ à vérifier : ordre physique des quatre contacts et affectation des broches de la carte."
       ],
       "precautions": [
-        "⚠️ à vérifier : compatibilité de la liaison série avec le micrologiciel Uno de Labo Blocs (brief §11.2).",
-        "La documentation du fabricant ne vaut pas validation du câblage réel par Thomas."
+        "⚠️ à vérifier : compatibilité de la liaison série avec le micrologiciel Uno de Labo Blocs.",
+        "La documentation du fabricant ne vaut pas validation du câblage réel par le professeur."
       ],
       "lies": [],
       "source": "https://wiki.seeedstudio.com/Grove-12-Channel-Capacitive-Touch-Keypad-ATtiny1616-/"
