@@ -4,15 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Escape Lab — professeur</title>
+<script src="js/porte-professeur.js"></script>
+<script src="code-professeur.js"></script>
 <link rel="stylesheet" href="css/charte.css">
 </head>
 <body>
 <header class="entete">
   <div class="marque">Escape <span>LAB</span> · professeur</div>
-  <a class="connecte" href="index.html">Espace élève</a>
+  <a class="connecte" href="index.html?prof">Suivi, pilotage, évaluation</a>
+  <button id="btnVerrouiller">Verrouiller</button>
 </header>
 <main>
-  <p class="bandeau">Espace du professeur. La protection par code et la vue d'ensemble des groupes arrivent à l'étape 11 du projet.</p>
+  <p class="bandeau">Fiches mécaniques, composants et synchronisation des deux dossiers de 3C2D1. Le suivi des groupes, le pilotage, l'évaluation et les exports sont dans « Suivi, pilotage, évaluation ».</p>
 
   <section class="carte">
     <h2>Dossiers de classe ouverts</h2>
@@ -32,6 +35,7 @@
   <nav id="ongletsProf" class="onglets" hidden>
     <button data-page="mecaniques" aria-selected="true">Fiches mécaniques</button>
     <button data-page="composants" aria-selected="false">Bibliothèque de composants</button>
+    <button data-page="synchro" aria-selected="false">Synchronisation 3C2D1</button>
   </nav>
   <div id="pageProf"></div>
 </main>

@@ -42,7 +42,7 @@
       : '<p class="bandeau">Le professeur placera ici les énigmes dans l\'ordre choisi par la classe.</p>');
 
     // Commandes du professeur : en démonstration, on peut les essayer.
-    if (et.demo) {
+    if (et.demo && !app.modeProf) {
       zone.insertAdjacentHTML("beforeend", '<label class="case"><input type="checkbox" id="essaiProf"' + (et.prof ? " checked" : "") +
         "> Essayer les commandes du professeur (démonstration)</label>");
       zone.querySelector("#essaiProf").addEventListener("change", function () { et.prof = this.checked; app.rafraichir(); });

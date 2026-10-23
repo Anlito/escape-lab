@@ -74,3 +74,15 @@ Avec deux postes (ou deux onglets) sur le même dossier :
 - [ ] Un autre groupe ouvre le programme : lecture seule, rien n'est enregistré.
 - [ ] Deux membres du groupe sur le même programme depuis deux postes : message « sa version reste dans l'historique ».
 - [ ] Lire et valider (ou corriger) `labo-blocs/docs/PLANS-COMPOSANTS-ESCAPE-LAB.md`.
+
+## Étape 11 — espace professeur
+- [ ] `index.html?prof` et `prof.html` demandent le code professeur (celui de Labo Blocs) ; un mauvais code est refusé ; « Verrouiller » referme.
+- [ ] Un élève sur `index.html` ne voit ni le suivi, ni le pilotage, ni l'évaluation.
+- [ ] Suivi des groupes : retards en ambre, filtre « en retard, bloqués ou sans activité », tri ; cliquer un groupe ouvre sa fiche.
+- [ ] Fiche d'un groupe : modifier, « Valider » un jalon physique (M1, M2, M3, câblage) ; laisser une remarque ; le groupe la voit.
+- [ ] Pilotage : séance actuelle, nombre de groupes, mécanique et cadenas d'un groupe, échéances, annonce (et annonce type), épingler, retirer.
+- [ ] Dossier personnel : choisir un dossier de classe est refusé ; notes privées, évaluations et observations n'apparaissent dans aucun dossier de classe.
+- [ ] Évaluation : grille d'un groupe, ajustement d'un élève, note /20 « provisoire », appréciation proposée puis corrigée, export CSV ouvert dans le tableur.
+- [ ] Observation jour J sur la tablette : phase, groupe, élève, remarque rapide, niveau en un geste ; elle apparaît dans la grille (« obs. »).
+- [ ] Exports : livret du Game Master et fiches d'installation imprimés en noir et blanc (une page par énigme) ; CSV d'avancement ; sauvegarde .json.
+- [ ] `prof.html` › Synchronisation : ouvrir 3C2 et 3D1, aperçu, synchroniser ; modifier la même section des deux côtés : conflit listé, les deux textes visibles dans la section.

@@ -98,7 +98,8 @@
     if (!racine.showDirectoryPicker) return messageDossiers("Ce navigateur ne sait pas ouvrir un dossier : utilise Chrome ou Edge.");
     try {
       var poignee = await racine.showDirectoryPicker({ id: "escape-lab-prof-" + depot, mode: "readwrite" });
-      dossiers.push({ depot: depot, nom: poignee.name, stockage: S.creerStockage(S.creerAdaptateurDossier(poignee), { depot: depot }) });
+      var adaptateur = S.creerAdaptateurDossier(poignee);
+      dossiers.push({ depot: depot, nom: poignee.name, adaptateur: adaptateur, stockage: S.creerStockage(adaptateur, { depot: depot }) });
       messageDossiers("");
       afficherDossiers();
     } catch (err) {
@@ -108,9 +109,9 @@
 
   async function ouvrirDemo() {
     if (dossiers.some(function (d) { return d.depot === "3Z9"; })) return;
-    var st = S.creerStockage(S.creerAdaptateurMemoire(), { depot: "3Z9" });
+    var adaptateurDemo = S.creerAdaptateurMemoire(), st = S.creerStockage(adaptateurDemo, { depot: "3Z9" });
     for (var i = 0; i < DEMO.elements.length; i++) await st.enregistrer(DEMO.elements[i].collection, DEMO.elements[i].id, DEMO.elements[i].valeur, null, { prenom: "Démo" });
-    dossiers.push({ depot: "3Z9", nom: "classe fictive (rien n'est enregistré)", stockage: st });
+    dossiers.push({ depot: "3Z9", nom: "classe fictive (rien n'est enregistré)", adaptateur: adaptateurDemo, stockage: st });
     afficherDossiers();
   }
 
@@ -275,9 +276,42 @@
     var zone = $("pageProf");
     document.querySelectorAll("#ongletsProf [data-page]").forEach(function (b) { b.setAttribute("aria-selected", String(b.getAttribute("data-page") === page)); });
     if (!dossiers.length) { zone.innerHTML = ""; return; }
+    if (page === "synchro") return afficherSynchro(zone);
     if (edition) return afficherFormulaire(zone);
     try { await afficherListe(zone); }
     catch (err) { zone.innerHTML = '<p class="bandeau ecart">Un dossier n\'a pas pu être lu (' + e(err.message) + "). Ferme-le et ouvre-le de nouveau.</p>"; }
+  }
+
+  // --- Synchronisation des deux dossiers d'une équipe (brief §10.1) ---
+
+  var rapportSynchro = null;
+  async function afficherSynchro(zone) {
+    var equipes = (REGLAGES.equipes || []).filter(function (eq) { return eq.depots.length > 1; });
+    var html = '<section class="carte"><h2>Synchronisation</h2><p class="petit">Pour une équipe à deux dossiers : ouvre les deux dossiers ci-dessus, regarde l\x27aperçu, puis synchronise. ' +
+      "Après, les deux dossiers sont identiques ; une section modifiée des deux côtés garde les deux textes (le professeur choisit dans la page de l\x27équipe).</p>";
+    for (var i = 0; i < equipes.length; i++) {
+      var eq = equipes[i], a = dossiers.filter(function (d) { return d.depot === eq.depots[0]; })[0], b = dossiers.filter(function (d) { return d.depot === eq.depots[1]; })[0];
+      html += "<h3>Équipe " + e(eq.nom) + " (" + e(eq.depots.join(" + ")) + ")</h3>";
+      if (!a || !b) { html += '<p class="ecart">Ouvre d\x27abord le dossier de ' + e(eq.depots.filter(function (d) { return !dossiers.some(function (x) { return x.depot === d; }); }).join(" et de ")) + ".</p>"; continue; }
+      var journal = await a.adaptateur.lister("synchronisation/journal"), derniere = 0;
+      for (var k = 0; k < journal.length; k++) { try { derniere = Math.max(derniere, JSON.parse(await a.adaptateur.lireTexte("synchronisation/journal/" + journal[k].nom)).le || 0); } catch (err) { /* illisible */ } }
+      html += "<p>" + (derniere ? "Dernière synchronisation : " + dateCourte(derniere) : "Jamais synchronisée.") + "</p>" +
+        '<div class="boutons"><button data-synchro="' + i + '" data-simuler="1">Aperçu</button><button class="principal" data-synchro="' + i + '">Synchroniser</button></div>';
+      if (rapportSynchro && rapportSynchro.equipe === eq.nom) html += rapportHtml(rapportSynchro, eq);
+    }
+    if (!equipes.length) html += '<p class="petit">Aucune équipe à deux dossiers dans donnees/equipes.js.</p>';
+    zone.innerHTML = (message ? '<p class="bandeau" role="status">' + message + "</p>" : "") + html + "</section>";
+    zone._equipes = equipes;
+  }
+
+  function rapportHtml(r, eq) {
+    function listeChemins(t) { return t.length ? "<ul>" + t.slice(0, 40).map(function (c) { return "<li>" + e(c) + "</li>"; }).join("") + (t.length > 40 ? "<li>… et " + (t.length - 40) + " autres</li>" : "") + "</ul>" : '<p class="petit">Rien.</p>'; }
+    var utiles = function (t) { return t.filter(function (c) { return c.indexOf("/historique/") === -1 && c.indexOf("presence/") !== 0; }); };
+    return '<div class="carte-groupe"><h4>' + (r.rapport.simulation ? "Aperçu (rien n\x27est encore copié)" : "Synchronisation faite") + "</h4>" +
+      "<p>Vers " + e(eq.depots[1]) + " : " + r.rapport.versB.length + " fichier(s) · vers " + e(eq.depots[0]) + " : " + r.rapport.versA.length + " fichier(s) · conflits : " + r.rapport.conflits.length + "</p>" +
+      (r.rapport.conflits.length ? '<p class="ecart">Modifié des deux côtés (les deux textes sont gardés, à trancher) :</p>' + listeChemins(r.rapport.conflits) : "") +
+      "<details><summary>Éléments copiés vers " + e(eq.depots[1]) + "</summary>" + listeChemins(utiles(r.rapport.versB)) + "</details>" +
+      "<details><summary>Éléments copiés vers " + e(eq.depots[0]) + "</summary>" + listeChemins(utiles(r.rapport.versA)) + "</details></div>";
   }
 
   // --- Événements ---
@@ -288,6 +322,7 @@
     $("choixDepot").innerHTML = '<option value="">Choisir…</option>' + tousLesDepots().map(function (d) { return "<option>" + e(d) + "</option>"; }).join("");
     $("choixDepot").addEventListener("change", function () { $("aideDepot").textContent = this.value ? "Dossier à choisir : " + cheminAttendu(this.value) : ""; });
     $("btnOuvrirDossier").addEventListener("click", ouvrirDossier);
+    $("btnVerrouiller").addEventListener("click", function () { if (racine.EscapeLabPorte) racine.EscapeLabPorte.verrouiller(); });
     $("btnDemoProf").addEventListener("click", ouvrirDemo);
     $("listeDossiers").addEventListener("click", function (ev) {
       var b = ev.target.closest("[data-fermer]");
@@ -303,6 +338,15 @@
 
     var zone = $("pageProf");
     zone.addEventListener("click", async function (ev) {
+      var bs = ev.target.closest("button[data-synchro]");
+      if (bs) {
+        var eq = zone._equipes[Number(bs.getAttribute("data-synchro"))];
+        var da = dossiers.filter(function (d) { return d.depot === eq.depots[0]; })[0], db = dossiers.filter(function (d) { return d.depot === eq.depots[1]; })[0];
+        bs.disabled = true; bs.textContent = "…";
+        try { rapportSynchro = { equipe: eq.nom, rapport: await S.synchroniser(da.adaptateur, db.adaptateur, { simuler: bs.hasAttribute("data-simuler") }) }; }
+        catch (err) { rapportSynchro = null; message = '<span class="ecart">La synchronisation n\x27a pas pu se faire (' + e(err.message) + "). Rien n\x27est perdu : relance-la.</span>"; }
+        return afficherPage();
+      }
       var b = ev.target.closest("button[data-action]");
       if (!b) return;
       var a = b.getAttribute("data-action"), id = b.getAttribute("data-id");

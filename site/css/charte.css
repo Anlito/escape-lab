@@ -24,6 +24,10 @@ h2 { font-size: 1.25rem; color: var(--or-clair); }
 h3 { font-size: 1.05rem; }
 .petit { font-size: .875rem; color: var(--texte-doux); }
 [hidden] { display: none !important; }
+/* Porte du code professeur : la page reste cachée tant que le code n'est pas donné */
+html.porte-fermee body > :not(.porte-professeur) { visibility: hidden !important; }
+.porte-professeur { position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; background: var(--fond); padding: 16px; }
+.porte-boite { width: min(28rem, 100%); }
 .cache-visuel { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .exemple { font-style: italic; }
 
@@ -161,6 +165,28 @@ th, td { border: 1px solid var(--bord); padding: .3em .4em; text-align: left; ve
 .hote-labo-blocs { position: fixed; inset: 0; z-index: 50; background: #fff; overflow: auto; }
 body.labo-ouvert { overflow: hidden; }
 .emplacement select, .emplacement input { margin-bottom: .3em; }
+
+/* Espace professeur */
+button.lien { border: none; padding: 0; background: none; color: var(--or-clair); text-decoration: underline; text-align: left; }
+table.suivi td { text-align: center; white-space: nowrap; }
+.ecart-cellule { color: var(--ambre); border-color: var(--ambre); font-weight: 700; }
+.grille-eval select { min-width: 4em; }
+.grille-eval tr.bloc th { background: #2b2b2b; color: var(--or-clair); }
+.observation button { min-height: 2.8em; }
+.observation button[aria-pressed="true"] { background: var(--or); color: #1d1d1d; font-weight: 700; }
+.observation .niveau { min-width: 5em; font-size: 1.2rem; font-weight: 800; }
+body.mode-prof .entete { border-bottom-color: var(--or-clair); }
+#impression { display: none; }
+@media print {
+  body.impression-en-cours > :not(#impression) { display: none !important; }
+  body.impression-en-cours #impression { display: block; color: #000; font-size: 11pt; }
+  #impression .page { break-after: page; }
+  #impression .cadre { border: 1px solid #000; padding: 4pt 8pt; margin: 6pt 0; break-inside: avoid; }
+  #impression table { border-collapse: collapse; width: 100%; }
+  #impression th, #impression td { border: 1px solid #000; padding: 2pt 4pt; }
+  #impression .manque { font-style: italic; }
+  #impression .manque::before { content: "[ "; } #impression .manque::after { content: " ]"; }
+}
 
 /* Jour J */
 .section-jourj > h2 { margin-top: 1em; }

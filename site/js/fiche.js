@@ -172,7 +172,8 @@
       }
       if (champ.type === "validation") {
         var j = (g.jalons || {})[champ.jalon] || {};
-        return '<p class="' + (j.valide ? "valide" : "petit") + '">' + (j.valide ? "✓ Validé par le professeur" : "Pas encore validé par le professeur") + "</p>";
+        return '<p class="' + (j.valide ? "valide" : "petit") + '">' + (j.valide ? "✓ Validé par le professeur" : "Pas encore validé par le professeur") +
+          (et.prof ? ' <button data-action="valider" data-jalon="' + champ.jalon + '">' + (j.valide ? "Retirer la validation" : "Valider") + "</button>" : "") + "</p>";
       }
       if (champ.masque && (lecture || options.autres) && !montrerSolution) {
         return '<p><strong>' + e(champ.libelle) + " :</strong> " + (rempliTexte(v) ? '<button data-action="montrerSolution">Afficher</button>' : '<span class="petit">pas encore écrite</span>') + "</p>";
@@ -409,8 +410,10 @@
 
     async function ongletRemarques() {
       var r = (await st.lister("remarques")).filter(function (x) { return x.valeur.groupe === groupeId; }).sort(function (a, b) { return b.le - a.le; });
-      return r.length ? r.map(function (x) { return '<div class="carte-groupe">' + O.miseEnForme(x.valeur.texte) + '<p class="petit">' + app.dateCourte(x.le) + "</p></div>"; }).join("")
-        : '<p class="petit">Le professeur n\'a pas encore laissé de remarque.</p>';
+      var formulaire = et.prof ? '<div class="carte-groupe"><label for="r-texte">Nouvelle remarque (visible par le groupe)</label><textarea id="r-texte" rows="3"></textarea>' +
+        '<div class="boutons"><button class="principal" data-action="ajouterRemarque">Ajouter la remarque</button></div></div>' : "";
+      return formulaire + (r.length ? r.map(function (x) { return '<div class="carte-groupe">' + O.miseEnForme(x.valeur.texte) + '<p class="petit">' + app.dateCourte(x.le) + "</p></div>"; }).join("")
+        : '<p class="petit">Le professeur n\'a pas encore laissé de remarque.</p>');
     }
 
     // Avis visibles du groupe concerné et du professeur ; un autre groupe ne voit que les siens (brief §7.7).
@@ -460,7 +463,7 @@
 
     async function afficher() {
       var m = app.mecaniques[g.mecanique];
-      var html = (options.autres ? '<button data-action="retour">← Toutes les énigmes</button>' : "") +
+      var html = (options.retour ? '<button data-action="retour">← Toutes les énigmes</button>' : "") +
         '<section class="carte"><h2>' + app.pastille(g.mecanique) + " " + e((fiche.enigme && fiche.enigme.titre) || g.nom || "Groupe " + groupeId) + "</h2>" +
         '<p class="petit">Groupe ' + e(groupeId) + " · " + e(m ? m.nom : "mécanique à attribuer") + "</p>" +
         (miroir ? '<p class="bandeau">Ce groupe travaille dans l\'autre dossier de l\'équipe : sa fiche se lit ici, elle se modifie là-bas.</p>' : "") +
@@ -529,7 +532,7 @@
           v.jalons[id] = { etat: calc[id], valide: !!(ancien && ancien.valide) };
         });
         if (fiche.enigme && rempliTexte(fiche.enigme.titre)) v.nom = fiche.enigme.titre;
-        if (!v.depotOrigine && et.equipe.depots.length > 1) v.depotOrigine = et.depot;
+        if (!v.depotOrigine && et.equipe.depots.length > 1 && !et.prof) v.depotOrigine = et.depot;
         var r = await st.enregistrer("groupes", groupeId, v, actuel ? actuel.vid : null, app.auteur());
         if (r.ok) { g = r.element.valeur; return; }
       }
@@ -559,6 +562,23 @@
         if (onglet) { courant = onglet; montrerSolution = false; }
         else if (action === "retour") { options.retour(); return; }
         else if (action === "montrerSolution") montrerSolution = true;
+        else if (action === "valider") {
+          var idJ = b.getAttribute("data-jalon");
+          for (var essaiV = 0; essaiV < 3; essaiV++) {
+            var actuelG = await st.lire("groupes", groupeId), vg = Object.assign({}, actuelG ? actuelG.valeur : {});
+            vg.jalons = Object.assign({}, vg.jalons || {});
+            var ancienJ = vg.jalons[idJ] || {};
+            vg.jalons[idJ] = { etat: ancienJ.etat || etatJalon(idJ), valide: !ancienJ.valide };
+            var rv = await st.enregistrer("groupes", groupeId, vg, actuelG ? actuelG.vid : null, app.auteur());
+            if (rv.ok) { g = rv.element.valeur; message = g.jalons[idJ].valide ? "Jalon validé." : "Validation retirée."; break; }
+          }
+        }
+        else if (action === "ajouterRemarque") {
+          var texteR = zone.querySelector("#r-texte").value.trim();
+          if (!texteR) { message = '<span class="ecart">Écris la remarque.</span>'; return afficher(); }
+          await st.enregistrer("remarques", groupeId + "-" + Date.now().toString(36), { groupe: groupeId, texte: texteR }, null, app.auteur());
+          message = "Remarque ajoutée : le groupe la voit dans « Remarques du professeur ».";
+        }
         else if (action === "ressource") {
           var contenu = await st.lireFichier("mecaniques", b.getAttribute("data-nom")), boite = zone.querySelector("#apercuRessource");
           if (!contenu) { boite.innerHTML = '<p class="ecart">Ce fichier n\'est pas (encore) dans le dossier de la classe.</p>'; return; }
@@ -674,7 +694,7 @@
       var reglages = await et.stockage.lire("equipe", "reglages");
       var seance = reglages && reglages.valeur.seanceActuelle;
       zone.innerHTML = '<p class="bandeau">Les énigmes des autres groupes de la classe, en lecture seule. Après un test croisé, laisse un avis au groupe.</p><div class="grille">' +
-        idsGroupes().filter(function (id) { return id !== et.groupe; }).map(function (id) {
+        idsGroupes().filter(function (id) { return et.prof || id !== et.groupe; }).map(function (id) {
           var v = groupes[id] ? groupes[id].valeur : {}, m = app.mecaniques[v.mecanique], av = app.avancement(v, seance);
           return '<article class="carte groupe"><h3>' + app.pastille(v.mecanique) + " " + e(v.nom || "Groupe " + id) + "</h3>" +
             '<p class="petit">Groupe ' + e(id) + " · " + e(m ? m.nom : "mécanique à attribuer") + "</p><p>" + av.pourcent + " % des jalons faits</p>" +
@@ -687,9 +707,16 @@
       var sousZone = document.createElement("div");
       zone.innerHTML = "";
       zone.appendChild(sousZone);
-      arreter = await afficherFiche(sousZone, b.getAttribute("data-ouvrir"), { lecture: true, autres: true, retour: liste });
+      arreter = await afficherFiche(sousZone, b.getAttribute("data-ouvrir"), et.prof ? { retour: liste } : { lecture: true, autres: true, retour: liste });
     });
-    await liste();
+    // Depuis le suivi des groupes : la fiche demandée s'ouvre directement.
+    if (et.groupeAOuvrir) {
+      var demande = et.groupeAOuvrir;
+      et.groupeAOuvrir = null;
+      var sousZone = document.createElement("div");
+      zone.appendChild(sousZone);
+      arreter = await afficherFiche(sousZone, demande, et.prof ? { retour: liste } : { lecture: true, autres: true, retour: liste });
+    } else await liste();
     return function () { if (arreter) arreter(); };
   };
 })(this);

@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Escape Lab</title>
+<!-- Code professeur : seulement pour index.html?prof (espace professeur) -->
+<script src="js/porte-professeur.js" data-si-prof></script>
+<script src="code-professeur.js"></script>
 <link rel="stylesheet" href="vendor/labo-blocs/labo-blocs.css">
 <link rel="stylesheet" href="css/charte.css">
 </head>
@@ -13,17 +16,19 @@
   <div class="carte">
     <h1>Escape <span style="color:var(--or)">LAB</span></h1>
     <p class="slogan">Créer. Coder. Jouer.</p>
-    <p>Choisis ta classe et ton groupe, écris ton prénom, puis ouvre le dossier de ta classe.</p>
+    <p id="introAccueil">Choisis ta classe et ton groupe, écris ton prénom, puis ouvre le dossier de ta classe.</p>
 
     <label for="choixClasse">Ta classe</label>
     <select id="choixClasse"></select>
     <p id="aideChemin" class="petit"></p>
 
+    <div class="champs-eleve">
     <label for="choixGroupe">Ton groupe</label>
     <select id="choixGroupe"></select>
 
     <label for="prenom">Ton prénom</label>
     <input id="prenom" autocomplete="off" maxlength="30" placeholder="Prénom seulement">
+    </div>
 
     <p id="messageAccueil" class="ecart" role="alert" hidden></p>
     <div class="boutons">
@@ -32,13 +37,15 @@
     </div>
   </div>
   <p class="petit">Pour découvrir l'outil sans dossier : <button id="btnDemo">Classe fictive</button>
-    (rien n'est enregistré). Escape Lab fonctionne avec Chrome ou Edge.</p>
+    (rien n'est enregistré). Escape Lab fonctionne avec Chrome ou Edge. · <a href="?prof">Espace professeur</a></p>
 </section>
 
 <div id="espace" hidden>
   <header class="entete">
     <div class="marque">Escape <span>LAB</span></div>
     <div id="connecte" class="connecte"></div>
+    <a id="lienProf" class="bouton" href="prof.html" hidden>Fiches et synchronisation</a>
+    <button id="btnVerrouiller" hidden>Verrouiller</button>
     <button id="btnQuitter">Changer</button>
   </header>
   <nav id="navigation" class="navigation" aria-label="Pages de l'équipe"></nav>
@@ -68,6 +75,8 @@
 <script src="js/lignes.js"></script>
 <script src="js/jourj.js"></script>
 <script src="js/programmation.js"></script>
+<script src="js/evaluation-regles.js"></script>
+<script src="js/professeur.js"></script>
 <script src="donnees/equipes.js"></script>
 <script src="donnees/jalons.js"></script>
 <script src="donnees/mecaniques.js"></script>
@@ -76,6 +85,10 @@
 <script src="donnees/composants.js"></script>
 <script src="donnees/messages.js"></script>
 <script src="donnees/jourj-modeles.js"></script>
+<script src="donnees/evaluation.js"></script>
+<script src="donnees/appreciations.js"></script>
+<script src="donnees/observations-modeles.js"></script>
+<script src="donnees/annonces-modeles.js"></script>
 <script src="donnees/demo.js"></script>
 </body>
 </html>

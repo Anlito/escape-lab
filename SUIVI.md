@@ -31,7 +31,7 @@ jour après. Le brief complet est dans `docs/BRIEF-CLAUDE-CODE-escape-lab.md`.
 | 8 | Page jour J | Claude | fait ; **recette Thomas** |
 | 9 | Fiches mécaniques + bibliothèque de composants (contenus) | **ChatGPT** (contenu) + Claude (éditeur) | fait (`site/prof.html`) ; **recette Thomas** |
 | 10 | Labo Blocs : parcours Escape Lab, partie libre | Claude | fait ; **recette Thomas** (et validation des plans de composants) |
-| 11 | Espace professeur, évaluation, exports | Claude | à faire |
+| 11 | Espace professeur, évaluation, exports | Claude | fait ; **recette Thomas** |
 | 12 | Câblage v2, régie caméras (phase 2) | Claude | après décision |
 | 13 | Recette | Thomas + Claude | à faire |
 
@@ -89,8 +89,10 @@ Claude « C4 livrée » : Claude relit, intègre et met à jour ce tableau.
 | C15 Mode d’emploi du professeur | **rangée** (`docs/mode-emploi-professeur.md`) ; **à mettre à jour** : écrit avant l’étape 9 (`prof.html` existe maintenant), à revoir après l’étape 11 |
 | C16 Fiche complète de démonstration | **intégrée** (groupe A de la démo : `fiches/A-<onglet>`, jalons recalculés) |
 | C17 Décisions à prendre (une page) | **rangée** (`docs/decisions.md`) : **à remplir par Thomas** |
-| C18 Remarques rapides de l’observation du jour J | **à faire** (pour l’étape 11) |
-| C19 Annonces types par séance | **à faire** (pour l’étape 11) |
+| C18 Remarques rapides de l’observation du jour J | **intégrée** (`site/donnees/observations-modeles.js`) |
+| C19 Annonces types par séance | **intégrée** (`site/donnees/annonces-modeles.js`, bouton « Reprendre » dans Pilotage) |
+| C20 Régie caméras : information et accord | **à faire** (pour l’étape 12) |
+| C21 Mode d’emploi professeur : étapes 10 et 11 | **à faire** |
 | C6 Grille d'évaluation | **rangée** (`site/donnees/evaluation.js`, utilisée à l'étape 11) ; **décisions de Thomas attendues** (voir ci-dessous) |
 
 ### Tâche C4 — Relevé du matériel à remplir par Thomas au collège (brief §4, question 9)
@@ -257,12 +259,39 @@ seances: [{ seance: 1, annonces: ["…"] }, …] })` : pour les séances 1 à 10
 au plus) tirées des jalons de `site/donnees/jalons.js` (« Aujourd’hui : scénario, solution et cadenas »), un rappel
 de sécurité aux séances d’électronique, ton encourageant, sans reproche.
 
+### Tâche C20 — Régie caméras : textes d’information et d’accord (brief §7.10, phase 2)
+`regie-textes.md` : (1) une affiche courte pour les joueurs (caméras pour suivre le jeu, **aucun enregistrement,
+rien n’est envoyé**, arrêt possible à tout moment) ; (2) un modèle de demande d’accord à la direction (but, nombre
+de webcams, lieu, poste de régie, aucune image gardée, élèves mineurs, joueurs extérieurs) ; (3) une fiche de 10
+lignes pour le Game Master (allumer, nommer les caméras, arrêter tout, que faire si un joueur refuse). Rien sur le
+matériel réel tant que la question 11 n’est pas tranchée : laisser des blancs « à compléter ».
+
+### Tâche C21 — Mettre à jour `mode-emploi-professeur.md` (étapes 10 et 11)
+Ajouter : la page Programmation (4 emplacements, carte, contrôle E1, lecture seule) ; l’espace professeur
+`index.html?prof` derrière le code professeur (le même que Labo Blocs) : Suivi des groupes, Fiches des groupes
+(modifier, valider un jalon, remarque), Frise (ordre), Pilotage (réglages, mécanique et cadenas, échéances, annonces,
+notes privées), Évaluation (dossier personnel, grille, note /20 provisoire, appréciation proposée, CSV),
+Observation jour J (tablette), Exports (livret, fiches d’installation, CSV, sauvegarde) ; `prof.html` : onglet
+Synchronisation 3C2D1 (aperçu puis synchroniser). Rappeler : notes et observations dans le dossier personnel.
+
 ## Questions à Thomas (grille C6)
 1. Barème : A–D = 0, 1, 2, 3 points (tout en C donne 13,3/20). Garder, ou celui des grilles Excel existantes ?
 2. Couleurs : le brief dit rouge / jaune / vert clair / vert foncé, la règle commune dit « jamais de rouge ». Remplacer le rouge (par ex. gris) ?
 3. Coefficients : 2 pour fiche énigme, câblage, programme, test croisé ; 1 ailleurs. D'accord ?
 
 ## Journal
+- 23/10/2026 — ChatGPT : C18 (30 remarques rapides), C19 (25 annonces types).
+- 23/10/2026 — Claude : étape 11. Code professeur (même empreinte que Labo Blocs, `site/code-professeur.js`) devant
+  `prof.html` et `index.html?prof`. Espace professeur dans l’application : Suivi des groupes (jalons ○ ◐ ● ✓ !, tri,
+  filtre retard/bloqué/sans journal, ouverture de la fiche), Fiches des groupes modifiables (validation des jalons
+  physiques, remarques), ordre de la frise, Pilotage (séance, durée, minutes par énigme, nombre de groupes 3 à 8,
+  taille des fichiers, mécanique et cadenas par groupe, dossier d’origine, échéances, annonces avec modèles C19,
+  notes privées), Évaluation (dossier personnel refusé s’il ressemble à un dossier de classe, grille groupe ×
+  élèves, ajustement individuel, observations reprises, note /20 provisoire, appréciation proposée, CSV, comparaison
+  des classes), Observation jour J (tablette, remarques C18), Exports (livret du Game Master et fiches
+  d’installation imprimables en noir et blanc, CSV d’avancement, sauvegarde complète .json). `prof.html` : onglet
+  Synchronisation 3C2D1 (aperçu, synchroniser, conflits listés). Copie de secours des données du professeur dans le
+  navigateur. Barème C6 appliqué **en attendant la décision de Thomas**. 53 tests verts.
 - 23/10/2026 — ChatGPT : C15 mise à jour (étape 9), C16 (fiche complète du groupe A, solution et code fictifs), C17
   (18 décisions ouvertes, classées par urgence).
 - 23/10/2026 — Claude : C16 intégrée dans la démo, C15 et C17 rangées dans `docs/`.

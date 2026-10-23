@@ -5,7 +5,10 @@
 
   var S = racine.EscapeLabStockage;
   var REGLAGES = null, JALONS = [], MECANIQUES = {}, DEMO = null;
-  var CLE_DERNIER = "escape-lab:dernier";
+  // Espace professeur : index.html?prof, derrière le code professeur (porte-professeur.js).
+  var MODE_PROF = new URLSearchParams(racine.location.search).has("prof");
+  var REGLAGES_EQUIPE = {};   // equipe/reglages du dossier : séance, nombre de groupes, échéances…
+  var CLE_DERNIER = new URLSearchParams(racine.location.search).has("prof") ? "escape-lab:dernier-prof" : "escape-lab:dernier";
 
   racine.definirEquipes = function (r) { REGLAGES = r; };
   racine.definirJalons = function (j) { JALONS = j.jalons; };
@@ -26,6 +29,9 @@
     try {
       (await etat.stockage.lister("mecaniques")).forEach(function (el) { MECANIQUES[el.id] = el.valeur; });
       (await etat.stockage.lister("composants")).forEach(function (el) { COMPOSANTS[el.id] = el.valeur; });
+      var r = await etat.stockage.lire("equipe", "reglages");
+      REGLAGES_EQUIPE = r ? r.valeur : {};
+      memoriserNombreGroupes(etat.depot, REGLAGES_EQUIPE.nombreGroupes);
     } catch (err) { /* dossier illisible : les ébauches du site restent */ }
   }
 
@@ -56,18 +62,26 @@
   // Personne connectée et dossier ouvert.
   // prof : commandes du professeur (ordre de la frise…), données par prof.html ou essayées en démonstration.
   var etat = { equipe: null, depot: "", groupe: "", prenom: "", stockage: null, adaptateur: null,
-               demo: false, nomDossier: "", prof: false };
+               demo: false, nomDossier: "", prof: MODE_PROF };
 
   var PAGES = [
     { id: "tableau", nom: "Tableau de bord" },
     { id: "histoire", nom: "Histoire", etape: 5 },
     { id: "frise", nom: "Frise", etape: 5 },
     { id: "bibliotheque", nom: "Bibliothèque", etape: 6 },
-    { id: "enigme", nom: "Mon énigme", etape: 7 },
-    { id: "autres", nom: "Énigmes des autres", etape: 7 },
+    { id: "enigme", nom: "Mon énigme", eleve: true },
+    { id: "autres", nom: "Énigmes des autres", nomProf: "Fiches des groupes" },
     { id: "programmation", nom: "Programmation", etape: 10 },
-    { id: "jourj", nom: "Jour J", etape: 8 }
+    { id: "jourj", nom: "Jour J", etape: 8 },
+    { id: "suivi", nom: "Suivi des groupes", prof: true },
+    { id: "pilotage", nom: "Pilotage", prof: true },
+    { id: "evaluation", nom: "Évaluation", prof: true },
+    { id: "observation", nom: "Observation jour J", prof: true },
+    { id: "exports", nom: "Exports", prof: true }
   ];
+  function pagesVisibles() {
+    return PAGES.filter(function (p) { return MODE_PROF ? !p.eleve : !p.prof; });
+  }
 
   function $(id) { return document.getElementById(id); }
 
@@ -83,7 +97,15 @@
            d.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
   }
 
-  function auteur() { return { classe: etat.depot, groupe: etat.groupe, prenom: etat.prenom }; }
+  function auteur() { return MODE_PROF ? { prof: true } : { classe: etat.depot, groupe: etat.groupe, prenom: etat.prenom }; }
+
+  // Nombre de groupes : réglé par le professeur dans le dossier, sinon celui de donnees/equipes.js.
+  function nombreGroupes() { return REGLAGES_EQUIPE.nombreGroupes || REGLAGES.nombreGroupes; }
+  // Jalons avec les échéances réglées par le professeur (equipe/reglages.echeances).
+  function jalonsActuels() {
+    var ech = REGLAGES_EQUIPE.echeances || {};
+    return JALONS.map(function (j) { return ech[j.id] ? Object.assign({}, j, { seance: ech[j.id] }) : j; });
+  }
 
   // --- Équipes et groupes ---
 
@@ -106,6 +128,14 @@
   }
 
   // --- Mémoire du navigateur (aucune donnée sensible ; tout est facultatif) ---
+
+  // Nombre de groupes vu au dernier passage dans le dossier de cette classe (liste « Ton groupe » de l'accueil).
+  function nombreGroupesMemorise(depot) {
+    try { return Number(localStorage.getItem("escape-lab:groupes:" + depot)) || REGLAGES.nombreGroupes; } catch (e) { return REGLAGES.nombreGroupes; }
+  }
+  function memoriserNombreGroupes(depot, n) {
+    try { if (n) localStorage.setItem("escape-lab:groupes:" + depot, String(n)); } catch (e) { /* navigation privée */ }
+  }
 
   function lireDernier() {
     try { return JSON.parse(localStorage.getItem(CLE_DERNIER)) || null; } catch (e) { return null; }
@@ -150,13 +180,13 @@
       var detail = e.depots.length > 1 ? " (équipe " + e.nom + ")" : "";
       return '<option value="' + echapper(d) + '">' + echapper(d + detail) + "</option>";
     }).join("");
-    $("choixGroupe").innerHTML = '<option value="">Choisir…</option>' + lettresGroupes(REGLAGES.nombreGroupes)
+    $("choixGroupe").innerHTML = '<option value="">Choisir…</option>' + lettresGroupes(nombreGroupesMemorise($("choixClasse").value))
       .map(function (g) { return '<option value="' + g + '">Groupe ' + g + "</option>"; }).join("");
 
     var dernier = lireDernier();
     if (dernier && equipeDuDepot(dernier.depot)) {
       $("btnReprendre").hidden = false;
-      $("btnReprendre").textContent = "Reprendre : " + dernier.prenom + ", groupe " + dernier.groupe + " (" + dernier.depot + ")";
+      $("btnReprendre").textContent = MODE_PROF ? "Reprendre : " + dernier.depot : "Reprendre : " + dernier.prenom + ", groupe " + dernier.groupe + " (" + dernier.depot + ")";
     }
     majAideChemin();
   }
@@ -173,7 +203,8 @@
 
   function lireFormulaire() {
     var depot = $("choixClasse").value, groupe = $("choixGroupe").value, prenom = $("prenom").value.trim();
-    if (!depot) return messageAccueil("Choisis ta classe.");
+    if (!depot) return messageAccueil(MODE_PROF ? "Choisis la classe." : "Choisis ta classe.");
+    if (MODE_PROF) { messageAccueil(""); return { depot: depot, groupe: "", prenom: "Professeur" }; }
     if (!groupe) return messageAccueil("Choisis ton groupe.");
     if (!prenom) return messageAccueil("Écris ton prénom : il signe ton travail.");
     messageAccueil("");
@@ -215,7 +246,8 @@
     if (!demo) memoriserDernier();
     $("accueil").hidden = true;
     $("espace").hidden = false;
-    $("connecte").innerHTML = "<strong>" + echapper(etat.prenom) + "</strong> · groupe " + echapper(etat.groupe) +
+    $("connecte").innerHTML = (MODE_PROF ? "<strong>Professeur</strong> · " + echapper(etat.depot)
+      : "<strong>" + echapper(etat.prenom) + "</strong> · groupe " + echapper(etat.groupe)) +
       " · " + echapper(etat.equipe.nom) + (demo ? " · démonstration" : "");
     if (!location.hash) location.hash = "#tableau";
     chargerReferentiels().then(afficherPage);
@@ -228,13 +260,13 @@
       var e = DEMO.elements[i];
       await stockage.enregistrer(e.collection, e.id, e.valeur, null, { prenom: "Démo" });
     }
-    entrer({ depot: DEMO.equipe.depots[0], groupe: "A", prenom: "Visiteur" }, adaptateur, true, DEMO.equipe.depots[0]);
+    entrer(MODE_PROF ? { depot: DEMO.equipe.depots[0], groupe: "", prenom: "Professeur" } : { depot: DEMO.equipe.depots[0], groupe: "A", prenom: "Visiteur" }, adaptateur, true, DEMO.equipe.depots[0]);
   }
 
   function quitter() {
     if (arreterPage) { arreterPage(); arreterPage = null; }
     etat.stockage = etat.adaptateur = null;
-    etat.prof = false;
+    etat.prof = MODE_PROF;
     $("espace").hidden = true;
     $("accueil").hidden = false;
     history.replaceState(null, "", location.pathname);
@@ -246,12 +278,13 @@
 
   function pageCourante() {
     var id = location.hash.replace("#", "");
-    return PAGES.filter(function (p) { return p.id === id; })[0] || PAGES[0];
+    var visibles = pagesVisibles();
+    return visibles.filter(function (p) { return p.id === id; })[0] || visibles[0];
   }
 
   function afficherNavigation(page) {
-    $("navigation").innerHTML = PAGES.map(function (p) {
-      return '<a href="#' + p.id + '"' + (p === page ? ' aria-current="page"' : "") + ">" + echapper(p.nom) + "</a>";
+    $("navigation").innerHTML = pagesVisibles().map(function (p) {
+      return '<a href="#' + p.id + '"' + (p === page ? ' aria-current="page"' : "") + ">" + echapper(MODE_PROF && p.nomProf || p.nom) + "</a>";
     }).join("");
   }
 
@@ -281,6 +314,7 @@
   // Avancement d'un groupe : jalons faits, jalons en retard (séance dépassée et pas encore faits).
   function avancement(valeur, seanceActuelle) {
     var jalons = (valeur && valeur.jalons) || {}, faits = 0, retard = [];
+    var JALONS = jalonsActuels();
     JALONS.forEach(function (j) {
       var e = jalons[j.id];
       var fait = e === "fait" || (e && e.etat === "fait");
@@ -305,7 +339,7 @@
     var taches = (await st.lister("jourj-taches")).filter(function (t) { return !t.valeur.retiree && t.valeur.tache; });
     var roles = (await st.lister("jourj-roles")).filter(function (r) { return !r.valeur.retiree; }).map(function (r) { return r.valeur; });
     var eleves = [];
-    var ids = lettresGroupes(REGLAGES.nombreGroupes);
+    var ids = lettresGroupes(nombreGroupes());
     for (var i = 0; i < ids.length; i++) {
       var en = await st.lire("fiches", ids[i] + "-enigme");
       var membres = en ? en.valeur.membres : (groupesLus[ids[i]] && groupesLus[ids[i]].valeur.membres);
@@ -328,7 +362,7 @@
       var seance = reglages && reglages.valeur.seanceActuelle;
       var groupesLus = {};
       (await st.lister("groupes")).forEach(function (g) { groupesLus[g.id] = g; });
-      var annonces = (await st.lister("annonces")).sort(function (a, b) {
+      var annonces = (await st.lister("annonces")).filter(function (a) { return !a.valeur.retiree; }).sort(function (a, b) {
         return (!!b.valeur.epinglee - !!a.valeur.epinglee) || (b.le - a.le);
       });
       var frise = await st.lire("frise", "ordre");
@@ -350,7 +384,7 @@
       html += "</section>";
 
       html += '<section class="carte"><h2>Les groupes' + (seance ? ' <span class="petit">· séance ' + seance + "</span>" : "") + "</h2><div class=\"grille\">";
-      lettresGroupes(REGLAGES.nombreGroupes).forEach(function (id) {
+      lettresGroupes(nombreGroupes()).forEach(function (id) {
         var g = groupesLus[id], v = g ? g.valeur : {};
         var av = avancement(v, seance);
         var m = MECANIQUES[v.mecanique];
@@ -358,7 +392,7 @@
           '<p class="petit">Groupe ' + id + " · " + echapper(m ? m.nom : "mécanique à attribuer") +
           (id === etat.groupe ? ' · <span class="etiquette">ton groupe</span>' : "") + "</p>" +
           '<div class="barre" role="img" aria-label="' + av.pourcent + ' % des jalons faits"><div style="width:' + av.pourcent + '%"></div></div>' +
-          "<p>" + av.faits + " jalon" + (av.faits > 1 ? "s" : "") + " fait" + (av.faits > 1 ? "s" : "") + " sur " + JALONS.length + " (" + av.pourcent + " %)</p>" +
+          "<p>" + av.faits + " jalon" + (av.faits > 1 ? "s" : "") + " fait" + (av.faits > 1 ? "s" : "") + " sur " + jalonsActuels().length + " (" + av.pourcent + " %)</p>" +
           (av.retard.length ? '<p class="ecart">Encore à faire : ' + echapper(av.retard.join(", ")) + "</p>" : "") +
           '<p class="petit">' + (g ? "Dernière activité : " + dateCourte(g.le) : "Pas encore commencé") + "</p></article>";
       });
@@ -391,7 +425,9 @@
   var app = racine.EscapeLab = {
     etat: etat, pages: {}, mecaniques: MECANIQUES, pastille: pastille, avancement: avancement,
     dateCourte: dateCourte, auteur: auteur, lettresGroupes: lettresGroupes,
-    jalons: function () { return JALONS; },
+    jalons: jalonsActuels,
+    modeProf: MODE_PROF,
+    reglagesEquipe: function () { return REGLAGES_EQUIPE; },
     // Texte d'aide d'un champ (donnees/aides.js) : { consigne, exemple, phraseACompleter }, ou {}.
     aide: function (id) { return AIDES[id] || {}; },
     composants: COMPOSANTS,
@@ -403,7 +439,14 @@
     message: function (id, valeurs) {
       return String(MESSAGES[id] || id).replace(/\{(\w+)\}/g, function (t, cle) { return valeurs && valeurs[cle] != null ? valeurs[cle] : t; });
     },
-    nombreGroupes: function () { return REGLAGES.nombreGroupes; },
+    nombreGroupes: nombreGroupes,
+    garderDossier: garderDossier,
+    retrouverDossier: retrouverDossier,
+    rechargerReglages: async function () {
+      var r = await etat.stockage.lire("equipe", "reglages");
+      REGLAGES_EQUIPE = r ? r.valeur : {};
+      memoriserNombreGroupes(etat.depot, REGLAGES_EQUIPE.nombreGroupes);
+    },
     rafraichir: afficherPage
   };
 
@@ -414,7 +457,21 @@
     if (LB.chargerCollegeEnLigne) LB.chargerCollegeEnLigne();
     if (LB.EVENEMENT_COLLEGE) document.addEventListener(LB.EVENEMENT_COLLEGE, majAideChemin);
     remplirAccueil();
-    $("choixClasse").addEventListener("change", majAideChemin);
+    $("choixClasse").addEventListener("change", function () {
+      majAideChemin();
+      var choisi = $("choixGroupe").value;
+      $("choixGroupe").innerHTML = '<option value="">Choisir…</option>' + lettresGroupes(nombreGroupesMemorise(this.value))
+        .map(function (g) { return '<option value="' + g + '"' + (g === choisi ? " selected" : "") + ">Groupe " + g + "</option>"; }).join("");
+    });
+    if (MODE_PROF) {
+      document.body.classList.add("mode-prof");
+      $("introAccueil").textContent = "Espace professeur : choisis la classe, puis ouvre le dossier de la classe.";
+      document.querySelector(".champs-eleve").hidden = true;
+      document.querySelector("label[for=choixClasse]").textContent = "Classe";
+      $("btnVerrouiller").hidden = false;
+      $("lienProf").hidden = false;
+      $("btnVerrouiller").addEventListener("click", function () { if (racine.EscapeLabPorte) racine.EscapeLabPorte.verrouiller(); });
+    }
     $("btnOuvrir").addEventListener("click", function () { var p = lireFormulaire(); if (p) ouvrirDossier(p); });
     $("btnReprendre").addEventListener("click", async function () {
       var d = lireDernier();
