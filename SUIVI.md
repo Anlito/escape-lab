@@ -87,8 +87,8 @@ Claude « C4 livrée » : Claude relit, intègre et met à jour ce tableau.
 | C13 Mécaniques supplémentaires | **intégrée** (`site/donnees/mecaniques-supplementaires.js`, 7 ébauches marquées « supplémentaire ») ; relecture Thomas avec le Drive |
 | C14 Guide « Bien démarrer » élève | **rangée** (`docs/bien-demarrer.md`) ; à imprimer, relecture Thomas |
 | C15 Mode d’emploi du professeur | **rangée** (`docs/mode-emploi-professeur.md`) ; **à mettre à jour** : écrit avant l’étape 9 (`prof.html` existe maintenant), à revoir après l’étape 11 |
-| C16 Fiche complète de démonstration | **à faire** (pour l’étape 11) |
-| C17 Décisions à prendre (une page) | **à faire** |
+| C16 Fiche complète de démonstration | **intégrée** (groupe A de la démo : `fiches/A-<onglet>`, jalons recalculés) |
+| C17 Décisions à prendre (une page) | **rangée** (`docs/decisions.md`) : **à remplir par Thomas** |
 | C6 Grille d'évaluation | **rangée** (`site/donnees/evaluation.js`, utilisée à l'étape 11) ; **décisions de Thomas attendues** (voir ci-dessous) |
 
 ### Tâche C4 — Relevé du matériel à remplir par Thomas au collège (brief §4, question 9)
@@ -248,6 +248,9 @@ fiches mécaniques et composants, activer, exporter, importer).
 3. Coefficients : 2 pour fiche énigme, câblage, programme, test croisé ; 1 ailleurs. D'accord ?
 
 ## Journal
+- 23/10/2026 — ChatGPT : C15 mise à jour (étape 9), C16 (fiche complète du groupe A, solution et code fictifs), C17
+  (18 décisions ouvertes, classées par urgence).
+- 23/10/2026 — Claude : C16 intégrée dans la démo, C15 et C17 rangées dans `docs/`.
 - 23/10/2026 — Claude : étape 10. Dans `labo-blocs` (branche `claude/parcours-escape-lab`, pas encore envoyée) :
   parcours `escape-lab` (Uno) et `escape-lab-microbit`, 4 exercices libres chacun = les 4 emplacements, au format
   de l’éditeur (contrôlés par `controler`) ; `docs/PLANS-COMPOSANTS-ESCAPE-LAB.md` (potentiomètre et relais sans

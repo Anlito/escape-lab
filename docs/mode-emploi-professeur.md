@@ -2,7 +2,7 @@
 
 ## Page 1 sur 2 — préparer et accompagner
 
-Version de référence : suivi du 23/10/2026, étapes 1 à 8 réalisées ; recettes au collège encore nécessaires.
+Version de référence : suivi du 23/10/2026, étapes 1 à 9 réalisées ; recettes au collège encore nécessaires.
 
 ### 1. Préparer les dossiers
 
@@ -51,18 +51,35 @@ Le jour J comprend tâches, rôles, textes, planning et répétition.
 Vérifiez que chacun a un rôle et un texte personnel.
 Une réalisation déclarée prête ne vaut pas validation physique.
 
+### 6. Utiliser les fiches du professeur — disponible
+
+Ouvrez **site/prof.html** avec Chrome ou Edge.
+Choisissez la classe puis **Ouvrir le dossier de cette classe** ; répétez pour les autres dossiers.
+Pour 3C2D1, ouvrez les deux dossiers ; cochez uniquement ceux qui doivent recevoir une modification.
+**Classe fictive** permet aussi d’essayer sans enregistrer dans les dossiers réels.
+
+Dans **Fiches mécaniques** ou **Bibliothèque de composants**, consultez l’origine et l’état par dossier.
+Modifiez la fiche avec l’éditeur, puis enregistrez dans les dossiers cochés.
+Activez ou désactivez une mécanique par classe ; les fiches du dossier remplacent les ébauches du site.
+Exportez une fiche en **.json**, ou importez une fiche compatible pour la relire avant enregistrement.
+Vous pouvez joindre des ressources image, PDF, audio ou vidéo, jusqu’à 50 Mo par fichier.
+Un composant comportant une mention « ⚠️ » ne peut pas être validé.
+Les composants non validés gardent leur avertissement côté élève.
+Les sept mécaniques supplémentaires restent à vérifier avec leurs ressources.
+La protection par code n’est pas encore disponible : elle relève de l’étape 11.
+
 <div style="break-before: page; page-break-before: always;"></div>
 
 ## Page 2 sur 2 — piloter, protéger et préparer la suite
 
-### 6. Régler l’ordre de la frise
+### 7. Régler l’ordre de la frise
 
 La frise montre le début, l’ordre des énigmes, les liaisons, la fin et la durée totale.
 Dans la classe fictive, **Essayer les commandes du professeur** permet de tester les changements d’ordre.
 L’historique conserve ancien ordre, nouvel ordre, auteur et note explicative.
 Le pilotage réel dans l’espace professeur reste **(étape 11, à venir)**.
 
-### 7. Valider un jalon physique
+### 8. Valider un jalon physique
 
 La fiche affiche les états et la validation du professeur pour les réalisations physiques.
 Examinez l’objet réel, la photo et les essais ; un champ rempli ne suffit pas.
@@ -70,7 +87,7 @@ Pour le câblage, utilisez les références et fiches techniques du matériel r�
 Demandez les compléments nécessaires avant toute mise sous tension.
 L’action de validation dans l’espace professeur reste **(étape 11, à venir)**.
 
-### 8. Synchroniser 3C2D1
+### 9. Synchroniser 3C2D1
 
 La couche de stockage et de synchronisation est réalisée et testée automatiquement.
 La recette sur les deux dossiers réels reste nécessaire ; utilisez d’abord des copies.
@@ -83,7 +100,7 @@ En cas de conflit, les deux contributions doivent rester conservées des deux c�
 Contrôler les pièces jointes, les historiques, le journal et l’égalité finale des contenus.
 Les groupes miroirs restent en lecture seule dans le dossier de l’autre moitié.
 
-### 9. Conserver les notes à part
+### 10. Conserver les notes à part
 
 L’évaluation, les observations du jour J et les notes privées sont **(étape 11, à venir)**.
 Leur destination prévue est un emplacement personnel du professeur, jamais un dossier de classe.
@@ -91,7 +108,7 @@ N’y joignez pas les fichiers d’évaluation dans la bibliothèque partagée.
 Le barème, les couleurs et les coefficients de la grille restent à confirmer.
 La grille et les appréciations rédigées ne constituent pas encore un écran de notation.
 
-### 10. Sauvegarder et vérifier
+### 11. Sauvegarder et vérifier
 
 Chaque enregistrement conserve un historique ; une restauration ajoute une version.
 Après un message d’échec réseau, gardez le brouillon et vérifiez le fichier avant de réessayer.
