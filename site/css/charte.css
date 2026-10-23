@@ -117,7 +117,22 @@ main { max-width: 1100px; margin: 0 auto; padding: 16px; }
 .ordre .commandes { margin-left: auto; display: flex; gap: .3em; }
 .ordre .commandes button { padding: .2em .6em; }
 
+/* Bibliothèque */
+.filtres { display: grid; gap: 0 12px; grid-template-columns: 2fr 1fr 1fr 1fr auto; align-items: end; }
+.filtres label { font-size: .9rem; }
+.filtres .case { margin-bottom: .6em; }
+fieldset { border: 1px solid var(--bord); border-radius: 6px; margin: .75em 0; padding: .3em .8em .6em; }
+fieldset .case { display: inline-flex; margin: .3em 1em .3em 0; }
+.formulaire { border: 2px solid var(--or); }
+.nature { margin: 0; font-size: .8rem; font-weight: 700; text-transform: uppercase; color: var(--or-clair); }
+.element-biblio h3 { margin-top: .2em; }
+.apercu img, .apercu video { max-width: 100%; border-radius: 6px; }
+.apercu iframe { width: 100%; height: 360px; border: 0; background: #fff; }
+.apercu audio { width: 100%; }
+.historique-biblio { border-top: 1px solid var(--bord); margin-top: .4em; }
+
 @media (max-width: 900px) {
+  .filtres { grid-template-columns: 1fr 1fr; }
   .suite { flex-direction: column; overflow-x: visible; }
   .suite > .carte { flex: none; width: 100%; }
 }

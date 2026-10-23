@@ -26,7 +26,7 @@ jour après. Le brief complet est dans `docs/BRIEF-CLAUDE-CODE-escape-lab.md`.
 | 3 | Couche de stockage + synchronisation 3C2D1 + tests | Claude | fait (10 tests `npm test`) ; recette Thomas |
 | 4 | Squelette : accueil, identification, tableau de bord, charte | Claude | fait ; recette Thomas (bouton « Classe fictive ») |
 | 5 | Histoire puis Frise | Claude | fait ; **recette Thomas** (`docs/RECETTE.md`) |
-| 6 | Bibliothèque commune | Claude | à faire |
+| 6 | Bibliothèque commune | Claude | fait ; recette Thomas |
 | 7 | Fiche énigme, énigmes des autres, câblage v1 | Claude | à faire |
 | 8 | Page jour J | Claude | à faire |
 | 9 | Fiches mécaniques + bibliothèque de composants (contenus) | **ChatGPT** (contenu) + Claude (éditeur) | à faire |
@@ -78,6 +78,9 @@ Claude « C4 livrée » : Claude relit, intègre et met à jour ce tableau.
 | C3 Démonstration 3Z9 | **intégrée** (`site/donnees/demo.js`, convertie au format du stockage ; groupes g1–g5 → A–E) |
 | C4 Relevé du matériel | **livré** (`docs/releve-materiel.md`) ; **Thomas le remplit au collège**, puis ChatGPT complète `composants.js` |
 | C5 Textes d'aide des fiches | **intégrée** (`site/donnees/aides.js`) : histoire et liaisons branchées ; fiche énigme et jour J aux étapes 7-8 ; relecture Thomas |
+| C7 Messages des jalons | **à faire** (pour l’étape 7) |
+| C8 Modèles du jour J | **à faire** (pour l’étape 8) |
+| C9 Rubriques du livret du Game Master | **à faire** (pour l’étape 11) |
 | C6 Grille d'évaluation | **rangée** (`site/donnees/evaluation.js`, utilisée à l'étape 11) ; **décisions de Thomas attendues** (voir ci-dessous) |
 
 ### Tâche C4 — Relevé du matériel à remplir par Thomas au collège (brief §4, question 9)
@@ -141,12 +144,38 @@ Chaque version est d'abord copiée dans `<collection>/historique/<id>/<version>.
 `<collection>/fichiers/`. Journal de synchronisation : `synchronisation/journal/`. Code : `site/js/stockage.js`
 (couche unique + synchronisation), `site/js/stockage-dossier.js` (accès au dossier dans Chrome/Edge).
 
+### Tâche C7 — Messages bienveillants des jalons et des contrôles (brief §7.6, §11.1, §12)
+`messages.js` au format `definirMessages({ format: "escape-lab/messages", version: 1, jalons: { "<id>": { aFaire,
+enCours, fait, enRetard } }, controles: { "<id>": "message" } })`. Identifiants des jalons : ceux de
+`site/donnees/jalons.js` (mecanique, scenario, materiel, matiere, choixE1, cablage, programme, M1, M2, M3, indices,
+installation, test, jourJ). Contrôles : `indiceManquant1`, `indiceManquant2`, `indiceManquant3`, `talkieManquant`,
+`solutionManquante`, `matiereManquante`, `lienMatiereTropCourt`, `contenuBoiteManquant`, `capteurManquant`,
+`actionneurManquant`, `memeBroche`, `brocheIndisponible`, `masseCommune`, `douzeVoltsSansRelais`,
+`validationProfAvantTension`, `photoManquante`, `dureeTropLongue`. Règles : décrire ce qui manque et la prochaine
+action, jamais « faux » ni reproche ; 15 mots au plus ; tutoiement du groupe (« Il manque encore… »). Pour les
+contrôles électriques : aucune valeur de broche ou de tension, seulement la règle et « demande au professeur ».
+
+### Tâche C8 — Modèles pour la page Jour J (brief §7.9)
+`jourj-modeles.js` au format `definirModelesJourJ({ format: "escape-lab/jourj-modeles", version: 1, roles: [{ id,
+nom, description, texteExemple }], logistique: [{ tache, quand }], miseEnPlace: ["…"], deroule: ["…"],
+rangement: ["…"], verifications: ["…"] })`. Rôles du brief (Game Master, comédiens, accueil, régie caméras,
+responsable d’énigme, rangement…). Texte d’exemple tiré de la démo 3Z9. Logistique : date, accord de la direction,
+joueurs invités (fonction, **jamais de noms**), cours déplacés, matériel à réserver. Phrases courtes.
+
+### Tâche C9 — Rubriques du livret du Game Master et de la fiche d’installation (brief §8.4)
+`livret.md` : plan détaillé (titres et ordre des rubriques, une phrase d’explication chacune) du livret dans l’ordre
+de la frise, et d’une fiche d’installation A4 par énigme, pensés pour une impression **noir et blanc** (bordures,
+lettres, cases à cocher, pas de couleur). Donner un exemple rempli avec la démo 3Z9 (sans solution inventée).
+
 ## Questions à Thomas (grille C6)
 1. Barème : A–D = 0, 1, 2, 3 points (tout en C donne 13,3/20). Garder, ou celui des grilles Excel existantes ?
 2. Couleurs : le brief dit rouge / jaune / vert clair / vert foncé, la règle commune dit « jamais de rouge ». Remplacer le rouge (par ex. gris) ?
 3. Coefficients : 2 pour fiche énigme, câblage, programme, test croisé ; 1 ailleurs. D'accord ?
 
 ## Journal
+- 23/10/2026 — Claude : étape 6, bibliothèque commune (notes, documents image/PDF/audio/vidéo ≤ 20 Mo par défaut,
+  liens http(s) seulement ; étiquettes suggérées + libres ; recherche et filtres ; aperçu intégré ; corbeille
+  restaurable ; historique ; modification simultanée réunie sans perte). 25 tests verts. Tâches C7 à C9 pour ChatGPT.
 - 23/10/2026 — ChatGPT : C4 (relevé vierge, 11 tableaux), C5 (42 textes d'aide), C6 (21 critères, 4 intitulés du BO
   n° 9 du 29/02/2024 cités mot pour mot d'après ChatGPT).
 - 23/10/2026 — Claude : C4 à C6 relues et rangées ; aides branchées sur l'histoire et les liaisons (consigne,

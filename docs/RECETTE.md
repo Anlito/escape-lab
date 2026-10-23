@@ -23,3 +23,13 @@ Avec deux postes (ou deux onglets) sur le même dossier :
 - [ ] Durée totale au-delà de 60 min : message en ambre.
 - [ ] Classe fictive, « Essayer les commandes du professeur » : déplacer (glisser ou flèches), retirer, ajouter,
       note ; l'historique de l'ordre affiche l'ancien et le nouvel ordre, l'auteur et la note.
+
+## Étape 6 — bibliothèque commune
+- [ ] Ajouter une note, un lien Canva, une image, un PDF, un son et une courte vidéo : chacun s'affiche avec son aperçu.
+- [ ] Un fichier trop lourd (plus de 20 Mo) ou d'un autre type : message en ambre qui dit quoi faire.
+- [ ] Un lien qui ne commence pas par https:// est refusé.
+- [ ] Recherche (sans accents), filtres par type, étiquette et groupe.
+- [ ] Mettre à la corbeille, cocher « Corbeille », sortir de la corbeille.
+- [ ] Deux postes modifient le même élément : les deux textes sont réunis, rien n'est perdu.
+- [ ] Le fichier ajouté sur un poste s'ouvre sur l'autre poste (et, pour 3C2D1, après synchronisation).
+- [ ] Délai de copie d'une vidéo de 20 Mo sur le réseau du collège (question 13).

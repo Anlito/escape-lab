@@ -974,6 +974,9 @@ definirDemo({
           }
         ]
       }
-    }
+    },
+    {"collection":"bibliotheque","id":"bdemo1","valeur":{"type":"note","titre":"Ambiance sonore de la station","texte":"- Bip régulier de la balise\n- Grésillement radio quand un poste se rallume","etiquettes":["son","décor"],"groupe":""}},
+    {"collection":"bibliotheque","id":"bdemo2","valeur":{"type":"lien","titre":"Modèle d’affiche Canva","url":"https://www.canva.com/","texte":"Modèle commun pour les documents à imprimer.","etiquettes":["image","règle"],"groupe":""}},
+    {"collection":"bibliotheque","id":"bdemo3","valeur":{"type":"note","titre":"Idée de cadre pour les calques","texte":"Un cadre en carton avec deux encoches pour aligner les feuilles.","etiquettes":["technique"],"groupe":"B"}}
   ]
 });

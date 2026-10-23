@@ -94,10 +94,84 @@
     return morceaux.join(" · ");
   }
 
+  // --- Bibliothèque commune (brief §7.5) ---
+
+  var ETIQUETTES_SUGGEREES = ["décor", "son", "image", "indice", "règle", "technique"];
+
+  // Seuls les liens web sont acceptés (pas de « javascript: » ni de chemin local).
+  function lienValide(adresse) {
+    return /^https?:\/\/[^\s<>"]+\.[^\s<>"]+$/i.test(String(adresse || "").trim());
+  }
+
+  // Nom du fichier dans le dossier : l'identifiant de l'élément + l'extension d'origine (lettres et chiffres).
+  function nomFichierStocke(id, nomOrigine) {
+    var m = String(nomOrigine || "").match(/\.([A-Za-z0-9]{1,5})$/);
+    return id + (m ? "." + m[1].toLowerCase() : "");
+  }
+
+  function genreDeFichier(typeMime) {
+    var t = String(typeMime || "");
+    if (t.indexOf("image/") === 0) return "image";
+    if (t === "application/pdf") return "pdf";
+    if (t.indexOf("audio/") === 0) return "audio";
+    if (t.indexOf("video/") === 0) return "video";
+    return "";
+  }
+
+  function lireEtiquettes(texte) {
+    var vues = {}, liste = [];
+    String(texte || "").split(/[,;]+/).forEach(function (x) {
+      var t = x.trim().toLowerCase();
+      if (t && !vues[t]) { vues[t] = true; liste.push(t); }
+    });
+    return liste;
+  }
+
+  function etiquettesDe(elements) {
+    var vues = {};
+    ETIQUETTES_SUGGEREES.forEach(function (t) { vues[t] = true; });
+    elements.forEach(function (el) { (el.valeur.etiquettes || []).forEach(function (t) { vues[t] = true; }); });
+    return Object.keys(vues).sort(function (a, b) { return a.localeCompare(b, "fr"); });
+  }
+
+  function sansAccents(t) { return String(t || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, ""); }
+
+  // filtres : { recherche, type, etiquette, groupe, corbeille: bool } ; les plus récents d'abord.
+  function filtrerBibliotheque(elements, filtres) {
+    var mots = sansAccents(filtres.recherche).split(/\s+/).filter(Boolean);
+    return elements.filter(function (el) {
+      var v = el.valeur;
+      if (!!v.corbeille !== !!filtres.corbeille) return false;
+      if (filtres.type && v.type !== filtres.type) return false;
+      if (filtres.etiquette && (v.etiquettes || []).indexOf(filtres.etiquette) === -1) return false;
+      if (filtres.groupe && v.groupe !== filtres.groupe) return false;
+      var texte = sansAccents([v.titre, v.texte, v.url, (v.etiquettes || []).join(" "), v.fichier && v.fichier.nomOrigine].join(" "));
+      return mots.every(function (m) { return texte.indexOf(m) !== -1; });
+    }).sort(function (a, b) { return b.le - a.le; });
+  }
+
+  // Deux modifications du même élément : on garde son titre, on réunit étiquettes et textes, rien n'est perdu.
+  function fusionnerElementBiblio(leur, mien) {
+    var r = Object.assign({}, leur);
+    r.etiquettes = lireEtiquettes((leur.etiquettes || []).concat(mien.etiquettes || []).join(","));
+    if (leur.type === "note") r.texte = combinerTextes(leur, mien, ["texte"]).texte;
+    if (mien.titre && mien.titre !== leur.titre) r.texte = ((r.texte || "") + "\n\nAutre titre proposé : " + mien.titre).trim();
+    if (mien.url && mien.url !== leur.url && r.type === "lien") r.texte = ((r.texte || "") + "\n\nAutre lien proposé : " + mien.url).trim();
+    return r;
+  }
+
+  function tailleLisible(octets) {
+    if (octets < 1024 * 1024) return Math.max(1, Math.round(octets / 1024)) + " ko";
+    return (octets / 1024 / 1024).toFixed(1).replace(".", ",") + " Mo";
+  }
+
   var EscapeLabOutils = {
     echapper: echapper, miseEnForme: miseEnForme, combinerTextes: combinerTextes, nomAuteur: nomAuteur,
     liaisonsDeLOrdre: liaisonsDeLOrdre, deplacer: deplacer, dureeTotale: dureeTotale,
-    decrireChangementOrdre: decrireChangementOrdre
+    decrireChangementOrdre: decrireChangementOrdre,
+    ETIQUETTES_SUGGEREES: ETIQUETTES_SUGGEREES, lienValide: lienValide, nomFichierStocke: nomFichierStocke,
+    genreDeFichier: genreDeFichier, lireEtiquettes: lireEtiquettes, etiquettesDe: etiquettesDe,
+    filtrerBibliotheque: filtrerBibliotheque, fusionnerElementBiblio: fusionnerElementBiblio, tailleLisible: tailleLisible
   };
   if (typeof module !== "undefined" && module.exports) module.exports = EscapeLabOutils;
   else racine.EscapeLabOutils = EscapeLabOutils;

@@ -50,3 +50,60 @@ test("frise : description d'un changement d'ordre", () => {
   assert.equal(O.decrireChangementOrdre([], ["A", "B"]), "Premier ordre : A → B");
   assert.equal(O.decrireChangementOrdre(["A", "B"], ["B", "A", "C"]), "A → B  devient  B → A → C · ajouté : C");
 });
+
+// --- Bibliothèque (étape 6) ---
+
+test("bibliothèque : seuls les liens web sont acceptés", () => {
+  assert.ok(O.lienValide("https://www.canva.com/design/abc"));
+  assert.ok(O.lienValide("http://exemple.fr"));
+  assert.ok(!O.lienValide("javascript:alert(1)"));
+  assert.ok(!O.lienValide("file:///C:/secret.txt"));
+  assert.ok(!O.lienValide("https://"));
+});
+
+test("bibliothèque : nom de fichier stocké sûr", () => {
+  assert.equal(O.nomFichierStocke("b123", "Plan du Foyer.PNG"), "b123.png");
+  assert.equal(O.nomFichierStocke("b123", "../../x"), "b123");
+});
+
+test("bibliothèque : genre de fichier pour l'aperçu", () => {
+  assert.equal(O.genreDeFichier("image/png"), "image");
+  assert.equal(O.genreDeFichier("application/pdf"), "pdf");
+  assert.equal(O.genreDeFichier("video/mp4"), "video");
+  assert.equal(O.genreDeFichier("application/zip"), "");
+});
+
+test("bibliothèque : étiquettes sans doublon, suggestions toujours proposées", () => {
+  assert.deepEqual(O.lireEtiquettes("Son, décor ; son,, "), ["son", "décor"]);
+  const toutes = O.etiquettesDe([{ valeur: { etiquettes: ["ambiance"] } }]);
+  assert.ok(toutes.includes("ambiance") && toutes.includes("indice"));
+});
+
+test("bibliothèque : recherche et filtres, corbeille à part", () => {
+  const el = (id, le, v) => ({ id, le, valeur: v });
+  const liste = [
+    el("1", 1, { type: "note", titre: "Ambiance sonore", etiquettes: ["son"], groupe: "A" }),
+    el("2", 3, { type: "lien", titre: "Affiche Canva", url: "https://canva.com/x", etiquettes: ["décor"] }),
+    el("3", 2, { type: "note", titre: "Vieille idée", corbeille: true })
+  ];
+  assert.deepEqual(O.filtrerBibliotheque(liste, {}).map(e => e.id), ["2", "1"]);
+  assert.deepEqual(O.filtrerBibliotheque(liste, { recherche: "SONORE" }).map(e => e.id), ["1"]);
+  assert.deepEqual(O.filtrerBibliotheque(liste, { recherche: "decor" }).map(e => e.id), ["2"]);
+  assert.deepEqual(O.filtrerBibliotheque(liste, { type: "note" }).map(e => e.id), ["1"]);
+  assert.deepEqual(O.filtrerBibliotheque(liste, { groupe: "A" }).map(e => e.id), ["1"]);
+  assert.deepEqual(O.filtrerBibliotheque(liste, { corbeille: true }).map(e => e.id), ["3"]);
+});
+
+test("bibliothèque : deux modifications du même élément, rien n'est perdu", () => {
+  const r = O.fusionnerElementBiblio(
+    { type: "note", titre: "Sons", texte: "Porte qui grince", etiquettes: ["son"] },
+    { type: "note", titre: "Bruitages", texte: "Alarme", etiquettes: ["indice"] });
+  assert.deepEqual(r.etiquettes, ["son", "indice"]);
+  assert.ok(r.texte.includes("Porte qui grince") && r.texte.includes("Alarme") && r.texte.includes("Bruitages"));
+  assert.equal(r.titre, "Sons");
+});
+
+test("bibliothèque : taille lisible", () => {
+  assert.equal(O.tailleLisible(2048), "2 ko");
+  assert.equal(O.tailleLisible(5 * 1024 * 1024), "5,0 Mo");
+});
