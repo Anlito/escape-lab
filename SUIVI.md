@@ -96,7 +96,8 @@ Claude « C4 livrée » : Claude relit, intègre et met à jour ce tableau.
 | C22 Mise à jour « Bien démarrer » et mode d’emploi (étape 12) | **rangée** (`docs/bien-demarrer.md`, `docs/mode-emploi-professeur.md`) |
 | C23 Recette finale : étapes 10 à 12 | **rangée** (`docs/recette-finale.md`) : **à mener par Thomas au collège** |
 | C24 Relecture des textes lus par les élèves | **intégrée** : 63 corrections sur 64 (celle de l’accueil ne s’applique plus depuis la nouvelle charte) |
-| C25 Guides à jour de la nouvelle navigation | **à faire** |
+| C25 Guides à jour de la nouvelle navigation | **rangée** (`docs/bien-demarrer.md`, `docs/mode-emploi-professeur.md`) |
+| C26 Affiche du projet pour la classe | **à faire** |
 | C6 Grille d'évaluation | **intégrée** (étape 11) ; barème validé par Thomas le 23/10 |
 
 ### Tâche C4 — Relevé du matériel à remplir par Thomas au collège (brief §4, question 9)
@@ -309,11 +310,19 @@ le groupe et « ● Enregistré à … ». Le tableau de bord montre « Ton grou
 (Réglages et annonces), **Évaluer** (Évaluation, Observation jour J, Exports et livret), **La classe** ; suivi avec
 chiffres clés et filtres en pastilles. Remplacer les anciennes descriptions (barre d’onglets, listes déroulantes).
 
+### Tâche C26 — Affiche du projet pour la salle (une page A3, noir et blanc)
+`affiche-projet.md` : « Escape LAB — Créer. Coder. Jouer. », les 10 séances avec l’objectif de chacune et les jalons à
+atteindre (d’après `site/donnees/jalons.js` et l’annexe C du brief), les livrables imposés M1, M2, M3, E1, F1, F2, F3,
+J1 en une ligne chacun, les trois niveaux d’indices, la règle de sécurité 12 V et l’adresse de l’outil
+(https://anlito.github.io/escape-lab/site/). Phrases de 12 mots au plus, tutoiement, aucun prénom. Pensée pour être lue
+de loin : peu de texte, gros titres.
+
 ## Décision de Thomas (grille C6, 23/10/2026)
 Barème validé : A à D = 0, 1, 2, 3 points ; coefficient 2 pour la fiche énigme, le câblage, le programme et le test
 croisé, 1 pour les autres critères ; **pas de rouge** (lettres A à D, sans couleur imposée).
 
 ## Journal
+- 23/10/2026 — ChatGPT : C25 (guides à jour de la nouvelle navigation) ; rangée dans `docs/`. Tâche C26.
 - 23/10/2026 — ChatGPT : C24 (64 propositions de relecture) ; Claude en applique 63 et donne la tâche C25.
 - 23/10/2026 — Claude : nouvelle charte et navigation (maquette validée par Thomas, https://claude.ai/artifact/X5ddttfcPeL2UmuBt2nLpX) :
   anthracite et or, titres Space Grotesk (copiée dans `site/polices/`, licence OFL), texte Atkinson Hyperlegible

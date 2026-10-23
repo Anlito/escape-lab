@@ -3,52 +3,56 @@
 ## ☐ Ouvre ton espace
 
 1. Ouvre Escape Lab avec Chrome ou Edge.
-2. Choisis ta classe, puis ton groupe.
-3. Écris seulement ton prénom.
-4. Clique sur « Ouvrir le dossier de la classe ».
-5. Sélectionne le dossier indiqué par le chemin affiché.
-6. Vérifie ton prénom, ton groupe et ton équipe.
+2. Touche la grande case de ta classe.
+3. Touche celle de ton groupe.
+4. Écris seulement ton prénom.
+5. Choisis « Ouvrir le dossier de la classe ».
+6. Sélectionne le dossier indiqué par le chemin affiché.
 
 ↺ La fois suivante, utilise « Reprendre ».
 Autorise de nouveau l’accès au dossier si nécessaire.
 
-## ☐ Retrouve les huit pages
+## ☐ Retrouve tes pages
 
-| Page | Tu y trouves… |
+Le menu est à gauche, ou en haut sur tablette.
+
+| Rubrique | Pages |
 | :--- | :--- |
-| Tableau de bord | Ton avancement, les annonces et les échéances. |
-| Histoire | L’univers et la mission de ton équipe. |
-| Frise | L’ordre des énigmes et leurs liaisons. |
-| Bibliothèque | Les documents, liens et notes partagés. |
-| Mon énigme | Ta mécanique, tes livrables et ta fiche. |
-| Énigmes des autres | Leurs fiches en lecture et les avis de test. |
-| Programmation | Quatre programmes dans Labo Blocs. |
-| Jour J | Les rôles, textes, horaires et tâches. |
+| Ma classe | Tableau de bord · Histoire · Frise · Bibliothèque · Jour J |
+| Mon groupe | Mon énigme · Programmation |
+| Les autres | Énigmes des autres |
 
-## ✎ Travaille et enregistre
+☐ Dans « Ton groupe », lis la prochaine étape.
+☐ Choisis « Y aller » pour ouvrir ta fiche.
+☐ Dans Programmation, retrouve tes quatre programmes Labo Blocs.
+☐ Consulte les autres énigmes pour préparer un test.
 
-☐ Enregistre après chaque modification, dans chaque onglet.
-☐ Vérifie le message après l’enregistrement.
+## ✎ Avance dans ta fiche
+
+La colonne d’étapes indique ton avancement.
+● fait · ◐ en cours · ○ à faire · ! à rattraper
+
+☐ Choisis une étape et remplis la partie affichée.
+☐ Utilise « Enregistrer et continuer » pour passer à la suivante.
+☐ Retrouve ton prénom et ton groupe au bas du menu.
+☐ Vérifie « ● Enregistré à … » après l’enregistrement.
 ☐ Si l’enregistrement échoue, garde ton texte et appelle le professeur.
-☐ Tu vois quand quelqu’un modifie une section de l’histoire.
-☐ En cas de conflit, lis les deux textes proposés.
-☐ Garde les deux contributions : rien ne doit être perdu.
-☐ Demande de l’aide avant de fermer un texte non enregistré.
+☐ En cas de conflit, relis les contributions et conserve-les.
+☐ Ne ferme pas un texte non enregistré sans demander d’aide.
 
 ## ✎ Prépare ton câblage
 
 ☐ Dans « Électronique et programmation », retrouve le schéma.
-☐ Glisse un composant depuis la palette.
-☐ Déplace-le pour organiser ton schéma.
+☐ Glisse un composant depuis la palette, puis déplace-le.
 ☐ Tire un fil d’un point vers une broche.
 ☐ Vérifie la ligne correspondante dans le tableau.
 ☐ Le tableau reste la référence ; le dessin ne valide rien.
-
-## ↺ Retrouve et protège ton travail
-
-☐ Dans l’historique, tu peux retrouver une ancienne version.
-☐ Restaurer crée une nouvelle version ; les précédentes restent conservées.
-☐ Dans la bibliothèque, retrouve les éléments supprimés dans « Corbeille ».
-☐ Tes photos montrent seulement les objets, sans personne reconnaissable.
 ☐ Ne branche jamais de 12 V sans le professeur.
 ☐ Fais vérifier ton montage avant toute mise sous tension.
+
+## ↺ Protège ton travail
+
+☐ Dans l’historique, retrouve une ancienne version.
+☐ Restaurer ajoute une version ; les précédentes restent conservées.
+☐ Dans la bibliothèque, retrouve les éléments supprimés dans « Corbeille ».
+☐ Tes photos montrent seulement les objets, sans personne reconnaissable.

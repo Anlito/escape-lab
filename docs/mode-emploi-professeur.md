@@ -1,6 +1,6 @@
 # Escape Lab — mode d’emploi du professeur
 
-Référence : suivi du 23/10/2026, étapes 1 à 12 réalisées ; essais au collège encore nécessaires.
+Référence : nouvelle navigation du 23/10/2026, étapes 1 à 12 réalisées ; essais au collège encore nécessaires.
 
 ## Page 1 — ouvrir, accompagner et piloter
 
@@ -19,13 +19,29 @@ Ouvrez **site/prof.html** pour les fiches mécaniques, les composants et la sync
 Les deux espaces professeur demandent le même code que Labo Blocs ; ne l’écrivez pas dans un document partagé.
 Ce code est une barrière d’interface, pas une protection des fichiers auxquels les utilisateurs ont déjà accès.
 
-### Ce que voient les élèves
+### Accueil et menu des élèves
 
-Les huit pages sont : Tableau de bord, Histoire, Frise, Bibliothèque, Mon énigme, Énigmes des autres, Programmation et Jour J.
-Les élèves modifient les contenus communs et la fiche de leur groupe ; les autres fiches sont en lecture seule.
-Les solutions et codes des autres groupes restent masqués avant « Afficher » ; journal et remarques n’y sont pas présentés.
-Après modification, enregistrer et vérifier le résultat ; en conflit, relire les contributions conservées.
-L’historique permet une restauration en créant une nouvelle version ; il ne remplace pas une copie de secours indépendante.
+À l’accueil, les élèves choisissent leur classe et leur groupe avec les grandes touches, puis saisissent leur prénom.
+Ils ouvrent le dossier indiqué ; « Reprendre » permet de retrouver leur dernier accès.
+Le menu se trouve à gauche sur ordinateur, en haut sur tablette.
+
+| Rubrique | Pages accessibles |
+| :--- | :--- |
+| Ma classe | Tableau de bord, Histoire, Frise, Bibliothèque, Jour J |
+| Mon groupe | Mon énigme, Programmation |
+| Les autres | Énigmes des autres |
+
+Au bas du menu, l’élève retrouve son prénom, son groupe et l’état « ● Enregistré à … ».
+Dans le tableau de bord, la carte **Ton groupe** indique la prochaine étape ; **Y aller** ouvre la fiche.
+La fiche présente une colonne d’étapes : **● fait**, **◐ en cours**, **○ à faire**, **! à rattraper**.
+Une partie s’affiche à la fois ; **Enregistrer et continuer** enregistre avant de passer à la suivante.
+Un message d’écart est présenté à la fois ; le groupe le traite puis vérifie l’état d’enregistrement.
+Les états d’avancement ne remplacent pas la validation physique du professeur.
+
+Les élèves modifient les contenus communs et la fiche de leur groupe ; les autres fiches restent en lecture seule.
+Les solutions et codes des autres groupes sont masqués avant « Afficher » ; leur journal et les remarques n’y figurent pas.
+En conflit, relire les contributions conservées ; après un échec, garder le brouillon et vérifier le résultat réel.
+L’historique restaure une version en en créant une nouvelle ; il ne remplace pas une copie de secours indépendante.
 
 ### Utiliser Programmation
 
@@ -35,15 +51,27 @@ Le contrôle E1 signale la présence d’au moins une entrée et une sortie ; il
 Les autres groupes consultent les programmes en lecture seule ; ne pas déduire une compétence acquise d’un exercice libre enregistré.
 Les trois exercices guidés rédigés pour C10 restent à créer dans l’éditeur ; les quatre exercices libres sont disponibles.
 
+### Se repérer dans le menu professeur
+
+Dans **site/index.html?prof**, le menu est regroupé par usage, à gauche ou en haut sur tablette.
+
+| Rubrique | Pages |
+| :--- | :--- |
+| Suivre | Suivi des groupes, Fiches des groupes |
+| Piloter | Réglages et annonces |
+| Évaluer | Évaluation, Observation jour J, Exports et livret |
+| La classe | Pages communes de la classe, dont Frise |
+
 ### Suivre et modifier les groupes
 
-Dans **Suivi des groupes**, consultez les jalons, triez et filtrez les retards, blocages ou absences de journal.
-Ouvrez **Fiches des groupes** pour modifier une fiche, ajouter une remarque et valider un jalon physique après contrôle réel.
+Dans **Suivre › Suivi des groupes**, lisez les chiffres clés puis utilisez les filtres en pastilles pour cibler les groupes.
+Consultez les jalons, triez et filtrez les retards, blocages ou absences de journal ; ouvrez une fiche depuis le suivi.
+Ouvrez **Suivre › Fiches des groupes** pour modifier une fiche, ajouter une remarque et valider un jalon physique après contrôle réel.
 Un élément déclaré prêt ou un champ rempli ne constitue pas une validation du matériel.
-Dans **Frise**, modifiez l’ordre, les liaisons, le début et la fin ; consultez l’historique des décisions.
-Dans **Pilotage**, réglez séance, durée, nombre de groupes, tailles des fichiers, mécanique, cadenas, dossier d’origine et échéances.
+Dans **La classe › Frise**, modifiez l’ordre, les liaisons, le début et la fin ; consultez l’historique des décisions.
+Dans **Piloter › Réglages et annonces**, réglez séance, durée, nombre de groupes, tailles des fichiers, mécanique, cadenas, dossier d’origine et échéances.
 Préparez les annonces, éventuellement avec **Reprendre** un modèle de séance ; relisez avant publication.
-Les notes privées de Pilotage exigent l’emplacement personnel, comme l’évaluation.
+Les notes privées de **Réglages et annonces** exigent l’emplacement personnel, comme l’évaluation.
 
 <div style="break-before: page; page-break-before: always;"></div>
 
@@ -68,7 +96,7 @@ La recette réelle à deux postes reste nécessaire même si les tests automatiq
 
 ### Évaluer dans le dossier personnel
 
-Dans **Évaluation**, choisissez votre dossier personnel, distinct des dossiers partagés de classe.
+Dans **Évaluer › Évaluation**, choisissez votre dossier personnel, distinct des dossiers partagés de classe.
 Un dossier reconnu comme dossier de classe est refusé ; vérifiez vous-même l’emplacement et ses accès.
 La grille permet de renseigner les critères groupe et individuels, de motiver un ajustement et de reprendre les observations.
 La note sur 20 reste provisoire si la grille est incomplète ; une absence d’observation n’est pas un zéro.
@@ -79,14 +107,14 @@ Coefficient 2 pour fiche énigme, câblage, programme et test croisé ; 1 pour l
 
 ### Observer le jour J sur tablette
 
-Ouvrez **Observation jour J**, choisissez phase et cible, puis saisissez le niveau et la remarque correspondant au fait observé.
+Ouvrez **Évaluer › Observation jour J**, choisissez phase et cible, puis saisissez le niveau et la remarque correspondant au fait observé.
 Les modèles C18 sont des raccourcis à adapter ; ils ne justifient aucune observation automatique ni attribution collective aux individus.
 Notes, ajustements, remarques privées et observations restent dans le dossier personnel du professeur, jamais dans un dossier de classe.
 Une copie de secours existe dans le navigateur ; elle ne remplace pas la sauvegarde du dossier personnel.
 
 ### Exporter et conserver
 
-Dans **Exports**, préparez le livret du Game Master dans l’ordre de la frise et les fiches d’installation.
+Dans **Évaluer › Exports et livret**, préparez le livret du Game Master dans l’ordre de la frise et les fiches d’installation.
 Vérifiez l’impression noir et blanc, les champs manquants et la lisibilité avant utilisation.
 Le CSV d’avancement et la sauvegarde de classe **.json** sont aussi disponibles ; ils ne remplacent pas la sauvegarde privée des notes.
 Les fichiers joints, notamment images et vidéos, restent dans le dossier : copiez aussi ce dossier pour les conserver.
@@ -97,7 +125,7 @@ Effectuez la recette avec **docs/RECETTE.md** et **docs/recette-finale.md**.
 Les références matérielles et les plans de nouveaux composants attendent encore validation.
 ### Utiliser le schéma de câblage
 
-Dans l’onglet Électronique et programmation, glissez un composant depuis la palette, puis déplacez-le.
+Dans la partie **Électronique et programmation** de la fiche, glissez un composant depuis la palette, puis déplacez-le.
 Tirez un fil d’un point du composant vers une broche de carte ou un rail ; la ligne correspondante est renseignée dans le tableau.
 La couleur du fil suit le texte saisi dans le tableau ; le tableau reste la référence des branchements.
 Le schéma représente le montage, sans le simuler ni valider sa sécurité ; utilisez les fiches des modèles réels.
