@@ -45,7 +45,7 @@ definirAnnoncesModeles({
       "seance": 6,
       "annonces": [
         "Aujourd’hui : prépare tes documents à imprimer et personnalise-les pour ton histoire.",
-        "Commence l’objet de résolution et le système à cadenas ; utilise les outils selon les consignes du professeur."
+        "Commence l’objet qui aidera les joueurs et le système à cadenas. Suis les consignes du professeur pour les outils."
       ]
     },
     {
@@ -58,7 +58,7 @@ definirAnnoncesModeles({
     {
       "seance": 8,
       "annonces": [
-        "Aujourd’hui : vérifie les documents, l’objet de résolution et le système à cadenas.",
+        "Aujourd’hui : vérifie les documents, l’objet qui aide les joueurs et le système à cadenas.",
         "Quand chaque réalisation est prête, demande la validation du professeur ; prépare l’installation."
       ]
     },

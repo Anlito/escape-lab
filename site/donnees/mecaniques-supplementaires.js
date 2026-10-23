@@ -7,7 +7,7 @@ definirMecaniques({
     {
       "id": "ecoute-trace",
       "supplementaire": true,
-      "nom": "Écoute et tracer",
+      "nom": "Écouter et tracer",
       "lettre": "E",
       "couleur": "#9ee8ee",
       "resume": "⚠️ à confirmer : Un enregistrement pourrait guider un tracé. Le dessin obtenu pourrait fournir une information.",
@@ -20,7 +20,7 @@ definirMecaniques({
         "⚠️ à confirmer : Un message sonore, sa consigne et un tracé de référence.",
         "⚠️ à confirmer : Une règle pour réécouter et recommencer."
       ],
-      "formatReponse": "⚠️ à confirmer : nature et longueur de la réponse à déterminer après lecture des ressources.",
+      "formatReponse": "⚠️ à confirmer : type de réponse et nombre de caractères à préciser après lecture des ressources.",
       "materiel": {
         "aCreer": [
           "⚠️ à confirmer : Une feuille de tracé."
@@ -66,7 +66,7 @@ definirMecaniques({
         "⚠️ à confirmer : Les objets, leurs cachettes et leur usage.",
         "⚠️ à confirmer : Les limites de recherche et la remise à zéro."
       ],
-      "formatReponse": "⚠️ à confirmer : nature et longueur de la réponse à déterminer après lecture des ressources.",
+      "formatReponse": "⚠️ à confirmer : type de réponse et nombre de caractères à préciser après lecture des ressources.",
       "materiel": {
         "aCreer": [
           "⚠️ à confirmer : Des documents qui orientent la recherche."
@@ -112,7 +112,7 @@ definirMecaniques({
         "⚠️ à confirmer : Un protocole validé et un résultat lisible.",
         "⚠️ à confirmer : Une façon de distinguer les résultats autrement que par la couleur seule."
       ],
-      "formatReponse": "⚠️ à confirmer : nature et longueur de la réponse à déterminer après lecture des ressources.",
+      "formatReponse": "⚠️ à confirmer : type de réponse et nombre de caractères à préciser après lecture des ressources.",
       "materiel": {
         "aCreer": [
           "⚠️ à confirmer : Une fiche de protocole et de résultats."
@@ -158,7 +158,7 @@ definirMecaniques({
         "⚠️ à confirmer : Le texte, sa transformation et l’outil de lecture.",
         "⚠️ à confirmer : Une présentation lisible sans reflet gênant."
       ],
-      "formatReponse": "⚠️ à confirmer : nature et longueur de la réponse à déterminer après lecture des ressources.",
+      "formatReponse": "⚠️ à confirmer : type de réponse et nombre de caractères à préciser après lecture des ressources.",
       "materiel": {
         "aCreer": [
           "⚠️ à confirmer : Une lettre mise en page."
@@ -202,9 +202,9 @@ definirMecaniques({
       ],
       "aConcevoir": [
         "⚠️ à confirmer : Une ressource autorisée et des aides de compréhension.",
-        "⚠️ à confirmer : Une solution d’accès alternative à faire valider."
+        "⚠️ à confirmer : Une autre façon de comprendre le message, à faire valider."
       ],
-      "formatReponse": "⚠️ à confirmer : nature et longueur de la réponse à déterminer après lecture des ressources.",
+      "formatReponse": "⚠️ à confirmer : type de réponse et nombre de caractères à préciser après lecture des ressources.",
       "materiel": {
         "aCreer": [
           "⚠️ à confirmer : Une consigne et des cartes d’aide."
@@ -240,7 +240,7 @@ definirMecaniques({
       "nom": "Image rouge / code bleu",
       "lettre": "I",
       "couleur": "#a5bfff",
-      "resume": "⚠️ à confirmer : Une image et un code pourraient être distingués par un dispositif visuel. Le principe optique et la réponse restent inconnus.",
+      "resume": "⚠️ à confirmer : Un outil pourrait aider à distinguer une image et un code. Son fonctionnement et la réponse restent inconnus.",
       "etapesJoueur": [
         "⚠️ à confirmer : Observez l’image fournie.",
         "⚠️ à confirmer : Essayez seulement le dispositif de lecture validé.",
@@ -250,7 +250,7 @@ definirMecaniques({
         "⚠️ à confirmer : L’image, le code et un dispositif testé.",
         "⚠️ à confirmer : Une façon de lire la réponse sans dépendre de la couleur seule."
       ],
-      "formatReponse": "⚠️ à confirmer : nature et longueur de la réponse à déterminer après lecture des ressources.",
+      "formatReponse": "⚠️ à confirmer : type de réponse et nombre de caractères à préciser après lecture des ressources.",
       "materiel": {
         "aCreer": [
           "⚠️ à confirmer : Une image et un document de lecture."
@@ -296,7 +296,7 @@ definirMecaniques({
         "⚠️ à confirmer : Les informations et un critère compréhensible.",
         "⚠️ à confirmer : Un ordre ou un regroupement dont le résultat est vérifiable."
       ],
-      "formatReponse": "⚠️ à confirmer : nature et longueur de la réponse à déterminer après lecture des ressources.",
+      "formatReponse": "⚠️ à confirmer : type de réponse et nombre de caractères à préciser après lecture des ressources.",
       "materiel": {
         "aCreer": [
           "⚠️ à confirmer : Des cartes d’information et une consigne."

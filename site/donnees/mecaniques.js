@@ -136,7 +136,7 @@ definirMecaniques({
         "M3": "Fabriquer une boîte qui transmet un élément à la suite."
       },
       "pistesElectroniques": [
-        "Piste proposée : des contacts détectent un parcours et déclenchent une révélation. Faisabilité, contacts et câblage à valider."
+        "Piste proposée : des contacts détectent un parcours et révèlent une information. Vérifie cette idée avec le professeur."
       ],
       "pieges": [
         "Pays difficiles à repérer sur une carte trop petite.",
@@ -154,7 +154,7 @@ definirMecaniques({
       "nom": "Morse",
       "couleur": "#ffd37f",
       "lettre": "M",
-      "resume": "Une devinette donne un mot à transmettre en morse. Le joueur utilise un bouton pour les signaux courts et un autre pour les longs.",
+      "resume": "Une devinette donne un mot à transmettre en morse, avec des signaux courts et longs. Deux boutons permettent de les envoyer.",
       "etapesJoueur": [
         "Résolvez la devinette.",
         "Codez le mot avec l’alphabet fourni.",
@@ -233,7 +233,7 @@ definirMecaniques({
         "M3": "Fabriquer une boîte à cadenas contenant la suite."
       },
       "pistesElectroniques": [
-        "Piste proposée : un dispositif de saisie et un actionneur révèlent la suite après décodage. Modèle et programme à valider."
+        "Piste proposée : les joueurs entrent leur réponse, puis un actionneur révèle la suite. Matériel et programme à valider avec le professeur."
       ],
       "pieges": [
         "Utiliser un signe sans l’avoir vérifié.",

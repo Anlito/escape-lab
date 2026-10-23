@@ -43,17 +43,17 @@
       { cle: "duree", type: "nombre", libelle: "Durée estimée (minutes)", aide: "enigme.duree", min: 1, max: 30 },
       { cle: "difficulte", type: "choix", libelle: "Difficulté", options: ["★", "★★", "★★★"], aide: "enigme.difficulte" },
       { cle: "matiere", type: "choix", libelle: "Matière vue en cours (obligatoire)", options: MATIERES, aide: "enigme.matiere" },
-      { cle: "lienMatiere", type: "zone", libelle: "Le lien avec cette matière, en 2 ou 3 phrases, avec un exemple dans l'énigme", aide: "enigme.lienMatiere", lignes: 3 }
+      { cle: "lienMatiere", type: "zone", libelle: "Explique le lien avec cette matière. Donne un exemple dans ton énigme, en 2 ou 3 phrases.", aide: "enigme.lienMatiere", lignes: 3 }
     ] },
     { id: "fonctionnement", nom: "Fonctionnement", jalons: [], champs: [
-      { cle: "texte", type: "zone", libelle: "La mécanique appliquée à notre énigme : comment le message, la grille, la clé… sont construits", aide: "fonctionnement", lignes: 7 },
+      { cle: "texte", type: "zone", libelle: "Explique comment fonctionne ton énigme. Décris la construction du message, de la grille ou de la clé.", aide: "fonctionnement", lignes: 7 },
       { cle: "photos", type: "photos", libelle: "Schéma ou photo (de l'objet, jamais des personnes)" }
     ] },
     { id: "materiel", nom: "Matériel", jalons: ["materiel"], champs: [
       { cle: "lignes", type: "tableau", libelle: "Matériel", colonnes: [
         { cle: "element", libelle: "Élément", type: "texte" }, { cle: "quantite", libelle: "Quantité", type: "nombre" },
-        { cle: "origine", libelle: "Origine", type: "choix", options: [["creer", "À créer"], ["trouver", "À trouver"], ["fourni", "Fourni par le prof"]] },
-        { cle: "machine", libelle: "Comment (machine)", type: "texte" }, { cle: "responsable", libelle: "Responsable", type: "texte" },
+        { cle: "origine", libelle: "Origine", type: "choix", options: [["creer", "À créer"], ["trouver", "À trouver"], ["fourni", "Fourni par le professeur"]] },
+        { cle: "machine", libelle: "Outils ou machines utilisés", type: "texte" }, { cle: "responsable", libelle: "Responsable", type: "texte" },
         { cle: "etat", libelle: "État", type: "choix", options: ETATS }] }
     ] },
     { id: "fabrication", nom: "Fabrication", jalons: ["M1", "M2", "M3"], champs: ["M1", "M2", "M3"].map(function (m) {
@@ -71,7 +71,7 @@
     { id: "electronique", nom: "Électronique et programmation", jalons: ["choixE1", "cablage", "programme"] },
     { id: "indices", nom: "Indices", jalons: ["indices"] },
     { id: "installation", nom: "Installation", jalons: ["installation"], champs: [
-      { cle: "etapes", type: "liste", libelle: "Étapes pour poser l'énigme dans le foyer (une par ligne : où, quoi, branchements, tests)", aide: "installation.etapes", lignes: 5 },
+      { cle: "etapes", type: "liste", libelle: "Installation dans le foyer : lieu, matériel, branchements et tests. Écris une étape par ligne.", aide: "installation.etapes", lignes: 5 },
       { cle: "remiseAZero", type: "liste", libelle: "Remise à zéro après chaque partie (une étape par ligne)", aide: "installation.remiseAZero", lignes: 4 },
       { cle: "verifs", type: "liste", libelle: "À vérifier avant l'arrivée des joueurs (une vérification par ligne)", aide: "installation.verifs", lignes: 4 }
     ] },

@@ -6,7 +6,7 @@ definirModelesJourJ({
   "roles": [
     {
       "id": "game-master",
-      "nom": "Game Master",
+      "nom": "Game Master (maître du jeu)",
       "description": "Suis la frise, donne les indices prévus et coordonne les interventions.",
       "texteExemple": "Équipe de maintenance, je vous écoute. Décrivez ce que vous voyez au poste."
     },
@@ -25,8 +25,8 @@ definirModelesJourJ({
     {
       "id": "regie-cameras",
       "nom": "Régie caméras — phase 2 seulement",
-      "description": "Seulement après accord, surveille les flux locaux sans enregistrement ni envoi extérieur.",
-      "texteExemple": "Game Master, décris le poste à observer. Je consulte seulement le flux autorisé."
+      "description": "Seulement après accord, regarde les images sur ce poste, sans enregistrer ni envoyer.",
+      "texteExemple": "Game Master, décris le poste à observer. Je regarde seulement les images autorisées."
     },
     {
       "id": "responsable-enigme",
@@ -57,7 +57,7 @@ definirModelesJourJ({
       "quand": "Avant de confirmer la date et les invitations."
     },
     {
-      "tache": "Préciser le nombre et la fonction des joueurs invités, sans noms.",
+      "tache": "Préciser le nombre de joueurs invités et leur rôle, sans noms.",
       "quand": "Lors de la préparation des invitations."
     },
     {
