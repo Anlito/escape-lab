@@ -22,7 +22,7 @@ Autorise de nouveau l’accès au dossier si nécessaire.
 | Bibliothèque | Les documents, liens et notes partagés. |
 | Mon énigme | Ta mécanique, tes livrables et ta fiche. |
 | Énigmes des autres | Leurs fiches en lecture et les avis de test. |
-| Programmation | L’espace Labo Blocs, prochainement disponible. |
+| Programmation | Quatre programmes dans Labo Blocs. |
 | Jour J | Les rôles, textes, horaires et tâches. |
 
 ## ✎ Travaille et enregistre
@@ -34,6 +34,15 @@ Autorise de nouveau l’accès au dossier si nécessaire.
 ☐ En cas de conflit, lis les deux textes proposés.
 ☐ Garde les deux contributions : rien ne doit être perdu.
 ☐ Demande de l’aide avant de fermer un texte non enregistré.
+
+## ✎ Prépare ton câblage
+
+☐ Dans « Électronique et programmation », retrouve le schéma.
+☐ Glisse un composant depuis la palette.
+☐ Déplace-le pour organiser ton schéma.
+☐ Tire un fil d’un point vers une broche.
+☐ Vérifie la ligne correspondante dans le tableau.
+☐ Le tableau reste la référence ; le dessin ne valide rien.
 
 ## ↺ Retrouve et protège ton travail
 

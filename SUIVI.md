@@ -93,8 +93,9 @@ Claude « C4 livrée » : Claude relit, intègre et met à jour ce tableau.
 | C19 Annonces types par séance | **intégrée** (`site/donnees/annonces-modeles.js`, bouton « Reprendre » dans Pilotage) |
 | C20 Régie caméras : information et accord | **rangée** (`docs/regie-textes.md`) : à compléter et faire approuver ; consignes reprises dans `regie.html` |
 | C21 Mode d’emploi professeur : étapes 10 et 11 | **rangée** (`docs/mode-emploi-professeur.md` remplacé) |
-| C22 Mise à jour « Bien démarrer » et mode d’emploi (étape 12) | **à faire** |
-| C23 Recette finale : étapes 10 à 12 | **à faire** (pour l’étape 13) |
+| C22 Mise à jour « Bien démarrer » et mode d’emploi (étape 12) | **rangée** (`docs/bien-demarrer.md`, `docs/mode-emploi-professeur.md`) |
+| C23 Recette finale : étapes 10 à 12 | **rangée** (`docs/recette-finale.md`) : **à mener par Thomas au collège** |
+| C24 Relecture des textes lus par les élèves | **à faire** |
 | C6 Grille d'évaluation | **intégrée** (étape 11) ; barème validé par Thomas le 23/10 |
 
 ### Tâche C4 — Relevé du matériel à remplir par Thomas au collège (brief §4, question 9)
@@ -290,11 +291,19 @@ l’Uno), de l’espace professeur (code, évaluation dans le dossier personnel,
 (tablette au doigt et souris) et de la régie (consentement, arrêt immédiat, aucune image gardée). Même présentation
 que la version C12 ; ne rien marquer comme réussi.
 
+### Tâche C24 — Relecture des textes lus par les élèves (sans rien modifier dans `site/`)
+Relire `site/donnees/aides.js`, `messages.js`, `mecaniques.js`, `mecaniques-supplementaires.js`,
+`jourj-modeles.js`, `annonces-modeles.js` et les libellés visibles de `site/js/fiche.js` (constante `ONGLETS`) et
+`site/index.html`. Livrer `relecture.md` : un tableau fichier · texte actuel · proposition · raison (orthographe,
+phrase trop longue pour un élève de 3e, tutoiement ou vouvoiement incohérent, mot technique non expliqué, reproche
+implicite). Ne garder que les vraies corrections ; ne rien proposer sur les valeurs matérielles.
+
 ## Décision de Thomas (grille C6, 23/10/2026)
 Barème validé : A à D = 0, 1, 2, 3 points ; coefficient 2 pour la fiche énigme, le câblage, le programme et le test
 croisé, 1 pour les autres critères ; **pas de rouge** (lettres A à D, sans couleur imposée).
 
 ## Journal
+- 23/10/2026 — ChatGPT : C22 (Bien démarrer et mode d’emploi à jour), C23 (recette finale complétée) ; rangées dans `docs/`.
 - 23/10/2026 — Claude : dépôt public **Anlito/escape-lab** créé et publié sur GitHub Pages :
   élèves https://anlito.github.io/escape-lab/site/ · professeur https://anlito.github.io/escape-lab/site/?prof ·
   `prof.html` · `regie.html`. Ajouté à https://anlito.github.io/ (rubrique Escape Lab, 9 projets · 19 outils).

@@ -363,18 +363,264 @@ Les caméras de phase 2 ne conditionnent pas la recette du cœur de l’outil.
 | Remarque / résultat observé | __________________________________________________ |
 | Date / poste / preuve de recette | __________________________________________________ |
 
+## Complément — étapes 10 à 12
+
+Aucun des essais ci-dessous n’a été exécuté dans cette livraison. Pour les caméras réelles, accord et information précèdent toute activation ; ne pas cocher les cases fictivement pour contourner cette condition. Les contrôles sans caméra restent possibles.
+
+### 31. Parcours et quatre emplacements
+
+| Rubrique | À vérifier |
+| :--- | :--- |
+| Conditions | A ; dossier fictif ; éditeur de Labo Blocs disponible. |
+| Action | Ouvrir les parcours Uno et micro:bit dans l’éditeur, vérifier leur disponibilité ; renommer les quatre emplacements dans Escape Lab. |
+| Résultat attendu | Les parcours sont contrôlables ; les quatre noms sont conservés après retour ; aucun exercice guidé non créé n’est présenté disponible. |
+| Décision | [ ] OK — [ ] À revoir |
+| Remarque / résultat observé | __________________________________________________ |
+| Date / poste / preuve de recette | __________________________________________________ |
+
+### 32. Programme simulé, envoi dans l’Uno et E1
+
+| Rubrique | À vérifier |
+| :--- | :--- |
+| Conditions | A ; Uno et montage réel validés par le professeur ; essai initial en simulation. |
+| Action | Créer un programme utilisant une entrée et une sortie ; simuler, observer le contrôle E1 puis envoyer dans l’Uno après accord. |
+| Résultat attendu | Le programme se simule et s’envoie ; E1 signale les composants sans valider automatiquement utilité pédagogique, sécurité ou compétence. |
+| Décision | [ ] OK — [ ] À revoir |
+| Remarque / résultat observé | __________________________________________________ |
+| Date / poste / preuve de recette | __________________________________________________ |
+
+### 33. Cartes, sauvegarde et lecture seule
+
+| Rubrique | À vérifier |
+| :--- | :--- |
+| Conditions | A et B ; deux groupes fictifs et un programme Uno enregistré. |
+| Action | Passer un emplacement à micro:bit puis revenir à Uno ; B consulte le programme d’A et tente de le modifier. |
+| Résultat attendu | Le programme Uno est conservé ; les autres groupes restent en lecture seule et aucune modification n’est enregistrée par cette consultation. |
+| Décision | [ ] OK — [ ] À revoir |
+| Remarque / résultat observé | __________________________________________________ |
+| Date / poste / preuve de recette | __________________________________________________ |
+
+### 34. Deux auteurs du même programme
+
+| Rubrique | À vérifier |
+| :--- | :--- |
+| Conditions | A et B ; membres du même groupe, même programme et version initiale. |
+| Action | Préparer deux changements distincts, enregistrer depuis A puis depuis B ; consulter message et historique. |
+| Résultat attendu | Le conflit est signalé ; la version concurrente reste dans l’historique et les deux contributions sont retrouvables. |
+| Décision | [ ] OK — [ ] À revoir |
+| Remarque / résultat observé | __________________________________________________ |
+| Date / poste / preuve de recette | __________________________________________________ |
+
+### 35. Plans des composants
+
+| Rubrique | À vérifier |
+| :--- | :--- |
+| Conditions | P ; document PLANS-COMPOSANTS-ESCAPE-LAB.md du dépôt Labo Blocs. |
+| Action | Lire les plans et consigner validation ou corrections avant de demander du code ou un essai réel. |
+| Résultat attendu | Aucun modèle matériel ni brochage n’est supposé ; les points en attente restent identifiés. |
+| Décision | [ ] OK — [ ] À revoir |
+| Remarque / résultat observé | __________________________________________________ |
+| Date / poste / preuve de recette | __________________________________________________ |
+
+### 36. Code et verrouillage des deux accès
+
+| Rubrique | À vérifier |
+| :--- | :--- |
+| Conditions | P ; index.html?prof et prof.html ; code connu du professeur seulement. |
+| Action | Essayer un code incorrect, puis le code autorisé ; utiliser Verrouiller et tenter un nouvel accès. |
+| Résultat attendu | Le mauvais code est refusé ; les fonctions protégées exigent de nouveau l’accès après verrouillage ; aucun code réel dans les preuves partagées. |
+| Décision | [ ] OK — [ ] À revoir |
+| Remarque / résultat observé | __________________________________________________ |
+| Date / poste / preuve de recette | __________________________________________________ |
+
+### 37. Séparation de l’interface élève
+
+| Rubrique | À vérifier |
+| :--- | :--- |
+| Conditions | A sur index.html sans mode professeur ; P sur sa session de recette. |
+| Action | A parcourt les menus pendant que P utilise le suivi et l’évaluation. |
+| Résultat attendu | L’élève ne voit ni suivi, ni pilotage, ni notes ; la limite des droits sur les fichiers partagés reste explicitée. |
+| Décision | [ ] OK — [ ] À revoir |
+| Remarque / résultat observé | __________________________________________________ |
+| Date / poste / preuve de recette | __________________________________________________ |
+
+### 38. Suivi, validation et remarque
+
+| Rubrique | À vérifier |
+| :--- | :--- |
+| Conditions | P et A ; groupe fictif avec jalon physique non validé. |
+| Action | P filtre et trie les groupes, ouvre la fiche, modifie un champ, valide le jalon de recette et laisse une remarque. |
+| Résultat attendu | La fiche s’ouvre ; la modification, la validation fictive et la remarque sont visibles sur A ; les retards restent signalés sans rouge. |
+| Décision | [ ] OK — [ ] À revoir |
+| Remarque / résultat observé | __________________________________________________ |
+| Date / poste / preuve de recette | __________________________________________________ |
+
+### 39. Pilotage et annonces types
+
+| Rubrique | À vérifier |
+| :--- | :--- |
+| Conditions | P et A ; copies de recette et historique connu des réglages. |
+| Action | Modifier séance, groupe, mécanique, cadenas et échéance ; reprendre un modèle d’annonce, corriger, épingler puis retirer. |
+| Résultat attendu | Réglages et annonces sont conservés ; le modèle n’est pas publié sans action ; les changements attendus sont visibles sur A. |
+| Décision | [ ] OK — [ ] À revoir |
+| Remarque / résultat observé | __________________________________________________ |
+| Date / poste / preuve de recette | __________________________________________________ |
+
+### 40. Dossier privé et reprise
+
+| Rubrique | À vérifier |
+| :--- | :--- |
+| Conditions | P ; dossier de classe de recette et dossier personnel distinct ; aucune donnée réelle. |
+| Action | Essayer de choisir le dossier de classe pour les notes, puis le dossier personnel ; écrire, fermer et rouvrir. |
+| Résultat attendu | Le dossier de classe est refusé ; notes, observations et ajustements sont retrouvés uniquement côté personnel, sans copie dans les dossiers élèves. |
+| Décision | [ ] OK — [ ] À revoir |
+| Remarque / résultat observé | __________________________________________________ |
+| Date / poste / preuve de recette | __________________________________________________ |
+
+### 41. Barème, ajustement et note provisoire
+
+| Rubrique | À vérifier |
+| :--- | :--- |
+| Conditions | P ; groupe et élève fictifs ; grille comportant des critères non observés. |
+| Action | Noter quelques critères, ajuster un élève avec motif ; tester la grille tout en C puis tout en D sur une copie. |
+| Résultat attendu | La note incomplète est provisoire ; absent ne vaut pas zéro ; barème validé appliqué : tout C ≈ 13,33/20, tout D = 20/20. |
+| Décision | [ ] OK — [ ] À revoir |
+| Remarque / résultat observé | __________________________________________________ |
+| Date / poste / preuve de recette | __________________________________________________ |
+
+### 42. Appréciation et CSV
+
+| Rubrique | À vérifier |
+| :--- | :--- |
+| Conditions | P ; notes fictives, tableur disponible. |
+| Action | Générer puis corriger une appréciation ; exporter et ouvrir le CSV de la classe. |
+| Résultat attendu | La correction est conservée ; caractères français, colonnes et données correspondent à la grille ; aucun fichier privé dans la bibliothèque élève. |
+| Décision | [ ] OK — [ ] À revoir |
+| Remarque / résultat observé | __________________________________________________ |
+| Date / poste / preuve de recette | __________________________________________________ |
+
+### 43. Observation sur tablette
+
+| Rubrique | À vérifier |
+| :--- | :--- |
+| Conditions | P au doigt sur tablette ; dossier personnel de recette ouvert. |
+| Action | Choisir phase, groupe puis élève ; saisir niveau et remarque rapide, puis consulter la grille. |
+| Résultat attendu | La cible et la portée sont correctes ; observation horodatée retrouvée dans la grille, aucune attribution individuelle automatique d’un constat collectif. |
+| Décision | [ ] OK — [ ] À revoir |
+| Remarque / résultat observé | __________________________________________________ |
+| Date / poste / preuve de recette | __________________________________________________ |
+
+### 44. Exports imprimés et pièces jointes
+
+| Rubrique | À vérifier |
+| :--- | :--- |
+| Conditions | P ; groupe A complet de la démo ou copie de recette, schéma et pièce jointe fictive. |
+| Action | Imprimer livret et fiches d’installation en noir et blanc ; ouvrir CSV d’avancement et sauvegarde JSON. |
+| Résultat attendu | Ordre de frise respecté ; fiches A4 lisibles ; schéma visible ; JSON et CSV lisibles ; pièces jointes exclues du JSON signalées et conservées séparément. |
+| Décision | [ ] OK — [ ] À revoir |
+| Remarque / résultat observé | __________________________________________________ |
+| Date / poste / preuve de recette | __________________________________________________ |
+
+### 45. Schéma à la souris
+
+| Rubrique | À vérifier |
+| :--- | :--- |
+| Conditions | A ; onglet Électronique, composants fictifs sans montage réel sous tension. |
+| Action | Glisser un composant de la palette, le déplacer ; tirer un fil d’un point vers une broche puis vers un rail. |
+| Résultat attendu | La position est modifiée ; la destination est reportée dans la ligne du tableau ; aucune valeur de matériel réel n’est déduite du dessin. |
+| Décision | [ ] OK — [ ] À revoir |
+| Remarque / résultat observé | __________________________________________________ |
+| Date / poste / preuve de recette | __________________________________________________ |
+
+### 46. Schéma au doigt et couleur de fil
+
+| Rubrique | À vérifier |
+| :--- | :--- |
+| Conditions | P ou A sur tablette tactile ; même fiche fictive. |
+| Action | Répéter les gestes au doigt ; saisir une couleur dans le tableau ; enregistrer puis rouvrir. |
+| Résultat attendu | Gestes utilisables ; tableau et schéma cohérents après réouverture ; la couleur suit le tableau, qui reste la référence. |
+| Décision | [ ] OK — [ ] À revoir |
+| Remarque / résultat observé | __________________________________________________ |
+| Date / poste / preuve de recette | __________________________________________________ |
+
+### 47. Schéma micro:bit et impression
+
+| Rubrique | À vérifier |
+| :--- | :--- |
+| Conditions | A et P ; carte micro:bit sélectionnée dans une copie de recette. |
+| Action | Vérifier P0, P1, P2, 3V, GND ; ajouter un capteur intégré ; imprimer le schéma via les deux exports. |
+| Résultat attendu | Les repères existent ; le capteur intégré n’ajoute pas un composant externe câblé ; les schémas imprimés restent lisibles sans couleur. |
+| Décision | [ ] OK — [ ] À revoir |
+| Remarque / résultat observé | __________________________________________________ |
+| Date / poste / preuve de recette | __________________________________________________ |
+
+### 48. Régie avant autorisation
+
+| Rubrique | À vérifier |
+| :--- | :--- |
+| Conditions | P ; site/regie.html ; aucune caméra activée ; accord réel non encore obtenu. |
+| Action | Passer le code ; laisser les deux cases décochées puis tester séparément les états des cases sans démarrer de caméra. |
+| Résultat attendu | Allumer reste désactivé tant que les deux cases ne sont pas cochées ; une case cochée ne remplace jamais un accord réel. |
+| Décision | [ ] OK — [ ] À revoir |
+| Remarque / résultat observé | __________________________________________________ |
+| Date / poste / preuve de recette | __________________________________________________ |
+
+### 49. Webcams locales après accord
+
+| Rubrique | À vérifier |
+| :--- | :--- |
+| Conditions | P ; accord réel et information des participants obtenus ; une à quatre webcams disponibles sur ce poste. |
+| Action | Choisir le nombre disponible, allumer, nommer, associer aux énigmes et essayer le plein écran. |
+| Résultat attendu | Les seules webcams du poste sont affichées ; noms et associations correspondent ; pas de caméra distante ; défaut matériel décrit sans réussite supposée. |
+| Décision | [ ] OK — [ ] À revoir |
+| Remarque / résultat observé | __________________________________________________ |
+| Date / poste / preuve de recette | __________________________________________________ |
+
+### 50. Arrêt immédiat et refus
+
+| Rubrique | À vérifier |
+| :--- | :--- |
+| Conditions | P ; conditions autorisées du contrôle précédent et personne informée jouant le rôle de testeur. |
+| Action | Faire demander l’arrêt ; utiliser Tout arrêter ; contrôler chaque aperçu, voyant et indicateur matériel ; organiser la suite sans caméra. |
+| Résultat attendu | Tous les flux sont arrêtés immédiatement ; voyant Caméras éteintes ; aucune caméra ne continue ; refus respecté sans devoir justifier. |
+| Décision | [ ] OK — [ ] À revoir |
+| Remarque / résultat observé | __________________________________________________ |
+| Date / poste / preuve de recette | __________________________________________________ |
+
+### 51. Aucune image conservée ou envoyée
+
+| Rubrique | À vérifier |
+| :--- | :--- |
+| Conditions | P avec Claude pour vérification technique ; session autorisée, profil de navigateur et dossier de recette contrôlés. |
+| Action | Comparer stockage et téléchargements avant/après ; observer les requêtes pendant l’activation ; faire contrôler les API de capture et d’enregistrement utilisées. |
+| Résultat attendu | Aucun fichier, copie navigateur ou flux réseau contenant les images ; aucun enregistrement. Noter la méthode : la seule absence de fichier ne prouve pas l’absence d’envoi. |
+| Décision | [ ] OK — [ ] À revoir |
+| Remarque / résultat observé | __________________________________________________ |
+| Date / poste / preuve de recette | __________________________________________________ |
+
+### 52. Minuteur et indices talkie
+
+| Rubrique | À vérifier |
+| :--- | :--- |
+| Conditions | P ; régie ouverte, copie de classe avec indices ; caméras éteintes possibles pour cet essai. |
+| Action | Démarrer, mettre en pause et remettre à zéro ; tester le seuil des cinq minutes ; ouvrir la classe et choisir énigme et niveau. |
+| Résultat attendu | Minuteur cohérent, ambre sous cinq minutes ; ordre de frise et phrase talkie exacte en grand ; aucune modification des fiches depuis la régie. |
+| Décision | [ ] OK — [ ] À revoir |
+| Remarque / résultat observé | __________________________________________________ |
+| Date / poste / preuve de recette | __________________________________________________ |
+
 ## Points à confirmer pendant la recette
 
-- Liens de bibliothèque : docs/RECETTE.md annonce https:// seulement, tandis que SUIVI.md mentionne http(s) ; relever la règle réellement appliquée et faire confirmer celle attendue.
+- Liens de bibliothèque : http:// et https:// sont acceptés ; vérifier que les autres schémas d’URL sont refusés.
 - Taille des fichiers : relever le seuil configuré ; 20 Mo est le défaut décrit, pas une capacité réseau garantie.
 - Retard des jalons : utiliser les échéances réellement réglées, sans confondre champ rempli et validation physique.
-- Notes : les points, couleurs et coefficients restent soumis aux décisions du professeur sur C6.
+- Notes : barème validé A–D = 0/1/2/3 ; coefficients 2 sur F1, câblage, programme et test croisé, 1 ailleurs ; sans rouge.
 - Réseau : noter le moment de la coupure et l’état réel du fichier ; une panne n’implique pas que l’écriture a forcément échoué.
 - Limites d’accès : les droits du site sont une convention d’interface ; ils ne bloquent pas l’édition manuelle d’un fichier accessible.
 
 ## Bilan et corrections
 
-Nombre de contrôles OK : ______ / 30 · Nombre à revoir : ______
+Nombre de contrôles OK : ______ / 52 · Nombre à revoir : ______
 
 Fonctions non livrées : __________________________________________________________
 

@@ -1,6 +1,6 @@
 # Escape Lab — mode d’emploi du professeur
 
-Référence : suivi du 23/10/2026, étapes 1 à 11 réalisées ; essais au collège encore nécessaires.
+Référence : suivi du 23/10/2026, étapes 1 à 12 réalisées ; essais au collège encore nécessaires.
 
 ## Page 1 — ouvrir, accompagner et piloter
 
@@ -74,7 +74,8 @@ La grille permet de renseigner les critères groupe et individuels, de motiver u
 La note sur 20 reste provisoire si la grille est incomplète ; une absence d’observation n’est pas un zéro.
 L’appréciation proposée se relit et se modifie ; exportez le CSV seulement après contrôle des résultats.
 La comparaison des classes se consulte dans cet espace ; n’exportez jamais ses données vers la bibliothèque élève.
-Le barème C6 est appliqué en attendant votre décision : points, couleurs et coefficients restent à confirmer.
+Barème validé le 23/10/2026 : A–D = 0, 1, 2, 3 points, sans rouge.
+Coefficient 2 pour fiche énigme, câblage, programme et test croisé ; 1 pour les autres critères.
 
 ### Observer le jour J sur tablette
 
@@ -94,4 +95,23 @@ Après un échec réseau, gardez le brouillon et contrôlez le fichier avant de 
 
 Effectuez la recette avec **docs/RECETTE.md** et **docs/recette-finale.md**.
 Les références matérielles et les plans de nouveaux composants attendent encore validation.
-Les caméras et le câblage v2 restent en phase 2 ; aucune régie n’est autorisée par ce guide.
+### Utiliser le schéma de câblage
+
+Dans l’onglet Électronique et programmation, glissez un composant depuis la palette, puis déplacez-le.
+Tirez un fil d’un point du composant vers une broche de carte ou un rail ; la ligne correspondante est renseignée dans le tableau.
+La couleur du fil suit le texte saisi dans le tableau ; le tableau reste la référence des branchements.
+Le schéma représente le montage, sans le simuler ni valider sa sécurité ; utilisez les fiches des modèles réels.
+Le schéma figure aussi dans le livret du Game Master et les fiches d’installation ; contrôlez sa lisibilité imprimée.
+
+### Ouvrir la régie, seulement après accord
+
+Ouvrez **site/regie.html**, derrière le code professeur, sur le poste auquel les webcams sont raccordées.
+Avant tout allumage, obtenez l’accord réel de la direction et informez les joueurs ; les cases ne remplacent pas ces démarches.
+Cochez l’accord et l’information des joueurs, puis choisissez de une à quatre webcams disponibles sur ce poste.
+Utilisez **Allumer les caméras**, nommez-les selon les postes de jeu et associez-les aux énigmes ; le plein écran facilite l’observation.
+**Tout arrêter** coupe les flux ; vérifiez le voyant **Caméras éteintes** et l’extinction réelle des webcams.
+Si un joueur refuse ou demande l’arrêt, arrêtez immédiatement toutes les caméras et organisez la suite sans caméra.
+Le minuteur propose **Démarrer**, **Pause** et **Remettre à zéro** ; il devient ambre sous cinq minutes.
+Dans **Indices**, ouvrez le dossier de classe en lecture seule, puis choisissez l’énigme et le niveau : la phrase talkie s’affiche en grand.
+Aucun enregistrement, aucune image gardée, rien envoyé sur le réseau ou Internet ; les caméras d’autres postes ne sont pas prises en charge.
+La régie est livrée, mais son usage reste conditionné à la décision matérielle et à l’accord de la direction ; les webcams réelles restent à tester.
