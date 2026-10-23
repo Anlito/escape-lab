@@ -39,3 +39,9 @@ test("positions par défaut : celles déjà placées sont gardées", () => {
   assert.deepEqual(p.b, { x: 10, y: 20 });
   assert.ok(p.a.x > 500);
 });
+
+test("schéma : GND de la carte relié au rail −, 5 V (3 V sur micro:bit) au rail +", () => {
+  const uno = Sc.schemaSvg({ carte: "uno", composants: [], branchements: [] });
+  assert.ok(uno.includes("GND de la carte → rail −") && uno.includes("5V de la carte → rail +"));
+  assert.ok(Sc.schemaSvg({ carte: "microbit", composants: [], branchements: [] }).includes("3V de la carte → rail +"));
+});

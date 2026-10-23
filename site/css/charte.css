@@ -348,6 +348,7 @@ body.labo-ouvert { overflow: hidden; }
 .schema-rail line { stroke: #888; stroke-width: 6; stroke-linecap: round; }
 .schema-rail text { fill: #333; font-size: 12px; text-anchor: start; }
 .schema-fil { fill: none; stroke-width: 4; stroke-linecap: round; }
+.schema-fil.fil-clair { filter: drop-shadow(0 0 1.2px #333) drop-shadow(0 0 .6px #333); }   /* fil blanc lisible sur fond clair */
 .schema-fil-provisoire { stroke: #c9a227; stroke-width: 4; stroke-dasharray: 6 4; }
 .schema-corps { fill: #fff; stroke: #333; stroke-width: 2; cursor: grab; }
 .schema-nom { fill: #111; font-size: 13px; font-weight: 700; text-anchor: middle; pointer-events: none; }

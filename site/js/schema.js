@@ -82,10 +82,15 @@
       '<text class="schema-note" x="' + (PLATINE.x + PLATINE.l / 2) + '" y="' + (PLATINE.y + PLATINE.h / 2 + 4) + '">platine</text>';
     Object.keys(RAILS).forEach(function (r) {
       s += '<g class="schema-broche schema-rail" data-broche="' + echapper(r) + '"><line x1="' + (PLATINE.x + 12) + '" y1="' + RAILS[r] + '" x2="' + (PLATINE.x + PLATINE.l - 12) + '" y2="' + RAILS[r] + '"/>' +
-        '<text x="' + (PLATINE.x + 16) + '" y="' + (RAILS[r] - 5) + '">' + (r.indexOf("+") !== -1 ? "rail +" : "rail −") + "</text></g>";
+        '<text x="' + (PLATINE.x + 120) + '" y="' + (RAILS[r] - 5) + '">' + (r.indexOf("+") !== -1 ? "rail + (relié au " + (carte === "microbit" ? "3V" : "5V") + ")" : "rail − (relié au GND)") + "</text></g>";
     });
-    // Fils (sous les composants)
-    var fils = "", dessins = "";
+    // Liaisons déjà faites : GND de la carte → rail −, 5 V (3 V sur micro:bit) → rail +.
+    var gnd = bc.GND, plus = bc[carte === "microbit" ? "3V" : "5V"], cote = gnd.x < LARGEUR / 4 ? PLATINE.x - 14 : PLATINE.x + PLATINE.l + 14;
+    var bas = CARTE.y + CARTE.h + 22, bordRail = cote < PLATINE.x ? PLATINE.x + 12 : PLATINE.x + PLATINE.l - 12;
+    var fils = '<g class="schema-fixe"><path class="schema-fil schema-fil-fixe fil-clair" d="M' + plus.x + "," + plus.y + " L" + plus.x + "," + RAILS["Rail + de la platine"] +
+      '" stroke="' + COULEURS_FIL.blanc + '"><title>Déjà câblé : ' + (carte === "microbit" ? "3V" : "5V") + " de la carte → rail +</title></path>" +
+      '<path class="schema-fil schema-fil-fixe" d="M' + gnd.x + "," + gnd.y + " L" + gnd.x + "," + bas + " L" + cote + "," + bas + " L" + cote + "," + RAILS["Rail − de la platine"] + " L" + bordRail + "," + RAILS["Rail − de la platine"] +
+      '" stroke="' + COULEURS_FIL.noir + '"><title>Déjà câblé : GND de la carte → rail −</title></path></g>', dessins = "";
     composants.forEach(function (c) {
       var lignes = branchements.map(function (b, i) { return { b: b, i: i }; }).filter(function (x) { return x.b.composant === c.id; });
       var p = positions[c.id], pts = pointsComposant(p, lignes.length), h = hauteurComposant(lignes.length);
@@ -93,7 +98,7 @@
         var arrivee = positionBroche(carte, x.b.brocheCarte, pts[k].x - 60);
         if (arrivee) {
           var mx = (pts[k].x + arrivee.x) / 2;
-          fils += '<path class="schema-fil" d="M' + pts[k].x + "," + pts[k].y + " C" + mx + "," + pts[k].y + " " + mx + "," + arrivee.y + " " + arrivee.x + "," + arrivee.y +
+          fils += '<path class="schema-fil' + (/f2f2f2/.test(couleurFil(x.b.fil)) ? " fil-clair" : "") + '" d="M' + pts[k].x + "," + pts[k].y + " C" + mx + "," + pts[k].y + " " + mx + "," + arrivee.y + " " + arrivee.x + "," + arrivee.y +
             '" stroke="' + couleurFil(x.b.fil) + '"><title>' + echapper((c.nom || c.id) + " " + (x.b.brocheComposant || "") + " → " + x.b.brocheCarte) + "</title></path>";
         }
       });

@@ -111,6 +111,9 @@
   var ALIMENTATIONS = ["5V", "3,3V", "3V", "GND", "VIN"];
 
   function normaliserBroche(b) { return String(b || "").trim().toUpperCase().replace("3.3V", "3,3V").replace(/^MASSE$/, "GND"); }
+  // Le GND de la carte est relié au rail −, son 5 V (3 V sur micro:bit) au rail + : un rail vaut la broche.
+  function versMoins(b) { var n = normaliserBroche(b); return n === "GND" || /^RAIL\s*[−-]/.test(n); }
+  function versPlus(b) { var n = normaliserBroche(b); return /^(5V|3V|3,3V)$/.test(n) || /^RAIL\s*\+/.test(n); }
 
   // Contrôles signalés, jamais bloquants. Renvoie [{ id, broche?, composants? }].
   function controlesCablage(carte, composantsChoisis, branchements) {
@@ -132,7 +135,7 @@
     if (composantsChoisis.length) {
       if (!types.some(function (t) { return t === "capteur" || t === "saisie"; })) resultats.push({ id: "capteurManquant" });
       if (!types.some(function (t) { return t === "actionneur" || t === "afficheur"; })) resultats.push({ id: "actionneurManquant" });
-      var masse = (branchements || []).some(function (b) { return normaliserBroche(b.brocheCarte) === "GND"; });
+      var masse = (branchements || []).some(function (b) { return versMoins(b.brocheCarte); });
       if ((branchements || []).length && !masse) resultats.push({ id: "masseCommune" });
     }
     if (composantsChoisis.some(function (c) { return c.id === "electroaimant" || c.id === "relais" || /12\s*V/i.test(c.tension || ""); })) {
@@ -247,6 +250,34 @@
     });
   }
 
+  // Tous les composants ont tous leurs fils (bouton, servomoteur… comme la LED) : les lignes d'une fiche plus ancienne
+  // reçoivent leur rôle, les lignes vides « à vérifier » sont remplacées, puis les fils qui manquent sont ajoutés, sans
+  // broche (l'élève les branche). Rien de ce que l'élève a branché n'est retiré. Renvoie true si v a changé.
+  function completerTousLesFils(v, connus) {
+    var change = false, avant = JSON.stringify(v.branchements || []);
+    var lignes = (v.branchements || []).filter(function (b) {
+      return b.role || b.brocheCarte || (b.brocheComposant && !/vérifier/i.test(b.brocheComposant));
+    }).map(function (b) {
+      if (b.role) return b;
+      return Object.assign({}, b, { role: versMoins(b.brocheCarte) || /^(gnd|masse|−|-)$/i.test(String(b.brocheComposant || "").trim()) ? "gnd"
+        : versPlus(b.brocheCarte) || /^(vcc|5 ?v|\+)$/i.test(String(b.brocheComposant || "").trim()) ? "vcc" : "signal" });
+    });
+    (v.composants || []).forEach(function (id) {
+      var c = connus[id];
+      if (!c || c.integre) return;
+      var attendues = lignesDuComposant(c, v.carte || "uno", lignes), siens = lignes.filter(function (b) { return b.composant === id; });
+      // Combien de fils de chaque rôle manquent ; ils sont ajoutés dans l'ordre du connecteur.
+      var manque = {};
+      attendues.forEach(function (l) { manque[l.role] = (manque[l.role] || 0) + 1; });
+      siens.forEach(function (b) { manque[b.role] = (manque[b.role] || 0) - 1; });
+      attendues.forEach(function (l) {
+        if (manque[l.role] > 0 && !siens.some(function (b) { return b.brocheComposant === l.brocheComposant; })) { lignes.push(l); manque[l.role]--; }
+      });
+    });
+    if (JSON.stringify(lignes) !== avant) { v.branchements = lignes; change = true; }
+    return change;
+  }
+
   function couleurDe(texte) {
     var t = String(texte || "").toLowerCase();
     return COULEURS_FILS.filter(function (c) { return t.indexOf(c) !== -1; })[0] || "";
@@ -258,8 +289,13 @@
     composantsChoisis.forEach(function (c) {
       if (c.integre || c.id === "electroaimant") return;
       var siens = b.filter(function (x) { return x.composant === c.id; });
-      var gnd = siens.filter(function (x) { return x.role === "gnd" || normaliserBroche(x.brocheCarte) === "GND"; });
-      if (siens.length && !gnd.some(function (x) { return normaliserBroche(x.brocheCarte) === "GND"; })) r.push({ id: "filGndManquant", composant: c.nom || c.id });
+      var gnd = siens.filter(function (x) { return x.role === "gnd" || (!x.role && versMoins(x.brocheCarte)); });
+      if (siens.length && !gnd.some(function (x) { return versMoins(x.brocheCarte); })) r.push({ id: "filGndManquant", composant: c.nom || c.id });
+      siens.forEach(function (x) {
+        if (x.role === "gnd" && versPlus(x.brocheCarte)) r.push({ id: "gndVersPlus", composant: c.nom || c.id });
+        if (x.role === "vcc" && versMoins(x.brocheCarte)) r.push({ id: "vccVersMoins", composant: c.nom || c.id });
+        if (x.role === "signal" && (versPlus(x.brocheCarte) || versMoins(x.brocheCarte))) r.push({ id: "signalVersAlimentation", composant: c.nom || c.id, fil: x.brocheComposant });
+      });
       siens.filter(function (x) { return x.role === "vcc" && !normaliserBroche(x.brocheCarte); }).forEach(function () { r.push({ id: "filVccManquant", composant: c.nom || c.id }); });
       siens.filter(function (x) { return x.role === "signal" && !normaliserBroche(x.brocheCarte); }).forEach(function (x) { r.push({ id: "filSignalManquant", composant: c.nom || c.id, fil: x.brocheComposant }); });
     });
@@ -279,7 +315,7 @@
 
   var EscapeLabFiche = {
     COULEURS_FILS: COULEURS_FILS, COULEUR_SIGNAL_LED: COULEUR_SIGNAL_LED, filsDuComposant: filsDuComposant,
-    lignesDuComposant: lignesDuComposant, controlesFils: controlesFils, couleurDe: couleurDe,
+    lignesDuComposant: lignesDuComposant, controlesFils: controlesFils, completerTousLesFils: completerTousLesFils, versMoins: versMoins, versPlus: versPlus, couleurDe: couleurDe,
     analyserProgramme: analyserProgramme,
     prenomsDe: prenomsDe, elevesSansRole: elevesSansRole, etatJourJ: etatJourJ,
     lireChemin: lireChemin, ecrireChemin: ecrireChemin, fusionner: fusionner, calculerJalons: calculerJalons,

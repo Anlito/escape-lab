@@ -332,7 +332,13 @@
     }
 
     function ongletElectronique() {
-      var v = valeurDe("electronique"), carte = v.carte || "uno", connus = composantsConnus();
+      var connus = composantsConnus();
+      if (!lecture) {
+        // Chaque composant arrive avec tous ses fils (signal, GND, VCC), y compris ceux d'une fiche plus ancienne.
+        if (!travail.electronique) travail.electronique = JSON.parse(JSON.stringify(fiche.electronique || {}));
+        if (F.completerTousLesFils(travail.electronique, connus)) modifies.electronique = true;
+      }
+      var v = valeurDe("electronique"), carte = v.carte || "uno";
       var choisis = (v.composants || []).map(function (id) { return connus[id]; }).filter(Boolean);
       var html = '<p class="bandeau">E1 : une carte, au moins un capteur et au moins un actionneur. L\'électronique doit être nécessaire au jeu : elle valide, déclenche ou révèle.</p>';
       if (lecture) {
@@ -370,7 +376,6 @@
           (cablage.length ? "<p><strong>Câblage type :</strong></p><ul>" + cablage.map(function (t) { return "<li>" + avertir(t) + "</li>"; }).join("") + "</ul>" : "") +
           (precautions.length ? "<p><strong>Précautions :</strong></p><ul>" + precautions.map(function (t) { return "<li>" + avertir(t) + "</li>"; }).join("") + "</ul>" : "") +
           (c.source && /^https?:/.test(c.source) ? '<p class="petit"><a href="' + e(c.source) + '" target="_blank" rel="noopener noreferrer">Fiche du fabricant ↗</a></p>' : "") +
-          (filsManquants(c, v).length ? '<button data-action="completerFils" data-id="' + e(c.id) + '">Ajouter les fils manquants (' + e(filsManquants(c, v).map(function (x) { return x.brocheComposant; }).join(", ")) + ")</button> " : "") +
           '<button data-action="retirerComposant" data-id="' + e(c.id) + '">Retirer ce composant et ses fils</button></div>';
       }).join("");
       html += '<h4>Schéma <button class="petit-bouton" data-action="imprimerCablage">Imprimer mon câblage</button></h4>' +
@@ -380,6 +385,7 @@
         }).join("") + "</div>" +
         '<div class="zone-schema">' + racine.EscapeLabSchema.schemaSvg({ carte: carte, composants: choisis, positions: v.positions, branchements: v.branchements, interactif: true }) + "</div>";
       html += champHtml(colonnesBranchements(choisis), v);
+      html += '<p class="petit">Sur la platine, le rail − est déjà relié au GND de la carte et le rail + au ' + (carte === "microbit" ? "3V" : "5V") + ' : branche tes GND sur le rail − et tes VCC sur le rail +.</p>';
       html += '<p class="petit">Couleurs : GND en <b>noir</b>, VCC (5 V) en <b>blanc</b>. Le signal d\x27une LED ou d\x27un bouton : de sa couleur. Les autres signaux : une couleur différente chacun.</p>';
       var controles = F.controlesCablage(carte, choisis, v.branchements || []).concat(F.controlesFils(choisis, v.branchements || []));
       html += controles.map(function (x) {
@@ -392,17 +398,6 @@
         champHtml({ cle: "programmeOk", type: "case", libelle: "Le programme fonctionne" }, v) +
         '<p class="petit">Les programmes Labo Blocs du groupe sont dans la page <a href="#programmation">Programmation</a>.</p>';
       return html;
-    }
-
-    // Fils attendus (signal, GND, VCC) qui ne sont pas encore dans le tableau pour ce composant.
-    function filsManquants(c, v) {
-      var siens = (v.branchements || []).filter(function (b) { return b.composant === c.id; });
-      return F.lignesDuComposant(c, v.carte || "uno", v.branchements || []).filter(function (l) {
-        if (l.role === "gnd") return !siens.some(function (b) { return b.role === "gnd" || String(b.brocheCarte).toUpperCase() === "GND"; });
-        if (l.role === "vcc") return !siens.some(function (b) { return b.role === "vcc" || /^(5V|3V|3,3V)$/i.test(b.brocheCarte || ""); });
-        return siens.filter(function (b) { return b.role === "signal" || !b.role; }).length < F.lignesDuComposant(c, v.carte || "uno", []).filter(function (x) { return x.role === "signal"; }).length &&
-          !siens.some(function (b) { return b.brocheComposant === l.brocheComposant; });
-      });
     }
 
     function colonnesBranchements(choisis) {
@@ -595,7 +590,7 @@
     }
 
     // Le câblage s'enregistre à chaque geste : l'élève le retrouve tel quel s'il doit le refaire.
-    var GESTES_CABLAGE = ["ajouterComposant", "completerFils", "retirerComposant", "ajouterLigne", "retirerLigne"];
+    var GESTES_CABLAGE = ["ajouterComposant", "retirerComposant", "ajouterLigne", "retirerLigne"];
     async function enregistrerCablage() {
       if (lecture || courant !== "electronique") return;
       try {
@@ -678,10 +673,6 @@
           var id = zone.querySelector("#f-composant").value;
           if (!id) return;
           ajouterComposant(id, null);
-        } else if (action === "completerFils") {
-          var idc = b.getAttribute("data-id"), vc = travail.electronique;
-          vc.branchements = (vc.branchements || []).concat(filsManquants(composantsConnus()[idc], vc));
-          modifies.electronique = true;
         } else if (action === "retirerComposant") {
           var idr = b.getAttribute("data-id"), vr = travail.electronique;
           vr.composants = (vr.composants || []).filter(function (x) { return x !== idr; });

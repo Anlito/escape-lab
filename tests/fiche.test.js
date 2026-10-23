@@ -166,3 +166,27 @@ test("contrôles des fils : GND ou VCC oubliés, mauvaise couleur, même couleur
     { composant: "led", role: "signal", brocheCarte: "D3", fil: "vert" }, { composant: "led", role: "gnd", brocheCarte: "GND", fil: "noir" },
     { composant: "bouton", role: "signal", brocheCarte: "D2", fil: "vert" }, { composant: "bouton", role: "gnd", brocheCarte: "GND", fil: "noir" }])), ["memeCouleur"]);
 });
+
+test("tous les composants ont tous leurs fils, même une fiche ancienne", () => {
+  const connus = { bouton: { id: "bouton", nom: "Bouton" }, servomoteur: { id: "servomoteur", nom: "Servomoteur" } };
+  const v = { carte: "uno", composants: ["bouton", "servomoteur"], branchements: [
+    { composant: "bouton", brocheComposant: "À vérifier sur le modèle réel", brocheCarte: "", fil: "", verifie: false },
+    { composant: "servomoteur", brocheComposant: "signal", brocheCarte: "D9", fil: "orange" }] };
+  assert.equal(F.completerTousLesFils(v, connus), true);
+  const vue = v.branchements.map((b) => [b.composant, b.role, b.brocheCarte]);
+  assert.deepEqual(vue, [["servomoteur", "signal", "D9"], ["bouton", "signal", ""], ["bouton", "gnd", ""], ["servomoteur", "vcc", ""], ["servomoteur", "gnd", ""]]);
+  assert.equal(v.branchements.find((b) => b.composant === "bouton" && b.role === "gnd").fil, "noir");
+  assert.equal(F.completerTousLesFils(v, connus), false); // déjà complet : rien ne change
+});
+
+test("rails : le rail − vaut GND, le rail + vaut 5 V ; fil sur le mauvais rail signalé", () => {
+  const ids = (r) => r.map((x) => x.id).sort();
+  const led = { id: "led", nom: "LED" }, servo = { id: "servomoteur", nom: "Servomoteur" };
+  assert.deepEqual(ids(F.controlesFils([led], [
+    { composant: "led", role: "signal", brocheCarte: "D3", fil: "vert" }, { composant: "led", role: "gnd", brocheCarte: "Rail − de la platine", fil: "noir" }])), []);
+  assert.deepEqual(ids(F.controlesFils([servo], [
+    { composant: "servomoteur", role: "vcc", brocheCarte: "Rail − de la platine", fil: "blanc" },
+    { composant: "servomoteur", role: "gnd", brocheCarte: "Rail + de la platine", fil: "noir" },
+    { composant: "servomoteur", role: "signal", brocheCarte: "5V", fil: "orange" }])), ["filGndManquant", "gndVersPlus", "signalVersAlimentation", "vccVersMoins"]);
+  assert.equal(F.controlesCablage("uno", [led], [{ composant: "led", brocheCarte: "Rail − de la platine" }]).some((x) => x.id === "masseCommune"), false);
+});
