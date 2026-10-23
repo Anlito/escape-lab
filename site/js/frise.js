@@ -139,10 +139,14 @@
     function panneauOrdre() {
       var travail = ordre.slice(), glisse = null;
       var panneau = document.createElement("section");
-      panneau.className = "carte prof";
+      panneau.className = "carte prof ordre-plie";
+      // Plié par défaut : le professeur l'ouvre seulement pour changer l'ordre.
+      panneau.innerHTML = '<details><summary><h3>Ordre des énigmes (professeur)</h3> <span class="petit">' + ordre.length + " énigme" + (ordre.length > 1 ? "s" : "") +
+        ' dans la frise · ouvrir pour modifier</span></summary><div class="corps-ordre"></div></details>';
+      var corps = panneau.querySelector(".corps-ordre");
       function afficher() {
         var absents = tous.filter(function (id) { return travail.indexOf(id) === -1; });
-        panneau.innerHTML = "<h3>Ordre des énigmes (professeur)</h3>" +
+        corps.innerHTML =
           '<p class="petit">Glisser une énigme, ou utiliser les flèches. Chaque changement est gardé et visible par la classe.</p>' +
           '<ol class="ordre">' + travail.map(function (id, i) {
             return '<li draggable="true" data-index="' + i + '"><span class="poignee" aria-hidden="true">⠿</span> ' + e(nomDe(id)) +

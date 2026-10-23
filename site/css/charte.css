@@ -198,6 +198,13 @@ main { padding: 16px; }
 .autre-version { background: var(--fond-champ); color: var(--texte); padding: 8px 12px; border-radius: 10px; margin-top: .4em; }
 .version { border-top: 1px solid var(--bord); padding: .5em 0; }
 .version summary { cursor: pointer; }
+.ordre-plie summary { cursor: pointer; display: flex; flex-wrap: wrap; align-items: baseline; gap: .2em .8em; min-height: 38px; }
+.ordre-plie summary h3 { display: inline; margin: 0; }
+.ordre-plie summary::before { content: "▸"; color: var(--or); }
+.ordre-plie details[open] > summary::before { content: "▾"; }
+.ordre-plie summary::-webkit-details-marker { display: none; }
+.ordre-plie summary { list-style: none; }
+.ordre-plie .corps-ordre { margin-top: 10px; }
 .case { display: flex; gap: .6em; align-items: center; font-weight: 400; min-height: 44px; margin: .3em 0; }
 .case input { width: 1.3em; }
 

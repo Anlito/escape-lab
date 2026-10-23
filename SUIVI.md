@@ -351,6 +351,7 @@ Barème validé : A à D = 0, 1, 2, 3 points ; coefficient 2 pour la fiche énig
 croisé, 1 pour les autres critères ; **pas de rouge** (lettres A à D, sans couleur imposée).
 
 ## Journal
+- 23/10/2026 — Claude : frise côté professeur, le bloc « Ordre des énigmes » est plié par défaut (résumé : nombre d’énigmes) et s’ouvre pour changer l’ordre. À ajouter dans C30 (mode d’emploi professeur).
 - 23/10/2026 — Claude : tous les composants reçoivent tous leurs fils (y compris les fiches anciennes : rôles retrouvés, lignes « à vérifier » remplacées, rien de branché n’est retiré) ; GND de la carte relié au rail −, 5 V (3 V micro:bit) au rail +, dessinés ; contrôles GND sur le +, VCC sur le −, signal sur un rail ; fils blancs cerclés de gris. C30 complétée.
 - 23/10/2026 — Claude : câblage fait par l’élève. GND et VCC ne sont plus pré-branchés (seulement leur couleur) ; points du schéma à la couleur du fil, creux puis pleins une fois branchés ; enregistrement automatique après chaque geste (ajout, retrait, fil tiré, déplacement, tableau) ; bouton « Imprimer mon câblage ». Tâche C30 laissée à ChatGPT.
 - 23/10/2026 — Thomas : règles de câblage (signal(s) + GND + parfois VCC 5 V ; GND noir, VCC blanc ; signal d’une LED ou
