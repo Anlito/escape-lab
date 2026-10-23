@@ -102,7 +102,10 @@
         '<text class="schema-nom" x="' + (p.x + 60) + '" y="' + (p.y + 18) + '">' + echapper(String(c.nom || c.id).split(/[ —(]/)[0].slice(0, 16)) + "</text>" +
         lignes.map(function (x, k) {
           var relie = !!positionBroche(carte, x.b.brocheCarte, 0);
-          return '<circle class="schema-point' + (relie ? " relie" : "") + '" data-ligne="' + x.i + '" cx="' + pts[k].x + '" cy="' + pts[k].y + '" r="' + (options.interactif ? 7 : 5) + '"/>' +
+          // Point à la couleur de son fil : plein quand le fil est branché, creux sinon.
+          var couleur = couleurFil(x.b.fil), contour = /f2f2f2/.test(couleur) ? "#666" : couleur;
+          return '<circle class="schema-point' + (relie ? " relie" : "") + '" data-ligne="' + x.i + '" cx="' + pts[k].x + '" cy="' + pts[k].y + '" r="' + (options.interactif ? 8 : 5) +
+            '" style="stroke:' + contour + ";fill:" + (relie ? couleur : "#fff") + '"><title>' + echapper((x.b.brocheComposant || "fil") + (relie ? " → " + x.b.brocheCarte : " : à brancher")) + "</title></circle>" +
             '<text class="schema-etiquette" x="' + (pts[k].x + 12) + '" y="' + (pts[k].y + 4) + '">' + echapper(abreger(x.b.brocheComposant || "broche " + (k + 1), 18)) + "</text>";
         }).join("") + "</g>";
     });

@@ -529,6 +529,8 @@
     setTimeout(function () { if (boite.isConnected && !racine.matchMedia("print").matches) fin(); }, 60000);
   }
 
+  racine.EscapeLab.imprimer = imprimer;   // aussi pour la fiche énigme (impression du câblage)
+
   function liste(x, vide) {
     x = (x || []).filter(Boolean);
     return x.length ? "<ol>" + x.map(function (t) { return "<li>☐ " + e(t) + "</li>"; }).join("") + "</ol>" : '<p class="manque">' + e(vide || "Pas encore renseigné.") + "</p>";

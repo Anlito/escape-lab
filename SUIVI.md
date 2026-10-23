@@ -101,6 +101,7 @@ Claude « C4 livrée » : Claude relit, intègre et met à jour ce tableau.
 | C27 Guides : nouvelle frise et histoire en images | **rangée** (`docs/bien-demarrer.md`, `docs/mode-emploi-professeur.md`) |
 | C28 Guides : flèches de la frise, nouvelle page Jour J | **rangée** (`docs/bien-demarrer.md`, `docs/mode-emploi-professeur.md`) |
 | C29 Liste de rentrée pour Thomas | **rangée** (`docs/liste-rentree.md`) |
+| C30 Guides : câblage à faire soi-même | **à faire** : dans `docs/bien-demarrer.md` (élèves) et `docs/mode-emploi-professeur.md`, expliquer en quelques lignes le nouvel atelier de câblage : chaque fil (signal, GND, VCC) arrive avec sa couleur proposée mais **sans broche** ; l’élève tire chaque fil jusqu’à la bonne broche ou au rail (point creux = à brancher, point plein = branché) ; GND noir, VCC blanc, signal d’une LED ou d’un bouton de sa couleur, sinon orange/gris puis violet/jaune ; tout s’enregistre à chaque geste (« Câblage enregistré. ») ; bouton « Imprimer mon câblage » (schéma + tableau) pour recâbler sans l’ordinateur. Ton : phrases courtes, vouvoiement pour le professeur, tutoiement pour les élèves |
 | Suite de C4 | **en attente** : quand Thomas a rempli `docs/releve-materiel.md`, compléter `site/donnees/composants.js` (même règle : fiche technique citée, sinon « ⚠️ à vérifier »), **avec pour chaque composant son champ `fils`** : `[{ nom, role: "signal" | "gnd" | "vcc" }]` dans l’ordre du connecteur réel |
 | C6 Grille d'évaluation | **intégrée** (étape 11) ; barème validé par Thomas le 23/10 |
 
@@ -350,6 +351,7 @@ Barème validé : A à D = 0, 1, 2, 3 points ; coefficient 2 pour la fiche énig
 croisé, 1 pour les autres critères ; **pas de rouge** (lettres A à D, sans couleur imposée).
 
 ## Journal
+- 23/10/2026 — Claude : câblage fait par l’élève. GND et VCC ne sont plus pré-branchés (seulement leur couleur) ; points du schéma à la couleur du fil, creux puis pleins une fois branchés ; enregistrement automatique après chaque geste (ajout, retrait, fil tiré, déplacement, tableau) ; bouton « Imprimer mon câblage ». Tâche C30 laissée à ChatGPT.
 - 23/10/2026 — Thomas : règles de câblage (signal(s) + GND + parfois VCC 5 V ; GND noir, VCC blanc ; signal d’une LED ou
   d’un bouton de sa couleur ; 3 fils : VCC blanc/rouge, GND noir/marron, signal orange/gris ; 4e fil violet/jaune ;
   autres fils de couleurs différentes). Claude : chaque composant ajouté arrive avec tous ses fils et des couleurs

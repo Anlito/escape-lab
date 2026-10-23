@@ -140,10 +140,9 @@ test("fils : une LED a un signal et un GND, un servomoteur VCC, GND et signal", 
   assert.deepEqual(F.filsDuComposant({ id: "led", fils: [{ nom: "anode", role: "signal" }] }), [{ nom: "anode", role: "signal" }]);
 });
 
-test("fils : GND noir sur GND, VCC blanc sur 5 V (3 V sur la micro:bit), signal à choisir", () => {
+test("fils : couleurs proposées (GND noir, VCC blanc), tout reste à brancher par l'élève", () => {
   const l = F.lignesDuComposant({ id: "servomoteur" }, "uno", []);
-  assert.deepEqual(l.map((x) => [x.role, x.brocheCarte, x.fil]), [["vcc", "5V", "blanc"], ["gnd", "GND", "noir"], ["signal", "", "orange"]]);
-  assert.equal(F.lignesDuComposant({ id: "servomoteur" }, "microbit", [])[0].brocheCarte, "3V");
+  assert.deepEqual(l.map((x) => [x.role, x.brocheCarte, x.fil]), [["vcc", "", "blanc"], ["gnd", "", "noir"], ["signal", "", "orange"]]);
 });
 
 test("fils : les signaux de deux composants n'ont pas la même couleur", () => {

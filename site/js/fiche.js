@@ -339,7 +339,7 @@
         html += "<p><strong>Carte :</strong> " + (carte === "microbit" ? "micro:bit V2" : "Arduino Uno") + "</p>" +
           lectureHtml({ type: "zone", libelle: "Rôle dans l'énigme" }, v.role) +
           "<h4>Composants</h4>" + (choisis.length ? "<ul>" + choisis.map(function (c) { return "<li>" + e(c.nom) + " (" + e(c.type) + ")</li>"; }).join("") + "</ul>" : '<p class="petit vide">Pas encore choisis.</p>') +
-          (choisis.length ? '<div class="zone-schema">' + racine.EscapeLabSchema.schemaSvg({ carte: carte, composants: choisis, positions: v.positions, branchements: v.branchements }) + "</div>" : "") +
+          (choisis.length ? '<p><button data-action="imprimerCablage">Imprimer le câblage</button></p><div class="zone-schema">' + racine.EscapeLabSchema.schemaSvg({ carte: carte, composants: choisis, positions: v.positions, branchements: v.branchements }) + "</div>" : "") +
           lectureHtml(colonnesBranchements(choisis), v.branchements) +
           "<p>" + (v.cableTeste ? "☑" : "☐") + " Câblé et testé · " + (v.programmeOk ? "☑" : "☐") + " Le programme fonctionne</p>";
         return html;
@@ -373,7 +373,7 @@
           (filsManquants(c, v).length ? '<button data-action="completerFils" data-id="' + e(c.id) + '">Ajouter les fils manquants (' + e(filsManquants(c, v).map(function (x) { return x.brocheComposant; }).join(", ")) + ")</button> " : "") +
           '<button data-action="retirerComposant" data-id="' + e(c.id) + '">Retirer ce composant et ses fils</button></div>';
       }).join("");
-      html += "<h4>Schéma</h4>" +
+      html += '<h4>Schéma <button class="petit-bouton" data-action="imprimerCablage">Imprimer mon câblage</button></h4>' +
         '<p class="petit">Glisse un composant sur le schéma, déplace-le, puis tire un fil depuis un de ses points jusqu\'à une broche de la carte ou un rail de la platine : le tableau se remplit. Le tableau reste la référence.</p>' +
         '<div class="palette">' + proposes.filter(function (id) { return !connus[id].integre; }).map(function (id) {
           return '<span class="puce" draggable="true" data-palette="' + e(id) + '">' + e(connus[id].nom) + "</span>";
@@ -580,8 +580,9 @@
       }
     }
 
-    async function enregistrerOnglet() {
-      collecter();
+    // dejaCollecte : le travail vient d'être changé par un geste (l'écran n'est pas encore redessiné, ne pas le relire).
+    async function enregistrerOnglet(dejaCollecte) {
+      if (!dejaCollecte) collecter();
       var r = await enregistrerFusion("fiches", groupeId + "-" + courant, bases[courant], travail[courant]);
       elements[courant] = r.element;
       fiche[courant] = r.element.valeur;
@@ -591,6 +592,34 @@
       await majJalonsGroupe();
       message = "Enregistré." + (r.fusion ? " Un autre membre du groupe avait enregistré entre-temps : ses changements sont gardés." : "") +
         (r.signales.length ? ' <span class="ecart">Cette partie avait aussi été changée par un autre membre : ' + e(r.signales.join(", ")) + ". Son ancienne version reste dans l'historique.</span>" : "");
+    }
+
+    // Le câblage s'enregistre à chaque geste : l'élève le retrouve tel quel s'il doit le refaire.
+    var GESTES_CABLAGE = ["ajouterComposant", "completerFils", "retirerComposant", "ajouterLigne", "retirerLigne"];
+    async function enregistrerCablage() {
+      if (lecture || courant !== "electronique") return;
+      try {
+        await enregistrerOnglet(true);
+        message = message.replace(/^Enregistré./, "Câblage enregistré.");
+      } catch (err) {
+        message = '<span class="ecart">Le câblage n\'a pas pu être enregistré (' + e(err.message) + "). Il est toujours à l'écran : vérifie la connexion au réseau du collège, puis touche « Enregistrer ».</span>";
+      }
+    }
+
+    // Une page à imprimer : le schéma et le tableau des branchements, pour recâbler sans l'ordinateur.
+    function imprimerCablage() {
+      var v = valeurDe("electronique"), carte = v.carte || "uno", connus = composantsConnus();
+      var choisis = (v.composants || []).map(function (id) { return connus[id]; }).filter(Boolean);
+      var lignes = (v.branchements || []).map(function (b) {
+        return "<tr><td>" + e((connus[b.composant] || {}).nom || b.composant || "") + "</td><td>" + e(b.brocheComposant || "") + "</td><td>" +
+          (b.brocheCarte ? e(b.brocheCarte) : '<span class="manque">à brancher</span>') + "</td><td>" + e(b.fil || "") + "</td><td>" + (b.verifie ? "☑" : "☐") + "</td></tr>";
+      }).join("");
+      racine.EscapeLab.imprimer('<div class="page"><h1>Câblage · groupe ' + e(groupeId) + (fiche.enigme && rempliTexte(fiche.enigme.titre) ? " · " + e(fiche.enigme.titre) : "") + "</h1>" +
+        "<p>Carte : " + (carte === "microbit" ? "micro:bit V2" : "Arduino Uno") + " · imprimé le " + new Date().toLocaleDateString("fr-FR") + "</p>" +
+        '<div class="cadre">' + racine.EscapeLabSchema.schemaSvg({ carte: carte, composants: choisis, positions: v.positions, branchements: v.branchements }) + "</div>" +
+        "<table><thead><tr><th>Composant</th><th>Broche du composant</th><th>Broche de la carte ou rail</th><th>Couleur du fil</th><th>Vérifié</th></tr></thead><tbody>" +
+        (lignes || '<tr><td colspan="5" class="manque">pas encore de fil</td></tr>') + "</tbody></table>" +
+        "<p>GND en noir, VCC (5 V) en blanc. Débranche toujours la carte avant de modifier le câblage.</p></div>");
     }
 
     zone.addEventListener("click", async function (ev) {
@@ -604,6 +633,7 @@
         if (onglet) { courant = onglet; montrerSolution = false; }
         else if (action === "retour") { options.retour(); return; }
         else if (action === "montrerSolution") montrerSolution = true;
+        else if (action === "imprimerCablage") { imprimerCablage(); return; }
         else if (action === "valider") {
           var idJ = b.getAttribute("data-jalon");
           for (var essaiV = 0; essaiV < 3; essaiV++) {
@@ -678,6 +708,7 @@
           zone.querySelector(".message-avis").textContent = "Merci : ton avis est visible par le groupe " + groupeId + " et par le professeur.";
           return;
         } else return;
+        if (GESTES_CABLAGE.indexOf(action) !== -1) await enregistrerCablage();
       } catch (err) {
         message = '<span class="ecart">L\'enregistrement n\'a pas pu se faire (' + e(err.message) + "). Tes changements sont toujours là : vérifie la connexion au réseau du collège, puis réessaie.</span>";
       }
@@ -687,6 +718,7 @@
     zone.addEventListener("change", async function (ev) {
       var t = ev.target;
       if (t.getAttribute("data-recharger")) { collecter(); await afficher(); return; }
+      if (!lecture && courant === "electronique" && t.closest('[data-tableau="branchements"]')) { collecter(); await enregistrerCablage(); await afficher(); return; }
       var chemin = t.getAttribute("data-photo");
       if (!chemin || !t.files[0]) return;
       collecter();
@@ -738,6 +770,7 @@
       collecter();
       var p = pointSchema(cible.querySelector("svg"), ev.clientX, ev.clientY);
       ajouterComposant(id, { x: Math.max(0, p.x - 60), y: Math.max(0, p.y - 20) });
+      await enregistrerCablage();
       await afficher();
     });
     zone.addEventListener("pointerdown", function (ev) {
@@ -780,6 +813,7 @@
         ve.positions = Object.assign({}, ve.positions || {}, pos);
       }
       modifies.electronique = true;
+      await enregistrerCablage();
       await afficher();
     });
 

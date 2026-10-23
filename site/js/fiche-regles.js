@@ -225,8 +225,8 @@
     return [S("signal"), GND];
   }
 
-  // Lignes du tableau des branchements pour un composant : GND vers GND, VCC vers 5 V (3 V sur la micro:bit), signaux
-  // à choisir par l'élève ; couleurs proposées en évitant celles déjà prises par d'autres fils de signal.
+  // Lignes du tableau des branchements pour un composant : chaque fil (signal, GND, VCC) reste à brancher par l'élève
+  // lui-même, pour prendre le réflexe ; les couleurs sont proposées, en évitant celles déjà prises par d'autres signaux.
   function lignesDuComposant(composant, carte, existantes) {
     var fils = filsDuComposant(composant);
     var prises = (existantes || []).filter(function (b) { return b.role === "signal" && b.fil; }).map(function (b) { return b.fil; });
@@ -234,8 +234,8 @@
     var rang = 0;
     return fils.map(function (f) {
       var ligne = { composant: composant.id, brocheComposant: f.nom, role: f.role, brocheCarte: "", fil: "", verifie: false };
-      if (f.role === "gnd") { ligne.brocheCarte = "GND"; ligne.fil = "noir"; }
-      else if (f.role === "vcc") { ligne.brocheCarte = carte === "microbit" ? "3V" : "5V"; ligne.fil = "blanc"; }
+      if (f.role === "gnd") ligne.fil = "noir";
+      else if (f.role === "vcc") ligne.fil = "blanc";
       else {
         var couleur = preferees.filter(function (x) { return prises.indexOf(x) === -1; })[0];
         if (fils.length >= 4 && rang === 1) couleur = prises.indexOf("violet") === -1 ? "violet" : couleur;
