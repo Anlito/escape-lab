@@ -173,7 +173,7 @@
       valeur.groupe = f.querySelector("#bGroupe").value;
       if (type === "lien") {
         valeur.url = f.querySelector("#bUrl").value.trim();
-        if (!O.lienValide(valeur.url)) return refuser("L'adresse doit commencer par https:// (copie-la depuis la barre d'adresse).");
+        if (!O.lienValide(valeur.url)) return refuser("L'adresse doit commencer par https:// ou http:// (copie-la depuis la barre d'adresse).");
       }
       var fichier = null;
       if (type === "document" && !ancien) {

@@ -88,3 +88,23 @@ test("câblage : toute charge 12 V affiche la règle de sécurité", () => {
   assert.ok(r.some((x) => x.id === "douzeVoltsSansRelais") && r.some((x) => x.id === "validationProfAvantTension"));
   assert.ok(!F.controlesCablage("uno", [COMPOSANTS.bouton], []).some((x) => x.id === "douzeVoltsSansRelais"));
 });
+
+// --- Jour J (étape 8) ---
+
+test("jour J : prénoms d'une case « élève »", () => {
+  assert.deepEqual(F.prenomsDe("Léa, Tom et Noé / Inès"), ["lea", "tom", "noe", "ines"]);
+  assert.deepEqual(F.prenomsDe(""), []);
+});
+
+test("jour J : élèves sans rôle (sans doublon, accents ignorés)", () => {
+  const roles = [{ role: "Game Master", eleve: "Lea" }, { role: "Accueil", eleve: "Tom, Noé" }];
+  assert.deepEqual(F.elevesSansRole(["Léa", "Tom", "Inès", "Noé", "Inès"], roles), ["Inès"]);
+});
+
+test("jour J : jalon J1 d'un groupe", () => {
+  const roles = [{ eleve: "Léa", texte: "Bienvenue" }, { eleve: "Tom", texte: "" }];
+  assert.equal(F.etatJourJ(["Léa", "Tom"], roles), "en cours");
+  assert.equal(F.etatJourJ(["Léa"], roles), "fait");
+  assert.equal(F.etatJourJ(["Inès"], roles), "à faire");
+  assert.equal(F.etatJourJ([], roles), "à faire");
+});

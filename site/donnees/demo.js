@@ -983,16 +983,13 @@ definirDemo({
       }
     },
     {
-      "collection": "jourj",
-      "id": "logistique",
+      "collection": "jourj-taches",
+      "id": "ldemo1",
       "valeur": {
-        "taches": [
-          {
-            "tache": "Demander une date et l’accord de la direction.",
-            "responsable": "À désigner",
-            "etat": "à faire"
-          }
-        ]
+        "tache": "Demander une date et l’accord de la direction.",
+        "responsable": "À désigner",
+        "etat": "à faire",
+        "ordre": 1
       }
     },
     {
@@ -1035,6 +1032,17 @@ definirDemo({
           "technique"
         ],
         "groupe": "B"
+      }
+    },
+    {
+      "collection": "jourj-roles",
+      "id": "rdemo1",
+      "valeur": {
+        "role": "Game Master",
+        "eleve": "Zéluno",
+        "texte": "Équipe de maintenance, je vous écoute.",
+        "etat": "écrit",
+        "ordre": 1
       }
     }
   ]

@@ -140,7 +140,42 @@
     return resultats;
   }
 
+  // --- Jour J (brief §7.9) ---
+
+  // « Léa, Tom et Noa » ou « Léa / Tom » -> ["léa", "tom", "noa"] (comparaison sans majuscules ni accents).
+  function prenomsDe(texte) {
+    return String(texte || "").split(/,|;|\/|\bet\b|\+/i).map(cleNom).filter(Boolean);
+  }
+  function cleNom(t) { return String(t || "").trim().toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, ""); }
+
+  // Élèves (prénoms des membres de tous les groupes) qui n'ont encore aucun rôle.
+  function elevesSansRole(eleves, roles) {
+    var avecRole = {};
+    roles.forEach(function (r) { prenomsDe(r.eleve).forEach(function (p) { avecRole[p] = true; }); });
+    var vus = {};
+    return eleves.filter(function (p) {
+      var c = cleNom(p);
+      if (!c || vus[c]) return false;
+      vus[c] = true;
+      return !avecRole[c];
+    });
+  }
+
+  // Jalon J1 d'un groupe : chaque membre a un rôle et a écrit son texte (fait), ou au moins un a commencé (en cours).
+  function etatJourJ(membres, roles) {
+    var noms = membres.map(cleNom).filter(Boolean);
+    if (!noms.length) return A_FAIRE;
+    var complets = 0, commences = 0;
+    noms.forEach(function (n) {
+      var siens = roles.filter(function (r) { return prenomsDe(r.eleve).indexOf(n) !== -1; });
+      if (siens.length) commences++;
+      if (siens.length && siens.every(function (r) { return rempli(r.texte); })) complets++;
+    });
+    return etat(complets === noms.length, commences > 0);
+  }
+
   var EscapeLabFiche = {
+    prenomsDe: prenomsDe, elevesSansRole: elevesSansRole, etatJourJ: etatJourJ,
     lireChemin: lireChemin, ecrireChemin: ecrireChemin, fusionner: fusionner, calculerJalons: calculerJalons,
     manquesIndices: manquesIndices, controlesCablage: controlesCablage, BROCHES: BROCHES, A_FAIRE: A_FAIRE, EN_COURS: EN_COURS, FAIT: FAIT
   };

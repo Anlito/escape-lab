@@ -27,7 +27,7 @@ Avec deux postes (ou deux onglets) sur le même dossier :
 ## Étape 6 — bibliothèque commune
 - [ ] Ajouter une note, un lien Canva, une image, un PDF, un son et une courte vidéo : chacun s'affiche avec son aperçu.
 - [ ] Un fichier trop lourd (plus de 20 Mo) ou d'un autre type : message en ambre qui dit quoi faire.
-- [ ] Un lien qui ne commence pas par https:// est refusé.
+- [ ] Un lien qui ne commence pas par http:// ou https:// est refusé.
 - [ ] Recherche (sans accents), filtres par type, étiquette et groupe.
 - [ ] Mettre à la corbeille, cocher « Corbeille », sortir de la corbeille.
 - [ ] Deux postes modifient le même élément : les deux textes sont réunis, rien n'est perdu.
@@ -46,3 +46,12 @@ Avec deux postes (ou deux onglets) sur le même dossier :
 - [ ] Énigmes des autres : la fiche est en lecture seule, la solution et le code sont cachés (bouton « Afficher »),
       le journal et les remarques n'y sont pas ; laisser un avis : le groupe concerné le voit dans « Tests et avis ».
 - [ ] 3C2D1 : la fiche d'un groupe de l'autre dossier est en lecture seule (« elle se modifie là-bas »).
+
+## Étape 8 — jour J
+- [ ] Date, lieu, accord, invités (nombre et fonction, sans noms), cours, matériel : cartes modifiables avec historique.
+- [ ] « Ajouter les tâches types » puis donner un responsable et un état à une tâche.
+- [ ] « Ajouter les rôles types » (pas de régie caméras) ; deux élèves écrivent leur texte sur deux postes en même temps.
+- [ ] Le bandeau liste les élèves encore sans rôle (prénoms des fiches « Mon énigme ») ; il disparaît quand tous en ont un.
+- [ ] Retirer une ligne, la retrouver dans « Lignes retirées », la remettre ; ↺ montre l'historique d'une ligne.
+- [ ] Planning : mise en place, déroulé, rangement, « tout est à sa place » ; remise à zéro de chaque énigme listée.
+- [ ] Tableau de bord : résumé Jour J (date, tâches faites, élèves sans rôle).

@@ -28,7 +28,7 @@ jour après. Le brief complet est dans `docs/BRIEF-CLAUDE-CODE-escape-lab.md`.
 | 5 | Histoire puis Frise | Claude | fait ; **recette Thomas** (`docs/RECETTE.md`) |
 | 6 | Bibliothèque commune | Claude | fait ; recette Thomas |
 | 7 | Fiche énigme, énigmes des autres, câblage v1 | Claude | fait ; **recette Thomas** |
-| 8 | Page jour J | Claude | à faire |
+| 8 | Page jour J | Claude | fait ; **recette Thomas** |
 | 9 | Fiches mécaniques + bibliothèque de composants (contenus) | **ChatGPT** (contenu) + Claude (éditeur) | à faire |
 | 10 | Labo Blocs : parcours Escape Lab, partie libre | Claude | à faire |
 | 11 | Espace professeur, évaluation, exports | Claude | à faire |
@@ -81,9 +81,12 @@ Claude « C4 livrée » : Claude relit, intègre et met à jour ce tableau.
 | C7 Messages des jalons | **intégrée** (`site/donnees/messages.js`) ; memeBroche et brocheIndisponible nomment la broche ; relecture Thomas |
 | C8 Modèles du jour J | **rangée** (`site/donnees/jourj-modeles.js`, utilisée à l’étape 8) |
 | C9 Rubriques du livret du Game Master | **rangée** (`docs/livret.md`, mise en page à l’étape 11) |
-| C10 Exercices guidés Labo Blocs | **à faire** (pour l’étape 10) |
-| C11 Appréciations générées | **à faire** (pour l’étape 11) |
-| C12 Fiche de recette finale | **à faire** (pour l’étape 13) |
+| C10 Exercices guidés Labo Blocs | **rangée** (`docs/exercices-labo-blocs.md`, parcours créé à l’étape 10) |
+| C11 Appréciations générées | **rangée** (`site/donnees/appreciations.js`, utilisée à l’étape 11) |
+| C12 Fiche de recette finale | **rangée** (`docs/recette-finale.md`) ; liens : http:// et https:// acceptés |
+| C13 Mécaniques supplémentaires | **à faire** (pour l’étape 9) |
+| C14 Guide « Bien démarrer » élève | **à faire** |
+| C15 Mode d’emploi du professeur | **à faire** (pour l’étape 11) |
 | C6 Grille d'évaluation | **rangée** (`site/donnees/evaluation.js`, utilisée à l'étape 11) ; **décisions de Thomas attendues** (voir ci-dessous) |
 
 ### Tâche C4 — Relevé du matériel à remplir par Thomas au collège (brief §4, question 9)
@@ -195,12 +198,39 @@ attendu, case « OK / à revoir », remarque. Inclure : deux élèves sur la mê
 enregistrement, restauration d’une version, synchronisation 3C2D1 avec modifications des deux côtés, impression noir
 et blanc, aucune donnée réelle dans le dépôt.
 
+### Tâche C13 — Fiches des mécaniques supplémentaires (brief §5.1, §8.3)
+Compléter `mecaniques-supplementaires.js` au **même format que `site/donnees/mecaniques.js`** (mêmes champs,
+`definirMecaniques`) pour les autres dossiers du Drive cités au brief §5.1 : écoute et tracer, objets cachés,
+mélange colorant-couleur, lettre-miroir, lire sur les lèvres, image rouge / code bleu, classer les informations.
+Identifiants courts en minuscules avec tirets, lettre et couleur **différentes** des six existantes. Seul le nom du
+dossier est connu : tout principe deviné est marqué « ⚠️ à confirmer ». Aucun « Thomas » ni « brief » dans les textes.
+
+### Tâche C14 — Fiche « Bien démarrer » pour les élèves (une page A4, noir et blanc)
+`bien-demarrer.md` : ouvrir Escape Lab (Chrome ou Edge), choisir sa classe, son groupe, écrire son prénom, ouvrir
+le dossier de la classe (le chemin s’affiche à l’écran), « Reprendre » la fois suivante ; où est quoi (8 pages du
+menu) ; enregistrer chaque onglet ; ce qui se passe si deux élèves écrivent en même temps (rien n’est perdu) ; la
+corbeille ; photos d’objets seulement ; ne jamais brancher de 12 V sans le professeur. Phrases de 12 mots au plus,
+pictogrammes texte (☐ ✎ ↺), tutoiement.
+
+### Tâche C15 — Mode d’emploi du professeur (deux pages)
+`mode-emploi-professeur.md` : préparer les dossiers de classe (`ESCAPE GAME › <classe>`), lancer la page de test
+`site/test-dossier.html`, ouvrir la classe fictive, ce que les élèves voient, où se trouve l’ordre de la frise,
+valider un jalon physique, synchroniser 3C2D1 (aperçu puis exécution, conflits gardés des deux côtés), où vont les
+notes (jamais dans un dossier de classe), sauvegarde. Décrire seulement ce qui existe dans `SUIVI.md` (étapes
+faites) et marquer « (étape 11, à venir) » le reste.
+
 ## Questions à Thomas (grille C6)
 1. Barème : A–D = 0, 1, 2, 3 points (tout en C donne 13,3/20). Garder, ou celui des grilles Excel existantes ?
 2. Couleurs : le brief dit rouge / jaune / vert clair / vert foncé, la règle commune dit « jamais de rouge ». Remplacer le rouge (par ex. gris) ?
 3. Coefficients : 2 pour fiche énigme, câblage, programme, test croisé ; 1 ailleurs. D'accord ?
 
 ## Journal
+- 23/10/2026 — ChatGPT : C10 (3 exercices guidés + libre), C11 (6 tranches, 8 phrases par bloc), C12 (30 contrôles).
+- 23/10/2026 — Claude : étape 8, page Jour J (date, invités sans noms, accord, cours, matériel ; tâches ; rôles et
+  textes en cartes, une ligne = un élément `jourj-roles/` ; contrôle « chaque élève a au moins un rôle » ; planning
+  mise en place / déroulé / rangement / vérifications ; remise à zéro de chaque énigme lue dans les fiches ;
+  répétition). Modèles C8 en un clic (régie caméras exclue, phase 2). Jalon J1 calculé par groupe. Résumé dans le
+  tableau de bord. 37 tests verts. C10 à C12 rangées ; tâches C13 à C15.
 - 23/10/2026 — ChatGPT : C7 (14 jalons × 4 états, 17 contrôles), C8 (7 rôles, 11 tâches, listes du jour J), C9 (plan
   du livret et de la fiche A4, exemple 3Z9).
 - 23/10/2026 — Claude : étape 7. Fiche énigme à 11 onglets (champs guidés, voyants ○ ◐ ●, jalons calculés depuis

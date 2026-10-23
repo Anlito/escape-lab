@@ -286,6 +286,26 @@
     return plusRecente;
   }
 
+  // Résumé de la page Jour J (brief §7.9) : date, tâches faites, élèves encore sans rôle.
+  async function resumeJourJ(st, groupesLus) {
+    var date = await st.lire("jourj", "date");
+    var taches = (await st.lister("jourj-taches")).filter(function (t) { return !t.valeur.retiree && t.valeur.tache; });
+    var roles = (await st.lister("jourj-roles")).filter(function (r) { return !r.valeur.retiree; }).map(function (r) { return r.valeur; });
+    var eleves = [];
+    var ids = lettresGroupes(REGLAGES.nombreGroupes);
+    for (var i = 0; i < ids.length; i++) {
+      var en = await st.lire("fiches", ids[i] + "-enigme");
+      var membres = en ? en.valeur.membres : (groupesLus[ids[i]] && groupesLus[ids[i]].valeur.membres);
+      (membres || []).forEach(function (m) { if (m.prenom) eleves.push(m.prenom); });
+    }
+    var sans = racine.EscapeLabFiche.elevesSansRole(eleves, roles);
+    var faites = taches.filter(function (t) { return t.valeur.etat === "fait"; }).length;
+    return '<section class="carte"><h2>Jour J</h2><p>Date : ' + echapper((date && date.valeur.date) || "pas encore fixée") + "</p>" +
+      "<p>Tâches faites : " + faites + " sur " + taches.length + " · Rôles : " + roles.length + "</p>" +
+      (eleves.length ? (sans.length ? '<p class="ecart">Encore sans rôle : ' + sans.length + " élève" + (sans.length > 1 ? "s" : "") + "</p>" : "<p>✓ Chaque élève a un rôle.</p>") : "") +
+      '<p><a href="#jourj">Ouvrir la page Jour J</a></p></section>';
+  }
+
   async function afficherTableau(zone) {
     zone.innerHTML = '<p class="petit">Lecture du dossier…</p>';
     var html = "";
@@ -330,6 +350,8 @@
           '<p class="petit">' + (g ? "Dernière activité : " + dateCourte(g.le) : "Pas encore commencé") + "</p></article>";
       });
       html += "</div></section>";
+
+      html += await resumeJourJ(st, groupesLus);
 
       var ordre = (frise && frise.valeur.ordre) || [];
       html += '<section class="carte"><h2>Frise des énigmes</h2>';
