@@ -38,7 +38,7 @@ jour après. Le brief complet est dans `docs/BRIEF-CLAUDE-CODE-escape-lab.md`.
 Recettes avec Thomas après les étapes 2, 3, 5, 7 et 11.
 
 ## Plan court (étape 1) — à valider par Thomas
-**Dépôt** : `Anlito/escape-lab` (question 3), dossier local `Documents/EscapeLab`.
+**Dépôt** : [Anlito/escape-lab](https://github.com/Anlito/escape-lab) (public, GitHub Pages), dossier local `Documents/EscapeLab`.
 
 **Arborescence**
 ```
@@ -295,6 +295,10 @@ Barème validé : A à D = 0, 1, 2, 3 points ; coefficient 2 pour la fiche énig
 croisé, 1 pour les autres critères ; **pas de rouge** (lettres A à D, sans couleur imposée).
 
 ## Journal
+- 23/10/2026 — Claude : dépôt public **Anlito/escape-lab** créé et publié sur GitHub Pages :
+  élèves https://anlito.github.io/escape-lab/site/ · professeur https://anlito.github.io/escape-lab/site/?prof ·
+  `prof.html` · `regie.html`. Ajouté à https://anlito.github.io/ (rubrique Escape Lab, 9 projets · 19 outils).
+  Question 3 du brief réglée. Pour ChatGPT : le dépôt local reste `C:UserspcDocumentsEscapeLab`.
 - 23/10/2026 — ChatGPT : C20 (affiche joueurs, demande à la direction, fiche Game Master), C21 (mode d’emploi refait).
 - 23/10/2026 — Claude : étape 12. Atelier de câblage v2 (`site/js/schema.js`) : schéma de l’Uno ou de la micro:bit,
   platine et rails, composants glissés depuis une palette, déplaçables, fil tiré d’un point vers une broche ou un
