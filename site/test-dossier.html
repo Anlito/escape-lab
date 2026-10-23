@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Escape Lab — test du dossier partagé</title>
+<style>
+  :root { --fond: #2f2f2f; --carte: #3a3a3a; --texte: #f7f4ef; --or: #c9a227; --ambre: #f0a030; --ok: #7cc47c; }
+  body { margin: 0; background: var(--fond); color: var(--texte); font: 16px/1.5 system-ui, sans-serif; }
+  main { max-width: 760px; margin: 0 auto; padding: 16px; }
+  h1 { color: var(--or); font-size: 24px; }
+  section { background: var(--carte); border-radius: 8px; padding: 12px 16px; margin: 12px 0; }
+  h2 { font-size: 18px; margin: 0 0 8px; }
+  button { font: inherit; padding: 6px 12px; margin: 4px 4px 4px 0; border: 2px solid var(--or);
+           background: transparent; color: var(--texte); border-radius: 6px; cursor: pointer; }
+  button:disabled { opacity: .5; cursor: default; }
+  input { font: inherit; padding: 4px 8px; }
+  .ligne { margin: 4px 0; font-size: 14px; }
+  .ok::before { content: "✓ "; color: var(--ok); }
+  .ecart::before { content: "! "; color: var(--ambre); font-weight: bold; }
+  .ecart { color: var(--ambre); }
+  pre { white-space: pre-wrap; background: #222; padding: 8px; font-size: 13px; }
+</style>
+</head>
+<body>
+<main>
+<h1>Escape Lab — test du dossier partagé</h1>
+<p>Cette page vérifie que le dossier commun du réseau fonctionne pour Escape Lab. Elle écrit seulement des fichiers
+  dont le nom commence par <code>test-escape-lab</code>. Lancer la page sur un poste élève, sur un second poste,
+  puis sur le poste du professeur.</p>
+
+<section>
+  <h2>1. Ce poste</h2>
+  <label>Nom du poste : <input id="nomPoste" placeholder="ex. élève salle 12"></label>
+  <div id="navigateur" class="ligne"></div>
+</section>
+
+<section>
+  <h2>2. Écrire dans le dossier commun</h2>
+  <button id="btnDossier">Choisir le dossier commun</button>
+  <button id="btnEcrire" disabled>Écrire le fichier de ce poste</button>
+  <div id="sortieEcriture"></div>
+</section>
+
+<section>
+  <h2>3. Lire les fichiers des autres postes</h2>
+  <p class="ligne">Laisser la page ouverte : elle relit le dossier toutes les 5 secondes. Quand un autre poste écrit,
+    la page affiche le délai avant de voir son fichier.</p>
+  <button id="btnRelire" disabled>Relire maintenant</button>
+  <div id="sortieLecture"></div>
+</section>
+
+<section>
+  <h2>4. Poste du professeur : deux dossiers en même temps</h2>
+  <button id="btnDossierA">Choisir le dossier A (ex. 3C2)</button>
+  <button id="btnDossierB">Choisir le dossier B (ex. 3D1)</button>
+  <button id="btnCopier" disabled>Copier un fichier de A vers B</button>
+  <label class="ligne">Taille du fichier lourd :
+    <input id="tailleMo" type="number" min="1" max="200" value="20" style="width:5em"> Mo</label>
+  <div id="sortieDeux"></div>
+</section>
+
+<section>
+  <h2>5. Résultat à envoyer à Claude</h2>
+  <button id="btnResultat">Copier le résultat</button>
+  <button id="btnNettoyer" disabled>Effacer les fichiers de test de ce poste</button>
+  <pre id="resultat"></pre>
+</section>
+</main>
+
+<script>
+// Page autonome de l'étape 0 : aucun envoi, tout reste dans les dossiers choisis.
+var journal = [];
+var dossierCommun = null, dossierA = null, dossierB = null;
+var vus = {};          // fichier -> heure où ce poste l'a vu la première fois
+var minuterie = null;
+var PREFIXE = "test-escape-lab";
+
+function $(id) { return document.getElementById(id); }
+function maintenant() { return new Date().toLocaleTimeString("fr-FR"); }
+
+function noter(zone, texte, ecart) {
+  var div = document.createElement("div");
+  div.className = "ligne " + (ecart ? "ecart" : "ok");
+  div.textContent = texte;
+  $(zone).appendChild(div);
+  journal.push((ecart ? "[écart] " : "[ok] ") + texte);
+  majResultat();
+}
+
+function decrireNavigateur() {
+  var ua = navigator.userAgent, nom = "inconnu";
+  if (/Edg\//.test(ua)) nom = "Edge " + ua.match(/Edg\/([\d.]+)/)[1];
+  else if (/Chrome\//.test(ua)) nom = "Chrome " + ua.match(/Chrome\/([\d.]+)/)[1];
+  else if (/Firefox\//.test(ua)) nom = "Firefox " + ua.match(/Firefox\/([\d.]+)/)[1];
+  else if (/Safari\//.test(ua)) nom = "Safari";
+  return nom;
+}
+
+function nomDuPoste() {
+  return ($("nomPoste").value.trim() || "poste sans nom").replace(/[^\wÀ-ÿ -]/g, "");
+}
+
+function nomFichier() {
+  return PREFIXE + "-" + nomDuPoste().replace(/ /g, "_") + ".json";
+}
+
+function majResultat() {
+  $("resultat").textContent = "Poste : " + nomDuPoste() + "\nNavigateur : " + decrireNavigateur() +
+    "\nAdresse : " + location.protocol + "\n\n" + journal.join("\n");
+}
+
+function apiDisponible() {
+  if (window.showDirectoryPicker) return true;
+  noter("sortieEcriture", "Ce navigateur ne sait pas choisir un dossier. Ouvrir la page avec Chrome ou Edge.", true);
+  return false;
+}
+
+async function choisirDossier(zone, etiquette) {
+  if (!apiDisponible()) return null;
+  try {
+    var d = await window.showDirectoryPicker({ mode: "readwrite" });
+    noter(zone, etiquette + " choisi : « " + d.name + " » (lecture et écriture accordées).");
+    return d;
+  } catch (e) {
+    noter(zone, etiquette + " non choisi (" + e.name + "). Recommencer et accepter l'accès en écriture.", true);
+    return null;
+  }
+}
+
+async function ecrireFichier(dossier, nom, contenu) {
+  var poignee = await dossier.getFileHandle(nom, { create: true });
+  var flux = await poignee.createWritable();
+  await flux.write(contenu);
+  await flux.close();
+}
+
+async function lireTexte(dossier, nom) {
+  var poignee = await dossier.getFileHandle(nom);
+  return (await poignee.getFile()).text();
+}
+
+// --- 2. Écriture ---
+$("btnDossier").onclick = async function () {
+  dossierCommun = await choisirDossier("sortieEcriture", "Dossier commun");
+  $("btnEcrire").disabled = $("btnRelire").disabled = $("btnNettoyer").disabled = !dossierCommun;
+  if (dossierCommun) { relire(); clearInterval(minuterie); minuterie = setInterval(relire, 5000); }
+};
+
+$("btnEcrire").onclick = async function () {
+  var contenu = JSON.stringify({ poste: nomDuPoste(), navigateur: decrireNavigateur(),
+                                 ecritLe: Date.now() }, null, 2);
+  try {
+    var debut = performance.now();
+    await ecrireFichier(dossierCommun, nomFichier(), contenu);
+    var relu = await lireTexte(dossierCommun, nomFichier());
+    var duree = Math.round(performance.now() - debut);
+    if (relu === contenu) noter("sortieEcriture", "Fichier « " + nomFichier() + " » écrit et relu en " + duree + " ms.");
+    else noter("sortieEcriture", "Le fichier relu ne correspond pas à celui écrit.", true);
+  } catch (e) {
+    noter("sortieEcriture", "Écriture impossible (" + e.name + " : " + e.message +
+      "). Vérifier que ce poste a le droit d'écrire dans ce dossier.", true);
+  }
+};
+
+// --- 3. Lecture des autres postes ---
+async function relire() {
+  if (!dossierCommun) return;
+  try {
+    for await (var [nom, poignee] of dossierCommun.entries()) {
+      if (poignee.kind !== "file" || nom.indexOf(PREFIXE) !== 0 || nom === nomFichier()) continue;
+      if (!/\.json$/.test(nom)) continue;
+      var donnees = JSON.parse(await (await poignee.getFile()).text());
+      var cle = nom + "@" + donnees.ecritLe;
+      if (vus[cle]) continue;
+      vus[cle] = Date.now();
+      var delai = Math.round((vus[cle] - donnees.ecritLe) / 1000);
+      noter("sortieLecture", maintenant() + " : fichier de « " + donnees.poste + " » (" + donnees.navigateur +
+        ") lu ; écrit il y a " + delai + " s" + (delai > 600 ? " (ancien fichier, ou horloges des postes décalées)" : "") + ".");
+    }
+  } catch (e) {
+    noter("sortieLecture", "Lecture du dossier impossible (" + e.name + " : " + e.message + ").", true);
+    clearInterval(minuterie);
+  }
+}
+$("btnRelire").onclick = relire;
+
+// --- 4. Deux dossiers ---
+function majBoutonCopier() { $("btnCopier").disabled = !(dossierA && dossierB); }
+$("btnDossierA").onclick = async function () { dossierA = await choisirDossier("sortieDeux", "Dossier A"); majBoutonCopier(); };
+$("btnDossierB").onclick = async function () { dossierB = await choisirDossier("sortieDeux", "Dossier B"); majBoutonCopier(); };
+
+$("btnCopier").onclick = async function () {
+  if (await dossierA.isSameEntry(dossierB)) {
+    noter("sortieDeux", "A et B sont le même dossier. Choisir deux dossiers différents.", true);
+    return;
+  }
+  var mo = Math.max(1, Math.min(200, Number($("tailleMo").value) || 20));
+  var nom = PREFIXE + "-lourd-" + mo + "Mo.bin";
+  $("btnCopier").disabled = true;
+  try {
+    // Fichier lourd fictif (simule une vidéo) : écrit dans A, puis copié de A vers B.
+    var octets = new Uint8Array(mo * 1024 * 1024);
+    for (var i = 0; i < octets.length; i += 4096) octets[i] = i % 251;
+    var t0 = performance.now();
+    await ecrireFichier(dossierA, nom, octets);
+    var t1 = performance.now();
+    noter("sortieDeux", "Écriture de " + mo + " Mo dans A : " + ((t1 - t0) / 1000).toFixed(1) + " s.");
+    var fichier = await (await dossierA.getFileHandle(nom)).getFile();
+    await ecrireFichier(dossierB, nom, fichier);
+    var t2 = performance.now();
+    var copie = await (await dossierB.getFileHandle(nom)).getFile();
+    if (copie.size === fichier.size) noter("sortieDeux", "Copie de A vers B : " + ((t2 - t1) / 1000).toFixed(1) + " s, taille identique.");
+    else noter("sortieDeux", "La copie dans B n'a pas la même taille que l'original.", true);
+  } catch (e) {
+    noter("sortieDeux", "Copie impossible (" + e.name + " : " + e.message + ").", true);
+  }
+  majBoutonCopier();
+};
+
+// --- 5. Résultat et nettoyage ---
+$("btnResultat").onclick = async function () {
+  majResultat();
+  try { await navigator.clipboard.writeText($("resultat").textContent); $("btnResultat").textContent = "Résultat copié"; }
+  catch (e) { $("btnResultat").textContent = "Sélectionner le texte ci-dessous et le copier"; }
+};
+
+$("btnNettoyer").onclick = async function () {
+  var dossiers = [dossierCommun, dossierA, dossierB].filter(Boolean);
+  var total = 0;
+  for (var d of dossiers) {
+    var aEffacer = [];
+    for await (var [nom, p] of d.entries()) {
+      if (p.kind === "file" && (nom === nomFichier() || nom.indexOf(PREFIXE + "-lourd-") === 0)) aEffacer.push(nom);
+    }
+    for (var nom of aEffacer) { await d.removeEntry(nom); total++; }
+  }
+  noter("sortieEcriture", total + " fichier(s) de test effacé(s). Les fichiers des autres postes sont gardés.");
+};
+
+$("nomPoste").oninput = majResultat;
+$("navigateur").textContent = "Navigateur : " + decrireNavigateur() + " · adresse : " + location.protocol +
+  (window.showDirectoryPicker ? " · choix de dossier possible" : " · choix de dossier impossible");
+majResultat();
+</script>
+</body>
+</html>
