@@ -25,7 +25,7 @@ jour après. Le brief complet est dans `docs/BRIEF-CLAUDE-CODE-escape-lab.md`.
 | 2 | Étape 0 : page de test du dossier partagé (2 dossiers sur le poste prof) | Claude | page prête ; **test sur les postes à la rentrée** (`site/test-dossier.html`) |
 | 3 | Couche de stockage + synchronisation 3C2D1 + tests | Claude | fait (10 tests `npm test`) ; recette Thomas |
 | 4 | Squelette : accueil, identification, tableau de bord, charte | Claude | fait ; recette Thomas (bouton « Classe fictive ») |
-| 5 | Histoire puis Frise | Claude | à faire |
+| 5 | Histoire puis Frise | Claude | fait ; **recette Thomas** (`docs/RECETTE.md`) |
 | 6 | Bibliothèque commune | Claude | à faire |
 | 7 | Fiche énigme, énigmes des autres, câblage v1 | Claude | à faire |
 | 8 | Page jour J | Claude | à faire |
@@ -142,6 +142,11 @@ Chaque version est d'abord copiée dans `<collection>/historique/<id>/<version>.
 (couche unique + synchronisation), `site/js/stockage-dossier.js` (accès au dossier dans Chrome/Edge).
 
 ## Journal
+- 23/10/2026 — Claude : étape 5. Histoire (7 sections, une carte modifiable chacune : présence « X modifie »,
+  conflit → garder les deux textes, historique et restauration) et frise (début, énigmes, liaisons `liaisons/A-B`
+  préremplies avec le contenu de la boîte, fin, durée totale, ordre par le professeur avec historique). Commandes du
+  professeur essayables en démonstration ; elles iront dans `prof.html` (étape 11). 18 tests verts.
+  Pour C5 : identifiants des sections d’histoire `titre theme pitch personnages lieu deroulement fin`.
 - 23/10/2026 — ChatGPT : six fiches mécaniques et démonstration fictive 3Z9 ; onze fiches composants (seule la
   documentation du clavier Grove est identifiée). Livré dans le dossier Codex de Thomas.
 - 23/10/2026 — Claude : C1 à C3 intégrées (voir tableau), démo vérifiée dans le navigateur. Tâches C4 à C6

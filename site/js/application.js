@@ -13,8 +13,9 @@
   racine.definirDemo = function (d) { DEMO = d; };
 
   // Personne connectée et dossier ouvert.
+  // prof : commandes du professeur (ordre de la frise…), données par prof.html ou essayées en démonstration.
   var etat = { equipe: null, depot: "", groupe: "", prenom: "", stockage: null, adaptateur: null,
-               demo: false, nomDossier: "" };
+               demo: false, nomDossier: "", prof: false };
 
   var PAGES = [
     { id: "tableau", nom: "Tableau de bord" },
@@ -190,7 +191,9 @@
   }
 
   function quitter() {
+    if (arreterPage) { arreterPage(); arreterPage = null; }
     etat.stockage = etat.adaptateur = null;
+    etat.prof = false;
     $("espace").hidden = true;
     $("accueil").hidden = false;
     history.replaceState(null, "", location.pathname);
@@ -217,7 +220,9 @@
     afficherNavigation(page);
     document.title = page.nom + " — Escape Lab";
     var zone = $("contenu");
+    if (arreterPage) { arreterPage(); arreterPage = null; }
     if (page.id === "tableau") return afficherTableau(zone);
+    if (app.pages[page.id]) { arreterPage = await app.pages[page.id](zone) || null; return; }
     zone.innerHTML = '<section class="carte"><h2>' + echapper(page.nom) + "</h2><p>Cette page arrive bientôt (étape " +
       page.etape + " du projet).</p></section>";
   }
@@ -314,6 +319,17 @@
     }
     zone.innerHTML = html;
   }
+
+  // --- Pour les autres pages (histoire.js, frise.js…) ---
+  // Une page s'inscrit dans EscapeLab.pages[id] = async function (zone) { … ; return fonctionPourArreter; }.
+  var arreterPage = null;
+  var app = racine.EscapeLab = {
+    etat: etat, pages: {}, mecaniques: MECANIQUES, pastille: pastille, avancement: avancement,
+    dateCourte: dateCourte, auteur: auteur, lettresGroupes: lettresGroupes,
+    jalons: function () { return JALONS; },
+    nombreGroupes: function () { return REGLAGES.nombreGroupes; },
+    rafraichir: afficherPage
+  };
 
   // --- Démarrage ---
 
