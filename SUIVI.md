@@ -100,7 +100,8 @@ Claude « C4 livrée » : Claude relit, intègre et met à jour ce tableau.
 | C26 Affiche du projet pour la classe | **rangée** (`docs/affiche-projet.html` à imprimer en A3, `docs/affiche-projet.md`) |
 | C27 Guides : nouvelle frise et histoire en images | **rangée** (`docs/bien-demarrer.md`, `docs/mode-emploi-professeur.md`) |
 | C28 Guides : flèches de la frise, nouvelle page Jour J | **rangée** (`docs/bien-demarrer.md`, `docs/mode-emploi-professeur.md`) |
-| C29 Liste de rentrée pour Thomas | **à faire** |
+| C29 Liste de rentrée pour Thomas | **rangée** (`docs/liste-rentree.md`) |
+| Suite de C4 | **en attente** : quand Thomas a rempli `docs/releve-materiel.md`, compléter `site/donnees/composants.js` (même règle : fiche technique citée, sinon « ⚠️ à vérifier ») |
 | C6 Grille d'évaluation | **intégrée** (étape 11) ; barème validé par Thomas le 23/10 |
 
 ### Tâche C4 — Relevé du matériel à remplir par Thomas au collège (brief §4, question 9)
@@ -349,6 +350,7 @@ Barème validé : A à D = 0, 1, 2, 3 points ; coefficient 2 pour la fiche énig
 croisé, 1 pour les autres critères ; **pas de rouge** (lettres A à D, sans couleur imposée).
 
 ## Journal
+- 23/10/2026 — ChatGPT : C29 (liste de rentrée) ; rangée dans `docs/`. Prochaine tâche ChatGPT : suite de C4, après le relevé du matériel.
 - 23/10/2026 — ChatGPT : C28 (guides : flèches de la frise, page Jour J) ; rangée. Tâche C29.
 - 23/10/2026 — Claude : page Jour J remise en page (chiffres clés, parties en pastilles, planning avant / pendant / après,
   vérifications et remises à zéro côte à côte). Tâche C28.
