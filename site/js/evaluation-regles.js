@@ -1,5 +1,5 @@
-// Règles de l'évaluation (brief §8.5), sans accès aux fichiers (testées avec node:test). Barème de la proposition C6,
-// à confirmer par le professeur : niveaux A à D = 0 à 3 points, coefficients par critère,
+// Règles de l'évaluation (brief §8.5), sans accès aux fichiers (testées avec node:test). Barème validé par le
+// professeur le 23/10/2026 : niveaux A à D = 0 à 3 points, coefficients par critère (donnees/evaluation.js), sans rouge,
 // note = 20 × Σ(points × coefficient) / (3 × Σ coefficients des critères observés). Un critère non observé reste
 // absent : jamais compté comme A ni comme zéro. Les notes restent dans le dossier personnel du professeur (§10.3).
 (function (racine) {

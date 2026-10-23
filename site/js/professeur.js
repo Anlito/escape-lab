@@ -302,7 +302,7 @@
       var cle = etat().depot + "-" + groupe, el = await prof.lire("evaluations", cle), v = el ? el.valeur : {};
       var eleves = membres(c, groupe), obs = (await prof.lister("observations")).filter(function (o) { return o.valeur.depot === etat().depot; });
       var html = (message ? '<p class="bandeau" role="status">' + message + "</p>" : "") +
-        '<p class="bandeau">Barème proposé (à confirmer) : A = 0, B = 1, C = 2, D = 3 points ; note = 20 × points pondérés ÷ maximum des critères observés. Un critère non observé ne compte pas.</p>' +
+        '<p class="bandeau">Barème : A = 0, B = 1, C = 2, D = 3 points (coefficient 2 pour la fiche énigme, le câblage, le programme et le test croisé) ; note = 20 × points pondérés ÷ maximum des critères observés. Un critère non observé ne compte pas.</p>' +
         '<section class="carte"><label for="groupeEval">Groupe</label><select id="groupeEval">' + c.ids.map(function (id) {
           return '<option value="' + id + '"' + (id === groupe ? " selected" : "") + ">" + e(id + " · " + nomGroupe(c, id)) + "</option>"; }).join("") + "</select>" +
         (eleves.length ? "" : '<p class="ecart">Les membres du groupe ne sont pas encore écrits dans sa fiche « Mon énigme » : seules les colonnes du groupe sont disponibles.</p>') +

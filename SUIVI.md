@@ -93,7 +93,7 @@ Claude « C4 livrée » : Claude relit, intègre et met à jour ce tableau.
 | C19 Annonces types par séance | **intégrée** (`site/donnees/annonces-modeles.js`, bouton « Reprendre » dans Pilotage) |
 | C20 Régie caméras : information et accord | **à faire** (pour l’étape 12) |
 | C21 Mode d’emploi professeur : étapes 10 et 11 | **à faire** |
-| C6 Grille d'évaluation | **rangée** (`site/donnees/evaluation.js`, utilisée à l'étape 11) ; **décisions de Thomas attendues** (voir ci-dessous) |
+| C6 Grille d'évaluation | **intégrée** (étape 11) ; barème validé par Thomas le 23/10 |
 
 ### Tâche C4 — Relevé du matériel à remplir par Thomas au collège (brief §4, question 9)
 Un document imprimable (`releve-materiel.md`) : un tableau par composant de `composants.js` avec ce que Thomas
@@ -274,12 +274,12 @@ notes privées), Évaluation (dossier personnel, grille, note /20 provisoire, ap
 Observation jour J (tablette), Exports (livret, fiches d’installation, CSV, sauvegarde) ; `prof.html` : onglet
 Synchronisation 3C2D1 (aperçu puis synchroniser). Rappeler : notes et observations dans le dossier personnel.
 
-## Questions à Thomas (grille C6)
-1. Barème : A–D = 0, 1, 2, 3 points (tout en C donne 13,3/20). Garder, ou celui des grilles Excel existantes ?
-2. Couleurs : le brief dit rouge / jaune / vert clair / vert foncé, la règle commune dit « jamais de rouge ». Remplacer le rouge (par ex. gris) ?
-3. Coefficients : 2 pour fiche énigme, câblage, programme, test croisé ; 1 ailleurs. D'accord ?
+## Décision de Thomas (grille C6, 23/10/2026)
+Barème validé : A à D = 0, 1, 2, 3 points ; coefficient 2 pour la fiche énigme, le câblage, le programme et le test
+croisé, 1 pour les autres critères ; **pas de rouge** (lettres A à D, sans couleur imposée).
 
 ## Journal
+- 23/10/2026 — Thomas valide le barème C6 (0 à 3 points, coefficients 2 sur quatre critères, sans rouge).
 - 23/10/2026 — ChatGPT : C18 (30 remarques rapides), C19 (25 annonces types).
 - 23/10/2026 — Claude : étape 11. Code professeur (même empreinte que Labo Blocs, `site/code-professeur.js`) devant
   `prof.html` et `index.html?prof`. Espace professeur dans l’application : Suivi des groupes (jalons ○ ◐ ● ✓ !, tri,

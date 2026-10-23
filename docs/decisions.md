@@ -14,7 +14,7 @@ Les valeurs « prévues » ne désignent pas une fonction déjà livrée.
 | ☐ Garder la synchronisation à la demande ou ajouter un rappel ? | À la demande prévu ; dernier état visible ; écran complet à venir. | Sans rappel : action du professeur ; rappel : seuil de délai à fixer. |
 | ☐ Garder le chemin ESCAPE GAME › classe ou adopter la convention Labo Blocs ? | Chemin affiché configuré par équipe. | Garder : organisation actuelle ; changer : adapter réglages et dossiers. |
 | ☐ Quel seuil de fichiers retenir après mesure réseau ? | Bibliothèque : 20 Mo ; ressources de fiches professeur : 50 Mo. | Garder : deux plafonds ; harmoniser ou modifier : adapter limites selon essais. |
-| ☐ Quel barème, quelles couleurs et quels coefficients retenir ? | C6 proposée : A–D = 0/1/2/3 ; coefficients 2 sur F1, câblage, programme, test ; 1 ailleurs. Couleurs non fixées. | Garder : tout en C donne 13,3/20 ; autre barème : recalculer. Gris remplace le rouge ou faire clarifier la règle commune. |
+| ☑ Quel barème, quelles couleurs et quels coefficients retenir ? **Décidé le 23/10 : proposition C6 gardée, sans rouge.** | C6 proposée : A–D = 0/1/2/3 ; coefficients 2 sur F1, câblage, programme, test ; 1 ailleurs. Couleurs non fixées. | Garder : tout en C donne 13,3/20 ; autre barème : recalculer. Gris remplace le rouge ou faire clarifier la règle commune. |
 | ☐ Valider les critères, les ajustements individuels et CSV seul ou Excel aussi ? | Grille proposée ; résultats groupe avec ajustement motivé prévu ; CSV seul prévu. | Confirmer : intégrer ; modifier : revoir critères/portées ; Excel : fournir le gabarit souhaité. |
 
 ## Avant la séance 3
