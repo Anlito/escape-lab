@@ -99,7 +99,8 @@ Claude « C4 livrée » : Claude relit, intègre et met à jour ce tableau.
 | C25 Guides à jour de la nouvelle navigation | **rangée** (`docs/bien-demarrer.md`, `docs/mode-emploi-professeur.md`) |
 | C26 Affiche du projet pour la classe | **rangée** (`docs/affiche-projet.html` à imprimer en A3, `docs/affiche-projet.md`) |
 | C27 Guides : nouvelle frise et histoire en images | **rangée** (`docs/bien-demarrer.md`, `docs/mode-emploi-professeur.md`) |
-| C28 Guides : flèches de la frise, nouvelle page Jour J | **à faire** |
+| C28 Guides : flèches de la frise, nouvelle page Jour J | **rangée** (`docs/bien-demarrer.md`, `docs/mode-emploi-professeur.md`) |
+| C29 Liste de rentrée pour Thomas | **à faire** |
 | C6 Grille d'évaluation | **intégrée** (étape 11) ; barème validé par Thomas le 23/10 |
 
 ### Tâche C4 — Relevé du matériel à remplir par Thomas au collège (brief §4, question 9)
@@ -334,11 +335,21 @@ tablette, on peut aussi la faire glisser au doigt. 2. Jour J : en haut, cinq chi
 2 Rôles et textes, 3 Planning du jour en « Avant · Pendant · Après », 4 Répétition) : une seule s’affiche à la fois.
 Une ou deux phrases par point.
 
+### Tâche C29 — Liste de rentrée (une page, cases à cocher, dans l’ordre)
+`liste-rentree.md` : ce que Thomas fait au collège avant la séance 1, dans l’ordre, avec le document à utiliser :
+lancer `site/test-dossier.html` sur trois postes ; créer les dossiers `ESCAPE GAME › <classe>` ; ouvrir les dossiers
+dans `prof.html` et relire les fiches mécaniques (`⚠️ à confirmer`) ; remplir `docs/releve-materiel.md` puis valider
+les fiches composants ; répondre à `docs/decisions.md` ; vérifier et publier les parcours Escape Lab dans l’éditeur de
+Labo Blocs ; régler séance, groupes, mécaniques et cadenas dans « Réglages et annonces » ; imprimer
+`docs/affiche-projet.html` (A3) et `docs/bien-demarrer.md` ; mener `docs/recette-finale.md`. Une ligne par action,
+sans rien inventer de plus.
+
 ## Décision de Thomas (grille C6, 23/10/2026)
 Barème validé : A à D = 0, 1, 2, 3 points ; coefficient 2 pour la fiche énigme, le câblage, le programme et le test
 croisé, 1 pour les autres critères ; **pas de rouge** (lettres A à D, sans couleur imposée).
 
 ## Journal
+- 23/10/2026 — ChatGPT : C28 (guides : flèches de la frise, page Jour J) ; rangée. Tâche C29.
 - 23/10/2026 — Claude : page Jour J remise en page (chiffres clés, parties en pastilles, planning avant / pendant / après,
   vérifications et remises à zéro côte à côte). Tâche C28.
 - 23/10/2026 — ChatGPT : C26 (affiche A3) et C27 (guides : frise, histoire en images). Claude : frise adaptée à la largeur

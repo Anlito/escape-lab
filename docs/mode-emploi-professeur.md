@@ -44,9 +44,12 @@ En conflit, relire les contributions conservées ; après un échec, garder le b
 L’historique restaure une version en en créant une nouvelle ; il ne remplace pas une copie de secours indépendante.
 
 <!-- C27 : trois lignes ajoutées sur la frise et l’histoire. -->
-La frise relie Début → cartes d’énigmes avec cadenas → Sortie ; chaque carte présente « Dans la boîte », sa durée et son état (● prête, ◐ en préparation, ! en retard) ; cliquer une énigme ouvre sa liaison modifiable en dessous.
+La frise relie Début → cartes d’énigmes avec cadenas → Sortie ; chaque carte présente « Dans la boîte », sa durée et son état (● prête, ◐ en préparation, ! en retard) ; cliquer une énigme ouvre sa liaison modifiable en dessous. Si la frise déborde, les flèches dorées ‹ ›, à gauche et à droite, avancent d’une énigme sans modifier l’ordre. Sur tablette, la frise peut aussi défiler par glissement au doigt.
 L’histoire se construit en six cases (thème, mission, personnages, lieu, déroulement, fin), chacune avec une image de 8 Mo maximum, ajoutée par « Ajouter une image » ou « Depuis la bibliothèque ».
 Utilisez uniquement une photo d’objet ou un dessin, sans élève reconnaissable ; « Retirer » conserve l’ancienne image dans l’historique.
+
+<!-- C28 : repères et parties de la page Jour J. -->
+En haut de Jour J, cinq repères résument la date du jeu, les tâches faites, les élèves sans rôle, les étapes du planning faites et la répétition. Les pastilles ouvrent une seule partie à la fois : 1 Date et logistique ; 2 Rôles et textes ; 3 Planning du jour, organisé en Avant · Pendant · Après ; 4 Répétition.
 
 ### Utiliser Programmation
 

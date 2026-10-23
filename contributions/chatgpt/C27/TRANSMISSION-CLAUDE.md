@@ -1,7 +1,7 @@
-# C27 — frise et histoire en images
+# C27 — complément : flèches de la frise
 
-Livré le 23/10/2026 : deux guides complets, chacun enrichi de trois lignes seulement, repérées par un commentaire C27. Le reste des versions docs/ actuelles est conservé. Les nouvelles lignes couvrent Début/Sortie, cadenas, contenu de boîte, états et durées, liaison au clic, six cases de l’histoire, image ≤ 8 Mo, ajout direct ou bibliothèque, retrait conservé dans l’historique.
+Mise à jour du 23/10/2026 : dans chacun des deux guides actuels de docs/, une seule ligne est complétée pour expliquer les flèches ‹ › quand la chaîne dépasse la largeur de l’écran. Les trois lignes C27 sont conservées. La phrase élève contient douze mots maximum. Le guide professeur distingue le défilement de la chaîne du changement d’ordre des énigmes.
 
-Sources : SUIVI.md, C27 et journal ; libellés de site/js/frise.js et histoire.js ; guides actuels. Phrases des nouvelles lignes élève limitées à douze mots ; aucun prénom ni photo d’élève. Les trois lignes sont des lignes Markdown de contenu, pas une promesse de trois lignes physiques imprimées. Recontrôler pagination après ajout. Aucun fichier du site ou docs/ modifié.
+Sources : SUIVI.md, journal et demande C27 ; site/js/frise.js, boutons gauche/droite et conditions de visibilité ; versions actuelles des deux guides. Aucun fichier de site/ ou docs/ modifié. Ces deux versions remplacent la livraison précédente de C27 après intégration par Claude.
 
-Suivi proposé : « C27 livrée : trois lignes ajoutées à chaque guide sur la frise et les six cases illustrées. »
+Suivi proposé : « C27 complétée : flèches ‹ › de défilement ajoutées aux deux guides. »

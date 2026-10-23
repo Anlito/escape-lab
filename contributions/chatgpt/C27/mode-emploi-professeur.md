@@ -44,7 +44,7 @@ En conflit, relire les contributions conservées ; après un échec, garder le b
 L’historique restaure une version en en créant une nouvelle ; il ne remplace pas une copie de secours indépendante.
 
 <!-- C27 : trois lignes ajoutées sur la frise et l’histoire. -->
-La frise relie Début → cartes d’énigmes avec cadenas → Sortie ; chaque carte présente « Dans la boîte », sa durée et son état (● prête, ◐ en préparation, ! en retard) ; cliquer une énigme ouvre sa liaison modifiable en dessous.
+La frise relie Début → cartes d’énigmes avec cadenas → Sortie ; chaque carte présente « Dans la boîte », sa durée et son état (● prête, ◐ en préparation, ! en retard) ; cliquer une énigme ouvre sa liaison modifiable en dessous. Quand la chaîne dépasse la largeur de l’écran, les flèches ‹ › permettent de la faire défiler ; elles ne changent pas l’ordre des énigmes.
 L’histoire se construit en six cases (thème, mission, personnages, lieu, déroulement, fin), chacune avec une image de 8 Mo maximum, ajoutée par « Ajouter une image » ou « Depuis la bibliothèque ».
 Utilisez uniquement une photo d’objet ou un dessin, sans élève reconnaissable ; « Retirer » conserve l’ancienne image dans l’historique.
 
