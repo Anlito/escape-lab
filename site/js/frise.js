@@ -63,7 +63,7 @@
           var m = app.mecaniques[(groupes[id] || {}).mecanique];
           return '<span style="width:' + (100 * (Number(durees[id]) || parEnigme) / Math.max(dureeJeu, duree.total)) + "%;background:" + (m ? m.couleur : "var(--texte-doux)") + '"></span>';
         }).join("") + "</div></div>" : "") + "</div>" +
-      '<div class="chaine"><div class="chaine-bout"><b>DÉBUT</b><span>' + e((notes.debut && notes.debut.valeur.texte) || "Comment commence la partie ?") + "</span></div>" +
+      '<div class="chaine-cadre"><button class="chaine-nav gauche" aria-label="Énigmes précédentes" hidden>‹</button><div class="chaine"><div class="chaine-bout"><b>DÉBUT</b><span>' + e((notes.debut && notes.debut.valeur.texte) || "Comment commence la partie ?") + "</span></div>" +
       ordre.map(function (id, i) {
         var v = groupes[id] || {}, m = app.mecaniques[v.mecanique], av = app.avancement(v, seance);
         var boite = (liaisons[id] && liaisons[id].donne) || (v.enigme && v.enigme.contenuBoite) || (i + 1 < ordre.length ? "à préciser" : "la fin de la partie");
@@ -75,8 +75,39 @@
           '<span class="petit">Cadenas : ' + e((v.cadenas && v.cadenas.type) || "à attribuer") + "</span>" +
           '<span class="dans-la-boite"><small>Dans la boîte</small>' + e(boite) + "</span>" + etat + "</span></button>";
       }).join("") + fleche +
-      '<div class="chaine-bout sortie"><b>SORTIE</b><span>' + e((notes.fin && notes.fin.valeur.texte) || "Comment se termine la partie ?") + "</span></div></div>";
+      '<div class="chaine-bout sortie"><b>SORTIE</b><span>' + e((notes.fin && notes.fin.valeur.texte) || "Comment se termine la partie ?") + "</span></div></div><button class=\"chaine-nav droite\" aria-label=\"Énigmes suivantes\" hidden>›</button></div>";
     zone.appendChild(partie);
+
+    // Flèches ‹ › quand la chaîne est plus large que l'écran : elles avancent d'une énigme à la fois.
+    var chaine = partie.querySelector(".chaine"), gauche = partie.querySelector(".chaine-nav.gauche"), droite = partie.querySelector(".chaine-nav.droite");
+    function majFleches() {
+      var deborde = chaine.scrollWidth > chaine.clientWidth + 4;
+      gauche.hidden = !deborde || chaine.scrollLeft <= 4;
+      droite.hidden = !deborde || chaine.scrollLeft + chaine.clientWidth >= chaine.scrollWidth - 4;
+      partie.querySelector(".chaine-cadre").classList.toggle("suite-a-droite", !droite.hidden);
+      partie.querySelector(".chaine-cadre").classList.toggle("suite-a-gauche", !gauche.hidden);
+    }
+    // Défilement animé ici : il ne dépend pas du réglage « défilement doux » du navigateur.
+    function avancer(sens) {
+      var maillon = chaine.querySelector(".maillon"), pas = sens * (maillon ? maillon.offsetWidth + 30 : 240);
+      var depart = chaine.scrollLeft, arrivee = Math.max(0, Math.min(chaine.scrollWidth - chaine.clientWidth, depart + pas)), debut = null;
+      function pasSuivant(t) {
+        if (debut === null) debut = t;
+        var p = Math.min(1, (t - debut) / 320), lisse = 1 - Math.pow(1 - p, 3);
+        chaine.scrollLeft = depart + (arrivee - depart) * lisse;
+        if (p < 1) requestAnimationFrame(pasSuivant); else majFleches();
+      }
+      requestAnimationFrame(pasSuivant);
+    }
+    gauche.addEventListener("click", function () { avancer(-1); });
+    droite.addEventListener("click", function () { avancer(1); });
+    chaine.addEventListener("scroll", majFleches, { passive: true });
+    racine.addEventListener("resize", majFleches);
+    requestAnimationFrame(majFleches);
+    setTimeout(majFleches, 300);
+    // La largeur change aussi quand les polices et le menu finissent de se placer.
+    var observateur = racine.ResizeObserver ? new ResizeObserver(majFleches) : null;
+    if (observateur) observateur.observe(chaine);
     partie.addEventListener("click", function (ev) {
       var b = ev.target.closest("[data-aller]");
       if (!b) return;
@@ -179,6 +210,7 @@
       return bloc;
     }
 
-    return Ed.suivreCartes(cartes);
+    var arreterCartes = Ed.suivreCartes(cartes);
+    return function () { arreterCartes(); racine.removeEventListener("resize", majFleches); if (observateur) observateur.disconnect(); };
   };
 })(this);
