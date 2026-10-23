@@ -27,6 +27,11 @@ Le menu est à gauche, ou en haut sur tablette.
 ☐ Dans Programmation, retrouve tes quatre programmes Labo Blocs.
 ☐ Consulte les autres énigmes pour préparer un test.
 
+<!-- C27 : trois lignes ajoutées sur la frise et l’histoire. -->
+La frise relie Début, les énigmes avec cadenas, puis Sortie. Chaque carte indique « Dans la boîte » et sa durée. ● prête · ◐ en préparation · ! en retard. Clique une énigme pour modifier sa liaison en dessous.
+L’histoire contient six cases : thème, mission, personnages, lieu, déroulement, fin. Chaque case peut recevoir une image de 8 Mo maximum.
+Choisis « Ajouter une image » ou « Depuis la bibliothèque ». Utilise une photo d’objet ou un dessin, sans élève reconnaissable. « Retirer » conserve l’ancienne image dans l’historique.
+
 ## ✎ Avance dans ta fiche
 
 La colonne d’étapes indique ton avancement.

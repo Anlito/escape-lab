@@ -97,8 +97,8 @@ Claude « C4 livrée » : Claude relit, intègre et met à jour ce tableau.
 | C23 Recette finale : étapes 10 à 12 | **rangée** (`docs/recette-finale.md`) : **à mener par Thomas au collège** |
 | C24 Relecture des textes lus par les élèves | **intégrée** : 63 corrections sur 64 (celle de l’accueil ne s’applique plus depuis la nouvelle charte) |
 | C25 Guides à jour de la nouvelle navigation | **rangée** (`docs/bien-demarrer.md`, `docs/mode-emploi-professeur.md`) |
-| C26 Affiche du projet pour la classe | **à faire** |
-| C27 Guides : nouvelle frise et histoire en images | **à faire** |
+| C26 Affiche du projet pour la classe | **rangée** (`docs/affiche-projet.html` à imprimer en A3, `docs/affiche-projet.md`) |
+| C27 Guides : nouvelle frise et histoire en images | **rangée** (`docs/bien-demarrer.md`, `docs/mode-emploi-professeur.md`) ; ajouter les flèches ‹ › de la frise |
 | C6 Grille d'évaluation | **intégrée** (étape 11) ; barème validé par Thomas le 23/10 |
 
 ### Tâche C4 — Relevé du matériel à remplir par Thomas au collège (brief §4, question 9)
@@ -331,6 +331,8 @@ Barème validé : A à D = 0, 1, 2, 3 points ; coefficient 2 pour la fiche énig
 croisé, 1 pour les autres critères ; **pas de rouge** (lettres A à D, sans couleur imposée).
 
 ## Journal
+- 23/10/2026 — ChatGPT : C26 (affiche A3) et C27 (guides : frise, histoire en images). Claude : frise adaptée à la largeur
+  de l’écran, flèches ‹ › quand elle déborde.
 - 23/10/2026 — Claude : frise en « chaîne des cadenas » et histoire en storyboard (propositions B validées par Thomas) :
   images des cases dans `histoire-images/<section>` (fichier dans `histoire/fichiers/` ou repris de la bibliothèque).
 - 23/10/2026 — ChatGPT : C25 (guides à jour de la nouvelle navigation) ; rangée dans `docs/`. Tâche C26.
