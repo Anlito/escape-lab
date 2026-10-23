@@ -30,16 +30,19 @@
 
     zone.innerHTML = "";
     var cartes = [];
+    var liaisons = {}, notes = { debut: await st.lire("frise", "debut"), fin: await st.lire("frise", "fin") };
+    for (var k = 0; k + 1 < ordre.length; k++) {
+      var l = await st.lire("liaisons", ordre[k] + "-" + ordre[k + 1]);
+      if (l) liaisons[ordre[k]] = l.valeur;
+    }
 
-    // Durée de la partie (alerte en ambre si elle dépasse le temps prévu).
+    // Durée de la partie, découpée par énigme (alerte en ambre si elle dépasse le temps prévu).
     var durees = {};
     ordre.forEach(function (id) { durees[id] = groupes[id] && groupes[id].enigme && groupes[id].enigme.duree; });
     var duree = O.dureeTotale(ordre, durees, parEnigme);
-    var precision = duree.parDefaut ? " (dont " + duree.parDefaut + " énigme" + (duree.parDefaut > 1 ? "s" : "") + " comptée" + (duree.parDefaut > 1 ? "s" : "") + " " + parEnigme + " min par défaut)" : "";
-    zone.insertAdjacentHTML("beforeend", ordre.length ? (duree.total > dureeJeu
-      ? '<p class="bandeau ecart">Durée estimée : ' + duree.total + " min" + precision + ", pour " + dureeJeu + " min de jeu prévues. Il faudra gagner " + (duree.total - dureeJeu) + " min.</p>"
-      : '<p class="bandeau">Durée estimée : ' + duree.total + " min" + precision + " sur " + dureeJeu + " min de jeu prévues.</p>")
-      : '<p class="bandeau">Le professeur placera ici les énigmes dans l\'ordre choisi par la classe.</p>');
+    var precision = duree.parDefaut ? " (dont " + duree.parDefaut + " comptée" + (duree.parDefaut > 1 ? "s" : "") + " " + parEnigme + " min par défaut)" : "";
+    if (!ordre.length) zone.insertAdjacentHTML("beforeend", '<p class="bandeau">Le professeur placera ici les énigmes dans l\'ordre choisi par la classe.</p>');
+    else if (duree.total > dureeJeu) zone.insertAdjacentHTML("beforeend", '<p class="bandeau ecart">La partie dure ' + duree.total + " min" + precision + ", pour " + dureeJeu + " min prévues. Il faudra gagner " + (duree.total - dureeJeu) + " min.</p>");
 
     // Commandes du professeur : en démonstration, on peut les essayer.
     if (et.demo && !app.modeProf) {
@@ -49,41 +52,58 @@
     }
     if (et.prof) zone.appendChild(panneauOrdre());
 
-    // La suite : Début → énigmes et liaisons → Fin.
-    var suite = document.createElement("div");
-    suite.className = "suite";
-    function ajouterCarte(carte) { cartes.push(carte); suite.appendChild(carte.noeud); }
-
-    ajouterCarte(Ed.creerCarte({ collection: "frise", id: "debut", titre: "Début de partie (facultatif)",
-      champs: [{ cle: "texte", libelle: "Début", aide: "Ce qui se passe à l'arrivée des joueurs.", lignes: 3 }] }));
-    ordre.forEach(function (id, i) {
-      suite.appendChild(carteEnigme(id, i + 1));
-      if (i + 1 < ordre.length) {
-        var suivant = ordre[i + 1], boite = groupes[id] && groupes[id].enigme && groupes[id].enigme.contenuBoite;
-        var carte = Ed.creerCarte({ collection: "liaisons", id: id + "-" + suivant, titre: "Liaison " + (i + 1) + " → " + (i + 2),
-          champs: CHAMPS_LIAISON, parDefaut: boite ? { donne: boite } : {} });
-        carte.noeud.classList.add("liaison");
-        ajouterCarte(carte);
-      }
+    // La chaîne : Début → une carte par énigme (ce qu'elle transmet) → Sortie.
+    var fleche = '<span class="chaine-fleche" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>';
+    var cadenas = '<svg width="58" height="58" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 22v-6a8 8 0 0 1 16 0v6"/><rect x="10" y="22" width="28" height="20" rx="4"/><path d="M24 30v5"/></svg>';
+    var partie = document.createElement("section");
+    partie.className = "carte";
+    partie.innerHTML = '<div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:14px"><h2 style="margin:0">Chaque boîte ouvre la suivante</h2>' +
+      (ordre.length ? '<div class="duree-partie"><span class="petit">Durée de la partie : ' + duree.total + " min sur " + dureeJeu + precision + '</span><div class="duree-barre" role="img" aria-label="' +
+        duree.total + " minutes sur " + dureeJeu + '">' + ordre.map(function (id) {
+          var m = app.mecaniques[(groupes[id] || {}).mecanique];
+          return '<span style="width:' + (100 * (Number(durees[id]) || parEnigme) / Math.max(dureeJeu, duree.total)) + "%;background:" + (m ? m.couleur : "var(--texte-doux)") + '"></span>';
+        }).join("") + "</div></div>" : "") + "</div>" +
+      '<div class="chaine"><div class="chaine-bout"><b>DÉBUT</b><span>' + e((notes.debut && notes.debut.valeur.texte) || "Comment commence la partie ?") + "</span></div>" +
+      ordre.map(function (id, i) {
+        var v = groupes[id] || {}, m = app.mecaniques[v.mecanique], av = app.avancement(v, seance);
+        var boite = (liaisons[id] && liaisons[id].donne) || (v.enigme && v.enigme.contenuBoite) || (i + 1 < ordre.length ? "à préciser" : "la fin de la partie");
+        var etat = av.pourcent === 100 ? '<span class="etat-fait">● prête</span>' : av.retard.length ? '<span class="etat-retard">! en retard</span>' : '<span class="etat-en-cours">◐ en préparation</span>';
+        return fleche + '<button class="maillon' + (id === et.groupe && !app.modeProf ? " moi" : "") + '" data-aller="' + e(id) + '" style="--teinte:' + (m ? m.couleur : "var(--or)") + '">' +
+          '<span class="haut" style="background:' + (m ? m.couleur + "22" : "var(--fond-menu)") + ";color:" + (m ? m.couleur : "var(--or)") + '"><span class="numero-case">' + (i + 1) + "</span>" + cadenas +
+          '<span class="duree">' + (v.enigme && v.enigme.duree ? e(v.enigme.duree) + " min" : parEnigme + " min ?") + "</span></span>" +
+          '<span class="bas"><span class="petit">Groupe ' + e(id) + " · " + e(m ? m.nom : "mécanique à attribuer") + "</span><strong>" + e(nomDe(id)) + "</strong>" +
+          '<span class="petit">Cadenas : ' + e((v.cadenas && v.cadenas.type) || "à attribuer") + "</span>" +
+          '<span class="dans-la-boite"><small>Dans la boîte</small>' + e(boite) + "</span>" + etat + "</span></button>";
+      }).join("") + fleche +
+      '<div class="chaine-bout sortie"><b>SORTIE</b><span>' + e((notes.fin && notes.fin.valeur.texte) || "Comment se termine la partie ?") + "</span></div></div>";
+    zone.appendChild(partie);
+    partie.addEventListener("click", function (ev) {
+      var b = ev.target.closest("[data-aller]");
+      if (!b) return;
+      var cible = zone.querySelector('[data-liaison="' + b.getAttribute("data-aller") + '"]');
+      if (cible) { cible.scrollIntoView({ behavior: "smooth", block: "center" }); cible.classList.add("repere"); setTimeout(function () { cible.classList.remove("repere"); }, 1600); }
     });
+
+    // Les notes modifiables par tous : début et fin, puis ce qui passe d'une énigme à l'autre.
+    var blocNotes = document.createElement("div");
+    blocNotes.innerHTML = '<h2 style="margin-top:8px">Début et fin de la partie</h2><div class="grille notes-frise"></div>' +
+      (ordre.length > 1 ? '<h2 style="margin-top:18px">Ce qui passe d\'une énigme à l\'autre</h2><div class="grille liaisons-frise"></div>' : "");
+    zone.appendChild(blocNotes);
+    function ajouterCarte(carte, conteneur) { cartes.push(carte); conteneur.appendChild(carte.noeud); return carte; }
+    ajouterCarte(Ed.creerCarte({ collection: "frise", id: "debut", titre: "Début de partie (facultatif)",
+      champs: [{ cle: "texte", libelle: "Début", aide: "Ce qui se passe à l'arrivée des joueurs.", lignes: 3 }] }), blocNotes.querySelector(".notes-frise"));
     ajouterCarte(Ed.creerCarte({ collection: "frise", id: "fin", titre: "Fin de partie",
-      champs: [{ cle: "texte", libelle: "Fin", aide: "Dernière révélation, sortie, message final, remise à zéro.", lignes: 4 }] }));
-    zone.appendChild(suite);
+      champs: [{ cle: "texte", libelle: "Fin", aide: "Dernière révélation, sortie, message final, remise à zéro.", lignes: 4 }] }), blocNotes.querySelector(".notes-frise"));
+    ordre.forEach(function (id, i) {
+      if (i + 1 >= ordre.length) return;
+      var suivant = ordre[i + 1], boite = groupes[id] && groupes[id].enigme && groupes[id].enigme.contenuBoite;
+      var carte = ajouterCarte(Ed.creerCarte({ collection: "liaisons", id: id + "-" + suivant, titre: (i + 1) + ". " + nomDe(id) + " → " + (i + 2) + ". " + nomDe(suivant),
+        champs: CHAMPS_LIAISON, parDefaut: boite ? { donne: boite } : {} }), blocNotes.querySelector(".liaisons-frise"));
+      carte.noeud.classList.add("liaison");
+      carte.noeud.setAttribute("data-liaison", id);
+    });
 
     zone.appendChild(await blocHistoriqueOrdre());
-
-    function carteEnigme(id, rang) {
-      var v = groupes[id] || {}, m = app.mecaniques[v.mecanique];
-      var av = app.avancement(v, seance);
-      var noeud = document.createElement("article");
-      noeud.className = "carte enigme";
-      noeud.innerHTML = '<p class="rang">Énigme ' + rang + "</p><h3>" + app.pastille(v.mecanique) + " " + e(nomDe(id)) + "</h3>" +
-        '<p class="petit">Groupe ' + e(id) + " · " + e(m ? m.nom : "mécanique à attribuer") + "</p>" +
-        "<p>Avancement : " + av.pourcent + " %</p>" +
-        "<p>Cadenas : " + e((v.cadenas && v.cadenas.type) || "à attribuer") + "</p>" +
-        "<p>Durée estimée : " + (v.enigme && v.enigme.duree ? e(v.enigme.duree) + " min" : "pas encore estimée") + "</p>";
-      return noeud;
-    }
 
     function panneauOrdre() {
       var travail = ordre.slice(), glisse = null;

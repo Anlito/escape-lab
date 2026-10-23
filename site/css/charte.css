@@ -201,6 +201,48 @@ main { padding: 16px; }
 .case { display: flex; gap: .6em; align-items: center; font-weight: 400; min-height: 44px; margin: .3em 0; }
 .case input { width: 1.3em; }
 
+/* Histoire en storyboard : six cases, une image et un texte chacune */
+.titre-histoire h3 { color: var(--or); font-size: .85rem; letter-spacing: .14em; text-transform: uppercase; font-family: var(--police); }
+.titre-histoire p:not(.petit):not(.presence) { font: 700 1.9rem/1.15 var(--titres); margin: .2em 0; }
+.storyboard { display: grid; gap: 18px; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-bottom: 18px; }
+.case-histoire { display: flex; flex-direction: column; border-radius: 18px; background: var(--fond-carte); border: 2px solid var(--bord); overflow: hidden; }
+.case-histoire:focus-within { border-color: var(--or); }
+.case-histoire > .editable { border: none; margin: 0; background: none; border-radius: 0; padding: 14px 16px 16px; flex: 1; }
+.image-case { position: relative; min-height: 170px; background: var(--fond-menu); display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.image-case.avec-image { min-height: 0; }
+.image-case img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; display: block; }
+.numero-case { position: absolute; top: 12px; left: 12px; z-index: 1; width: 34px; height: 34px; border-radius: 10px; background: var(--or); color: #17181c; display: flex; align-items: center; justify-content: center; font: 700 1rem var(--titres); }
+.ajout-image { display: flex; flex-direction: column; align-items: center; gap: 8px; color: var(--texte-doux); padding: 18px; }
+.ajout-image select { width: auto; max-width: 100%; }
+.actions-image { position: absolute; right: 10px; bottom: 10px; display: flex; gap: 6px; }
+.petit-bouton { min-height: 38px; padding: .25em .8em; font-size: .88rem; background: rgba(23, 24, 28, .85); }
+.message-image { padding: 0 12px 8px; margin: 0; }
+
+/* Frise : la chaîne des cadenas */
+.duree-partie { display: flex; flex-direction: column; gap: 6px; min-width: min(360px, 100%); }
+.duree-barre { height: 14px; border-radius: 7px; background: var(--fond-carte-2); overflow: hidden; display: flex; }
+.duree-barre span { height: 100%; border-right: 2px solid var(--fond); }
+.chaine { display: flex; align-items: stretch; overflow-x: auto; padding-bottom: 8px; margin-bottom: 22px; }
+.chaine-bout { flex: 0 0 150px; display: flex; flex-direction: column; justify-content: center; gap: 8px; padding: 16px; border-radius: 18px; background: var(--fond-carte); border: 2px solid var(--vert); }
+.chaine-bout b { font: 700 .9rem var(--titres); letter-spacing: .1em; color: var(--vert); }
+.chaine-bout.sortie { border-color: var(--or); background: var(--or-voile); }
+.chaine-bout.sortie b { color: var(--or); }
+.chaine-fleche { flex: 0 0 40px; display: flex; align-items: center; justify-content: center; color: var(--or); }
+.maillon { flex: 0 0 220px; display: flex; flex-direction: column; border-radius: 18px; background: var(--fond-carte-2); border: 2px solid var(--bord); overflow: hidden; text-decoration: none; color: var(--texte); }
+.maillon.moi { border-color: var(--or); }
+.maillon .haut { position: relative; height: 104px; display: flex; align-items: center; justify-content: center; }
+.maillon .haut .numero-case { background: var(--teinte, var(--or)); }
+.maillon .duree { position: absolute; top: 14px; right: 12px; font-size: .8rem; background: rgba(23, 24, 28, .7); padding: 3px 8px; border-radius: 999px; }
+.maillon .bas { padding: 14px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+.maillon .bas strong { font: 700 1.05rem/1.2 var(--titres); }
+.dans-la-boite { margin-top: auto; padding: 10px 12px; border-radius: 12px; background: var(--fond-menu); border: 1px dashed var(--or); display: flex; flex-direction: column; gap: 2px; font-size: .9rem; }
+.liaison.repere { border-color: var(--or); box-shadow: 0 0 0 3px var(--or-voile); }
+.maillon { font: inherit; text-align: left; padding: 0; min-height: 0; cursor: pointer; align-items: stretch; justify-content: flex-start; gap: 0; }
+.maillon .haut, .maillon .bas { width: 100%; }
+.maillon .bas { align-items: flex-start; }
+.maillon:hover { border-color: var(--or); }
+.dans-la-boite small { font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--or); }
+
 /* Frise : suite horizontale, verticale sur petit écran */
 .suite { display: flex; gap: 12px; overflow-x: auto; align-items: flex-start; padding-bottom: 8px; margin-bottom: 18px; }
 .suite > .carte { flex: 0 0 290px; margin: 0; }
@@ -390,6 +432,7 @@ table.suivi thead th { font-size: .78rem; text-align: center; color: #a9a49a; }
   .accueil-hero { padding: 32px 20px; border-right: none; border-bottom: 1px solid #2f3239; }
   .accueil-formulaire { padding: 28px 16px; max-width: none; }
   .duo { grid-template-columns: 1fr; }
+  .storyboard { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .fiche-corps { grid-template-columns: 1fr; }
   .etapes-fiche { position: static; flex-direction: row; overflow-x: auto; padding-bottom: 6px; }
   .etape-fiche { flex: 0 0 auto; width: auto; }
@@ -400,6 +443,7 @@ table.suivi thead th { font-size: .78rem; text-align: center; color: #a9a49a; }
 }
 @media (max-width: 600px) {
   .deux-textes { grid-template-columns: 1fr; }
+  .storyboard { grid-template-columns: 1fr; }
   .tete-mission h1, .tete-page h1 { font-size: 1.7rem; }
   .frise { flex-direction: column; align-items: flex-start; }
 }

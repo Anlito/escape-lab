@@ -98,6 +98,7 @@ Claude « C4 livrée » : Claude relit, intègre et met à jour ce tableau.
 | C24 Relecture des textes lus par les élèves | **intégrée** : 63 corrections sur 64 (celle de l’accueil ne s’applique plus depuis la nouvelle charte) |
 | C25 Guides à jour de la nouvelle navigation | **rangée** (`docs/bien-demarrer.md`, `docs/mode-emploi-professeur.md`) |
 | C26 Affiche du projet pour la classe | **à faire** |
+| C27 Guides : nouvelle frise et histoire en images | **à faire** |
 | C6 Grille d'évaluation | **intégrée** (étape 11) ; barème validé par Thomas le 23/10 |
 
 ### Tâche C4 — Relevé du matériel à remplir par Thomas au collège (brief §4, question 9)
@@ -317,11 +318,21 @@ J1 en une ligne chacun, les trois niveaux d’indices, la règle de sécurité 1
 (https://anlito.github.io/escape-lab/site/). Phrases de 12 mots au plus, tutoiement, aucun prénom. Pensée pour être lue
 de loin : peu de texte, gros titres.
 
+### Tâche C27 — Guides : la frise en chaîne de cadenas et l’histoire en storyboard
+Dans `bien-demarrer.md` et `mode-emploi-professeur.md` : la **frise** montre Début → une carte par énigme (cadenas,
+« Dans la boîte », état ● prête / ◐ en préparation / ! en retard) → Sortie, et la durée découpée par énigme ; cliquer
+une énigme mène à sa liaison, modifiable en dessous. L’**histoire** se fait en six cases (thème, mission,
+personnages, lieu, déroulement, fin), chacune avec **une image** : « Ajouter une image » (8 Mo au plus, photo d’objet
+ou dessin, jamais d’élève reconnaissable) ou « Depuis la bibliothèque » ; « Retirer » garde l’ancienne dans
+l’historique. Deux ou trois lignes par guide, pas plus.
+
 ## Décision de Thomas (grille C6, 23/10/2026)
 Barème validé : A à D = 0, 1, 2, 3 points ; coefficient 2 pour la fiche énigme, le câblage, le programme et le test
 croisé, 1 pour les autres critères ; **pas de rouge** (lettres A à D, sans couleur imposée).
 
 ## Journal
+- 23/10/2026 — Claude : frise en « chaîne des cadenas » et histoire en storyboard (propositions B validées par Thomas) :
+  images des cases dans `histoire-images/<section>` (fichier dans `histoire/fichiers/` ou repris de la bibliothèque).
 - 23/10/2026 — ChatGPT : C25 (guides à jour de la nouvelle navigation) ; rangée dans `docs/`. Tâche C26.
 - 23/10/2026 — ChatGPT : C24 (64 propositions de relecture) ; Claude en applique 63 et donne la tâche C25.
 - 23/10/2026 — Claude : nouvelle charte et navigation (maquette validée par Thomas, https://claude.ai/artifact/X5ddttfcPeL2UmuBt2nLpX) :
