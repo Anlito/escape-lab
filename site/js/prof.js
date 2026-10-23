@@ -8,7 +8,7 @@
   var e = O.echapper;
   var REGLAGES = null, DEMO = null, EBAUCHES = { mecaniques: [], composants: [] };
   racine.definirEquipes = function (r) { REGLAGES = r; };
-  racine.definirMecaniques = function (m) { EBAUCHES.mecaniques = m.mecaniques; };
+  racine.definirMecaniques = function (m) { EBAUCHES.mecaniques = EBAUCHES.mecaniques.concat(m.mecaniques); };
   racine.definirComposants = function (c) { EBAUCHES.composants = c.composants; };
   racine.definirDemo = function (d) { DEMO = d; };
 
@@ -146,7 +146,7 @@
       var v = x.valeur;
       var detail = page === "composants"
         ? '<p class="petit">' + e(v.type || "") + " · " + (v.valideParProf ? '<span class="valide">✓ validée</span>' : '<span class="ecart">pas encore validée</span>') + "</p>"
-        : "";
+        : v.supplementaire ? '<p class="petit">Mécanique supplémentaire : principe à confirmer avant de l\'attribuer.</p>' : "";
       return '<article class="carte groupe"><h3>' + (page === "mecaniques" ? pastille(v) + " " : "") + e(v.nom) + "</h3>" + detail +
         "<ul class=\"petit\">" + dossiers.map(function (d, i) {
           var el = x.etats[i];

@@ -84,10 +84,11 @@ Claude « C4 livrée » : Claude relit, intègre et met à jour ce tableau.
 | C10 Exercices guidés Labo Blocs | **rangée** (`docs/exercices-labo-blocs.md`, parcours créé à l’étape 10) |
 | C11 Appréciations générées | **rangée** (`site/donnees/appreciations.js`, utilisée à l’étape 11) |
 | C12 Fiche de recette finale | **rangée** (`docs/recette-finale.md`) ; liens : http:// et https:// acceptés |
-| C13 Mécaniques supplémentaires | **à faire** (pour l’étape 9) |
-| C14 Guide « Bien démarrer » élève | **à faire** |
-| C15 Mode d’emploi du professeur | **à faire** (pour l’étape 11) |
+| C13 Mécaniques supplémentaires | **intégrée** (`site/donnees/mecaniques-supplementaires.js`, 7 ébauches marquées « supplémentaire ») ; relecture Thomas avec le Drive |
+| C14 Guide « Bien démarrer » élève | **rangée** (`docs/bien-demarrer.md`) ; à imprimer, relecture Thomas |
+| C15 Mode d’emploi du professeur | **rangée** (`docs/mode-emploi-professeur.md`) ; **à mettre à jour** : écrit avant l’étape 9 (`prof.html` existe maintenant), à revoir après l’étape 11 |
 | C16 Fiche complète de démonstration | **à faire** (pour l’étape 11) |
+| C17 Décisions à prendre (une page) | **à faire** |
 | C6 Grille d'évaluation | **rangée** (`site/donnees/evaluation.js`, utilisée à l'étape 11) ; **décisions de Thomas attendues** (voir ci-dessous) |
 
 ### Tâche C4 — Relevé du matériel à remplir par Thomas au collège (brief §4, question 9)
@@ -231,12 +232,25 @@ de broche** (laisser `brocheCarte` vide). Sert à tester le livret du Game Maste
 Pour C13 : l’espace professeur importe une fiche `.json` ; garder le format `definirMecaniques` demandé, Claude
 convertira.
 
+### Tâche C17 — Une page « Décisions à prendre » pour Thomas
+`decisions.md` : toutes les questions encore ouvertes, rassemblées depuis le brief §14 (questions 1 à 14) et ce
+fichier (grille C6, http/https, taille des fichiers, micro:bit et E1, mécaniques supplémentaires…), **sans celles
+déjà tranchées** (lire « Décisions » du brief et le journal ci-dessous). Pour chacune : la question en une phrase, la
+valeur par défaut appliquée aujourd’hui dans l’outil, ce que change chaque réponse possible, une case à cocher.
+Classer par urgence : avant la rentrée, avant la séance 3, avant le jour J.
+
+Pour C15 : mettre à jour `mode-emploi-professeur.md` avec l’étape 9 (`site/prof.html` : ouvrir plusieurs dossiers,
+fiches mécaniques et composants, activer, exporter, importer).
+
 ## Questions à Thomas (grille C6)
 1. Barème : A–D = 0, 1, 2, 3 points (tout en C donne 13,3/20). Garder, ou celui des grilles Excel existantes ?
 2. Couleurs : le brief dit rouge / jaune / vert clair / vert foncé, la règle commune dit « jamais de rouge ». Remplacer le rouge (par ex. gris) ?
 3. Coefficients : 2 pour fiche énigme, câblage, programme, test croisé ; 1 ailleurs. D'accord ?
 
 ## Journal
+- 23/10/2026 — ChatGPT : C13 (7 mécaniques supplémentaires), C14 (Bien démarrer), C15 (mode d’emploi professeur).
+- 23/10/2026 — Claude : C13 chargée dans l’élève et le professeur (13 fiches, les 7 supplémentaires signalées), C14 et
+  C15 rangées dans `docs/`. Tâches C16 (en cours), C17, mise à jour de C15.
 - 23/10/2026 — Claude : étape 9, `site/prof.html` (première partie de l’espace professeur). Ouvrir un ou plusieurs dossiers
   de classe (ou la classe fictive) ; fiches mécaniques et composants : liste avec l’état par dossier (ébauche du site
   ou modifiée le …), éditeur sans code, liens et ressources déposées (image, PDF, audio, vidéo ≤ 50 Mo), contrôles

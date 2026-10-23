@@ -11,7 +11,7 @@
   racine.definirJalons = function (j) { JALONS = j.jalons; };
   // Ébauches du site ; les fiches enregistrées par le professeur dans le dossier les remplacent (chargerReferentiels).
   var EBAUCHES_MECANIQUES = [], EBAUCHES_COMPOSANTS = [];
-  racine.definirMecaniques = function (m) { EBAUCHES_MECANIQUES = m.mecaniques; m.mecaniques.forEach(function (x) { MECANIQUES[x.id] = x; }); };
+  racine.definirMecaniques = function (m) { EBAUCHES_MECANIQUES = EBAUCHES_MECANIQUES.concat(m.mecaniques); m.mecaniques.forEach(function (x) { MECANIQUES[x.id] = x; }); };
   racine.definirDemo = function (d) { DEMO = d; };
   var AIDES = {};
   racine.definirAides = function (a) { AIDES = a.champs || {}; };
