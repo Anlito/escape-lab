@@ -108,3 +108,24 @@ test("jour J : jalon J1 d'un groupe", () => {
   assert.equal(F.etatJourJ(["Inès"], roles), "à faire");
   assert.equal(F.etatJourJ([], roles), "à faire");
 });
+
+// --- Programme Labo Blocs (étape 10) ---
+
+test("programme : une entrée et une sortie, E1 respecté", () => {
+  const r = F.analyserProgramme({ demarrage: [], boucle: [{ bloc: "si_alors", condition: { bloc: "bouton_etat", broche: "D2" }, alors: [{ bloc: "servo_angle", broche: "D5", angle: 90 }] }] });
+  assert.deepEqual([r.entrees, r.sorties, r.e1], [["bouton_etat"], ["servo_angle"], true]);
+});
+
+test("programme : sortie seule, événement « quand appui », programme vide", () => {
+  assert.equal(F.analyserProgramme({ boucle: [{ bloc: "led_etat", broche: "D3" }] }).e1, false);
+  assert.equal(F.analyserProgramme([{ quand: "appui", broche: "D2", blocs: [{ bloc: "son" }] }]).e1, true);
+  assert.equal(F.analyserProgramme(null).vide, true);
+  assert.equal(F.analyserProgramme({ boucle: [{ bloc: "mb_lumiere" }, { bloc: "mb_image" }] }).e1, true);
+});
+
+test("programme : forme enregistrée par Labo Blocs (blocs de Blockly)", () => {
+  const programme = { blocks: { languageVersion: 0, blocks: [{ type: "demarrage" }, { type: "boucle", inputs: { DO: { block: {
+    type: "si_alors", inputs: { CONDITION: { block: { type: "bouton_etat" } }, ALORS: { block: { type: "led_etat" } } } } } } }] } };
+  assert.equal(F.analyserProgramme(programme).e1, true);
+  assert.equal(F.analyserProgramme({ blocks: { blocks: [{ type: "demarrage" }, { type: "boucle" }] } }).vide, true);
+});

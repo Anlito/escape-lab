@@ -157,6 +157,11 @@ th, td { border: 1px solid var(--bord); padding: .3em .4em; text-align: left; ve
 .enregistrer { align-items: center; }
 .journal li { margin-bottom: .6em; }
 
+/* Programmation : l'écran de Labo Blocs prend toute la fenêtre */
+.hote-labo-blocs { position: fixed; inset: 0; z-index: 50; background: #fff; overflow: auto; }
+body.labo-ouvert { overflow: hidden; }
+.emplacement select, .emplacement input { margin-bottom: .3em; }
+
 /* Jour J */
 .section-jourj > h2 { margin-top: 1em; }
 .ligne-carte label { font-size: .9rem; margin-top: .4em; }

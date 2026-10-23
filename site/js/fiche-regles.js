@@ -174,7 +174,33 @@
     return etat(complets === noms.length, commences > 0);
   }
 
+  // --- Programme Labo Blocs (brief §11, point 3) : au moins une entrée et une sortie, signalé, jamais bloquant ---
+
+  var BLOCS_ENTREE = ["bouton_etat", "joystick_direction", "joystick_position", "joystick_bouton", "touche_appuyee",
+    "mb_bouton", "mb_logo", "mb_geste", "mb_acceleration", "mb_temperature", "mb_lumiere"];
+  var BLOCS_SORTIE = ["led_etat", "servo_angle", "son", "mb_image", "mb_texte", "mb_dessin", "mb_pixel", "mb_note", "mb_nombre"];
+  var QUAND_ENTREE = ["appui", "relache", "joystick", "touche"];
+
+  // Parcourt un programme et range ce qu'il lit et ce qu'il commande. Deux formes : celle du noyau ({ bloc, quand })
+  // et celle que Labo Blocs enregistre (blocs de Blockly : { type, inputs: { … { block: { type } } } }).
+  function analyserProgramme(programme) {
+    var entrees = {}, sorties = {};
+    (function parcourir(x) {
+      if (Array.isArray(x)) return x.forEach(parcourir);
+      if (!x || typeof x !== "object") return;
+      var nom = typeof x.bloc === "string" ? x.bloc : typeof x.type === "string" ? x.type : "";
+      if (BLOCS_ENTREE.indexOf(nom) !== -1) entrees[nom] = true;
+      if (QUAND_ENTREE.indexOf(x.quand) !== -1) entrees["quand_" + x.quand] = true;
+      if (/^quand_(bouton|joystick|touche)/.test(nom)) entrees[nom] = true;
+      if (BLOCS_SORTIE.indexOf(nom) !== -1) sorties[nom] = true;
+      Object.keys(x).forEach(function (k) { if (x[k] && typeof x[k] === "object") parcourir(x[k]); });
+    })(programme);
+    var e = Object.keys(entrees), s = Object.keys(sorties);
+    return { entrees: e, sorties: s, vide: !e.length && !s.length, e1: e.length > 0 && s.length > 0 };
+  }
+
   var EscapeLabFiche = {
+    analyserProgramme: analyserProgramme,
     prenomsDe: prenomsDe, elevesSansRole: elevesSansRole, etatJourJ: etatJourJ,
     lireChemin: lireChemin, ecrireChemin: ecrireChemin, fusionner: fusionner, calculerJalons: calculerJalons,
     manquesIndices: manquesIndices, controlesCablage: controlesCablage, BROCHES: BROCHES, A_FAIRE: A_FAIRE, EN_COURS: EN_COURS, FAIT: FAIT

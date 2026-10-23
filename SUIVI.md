@@ -30,7 +30,7 @@ jour après. Le brief complet est dans `docs/BRIEF-CLAUDE-CODE-escape-lab.md`.
 | 7 | Fiche énigme, énigmes des autres, câblage v1 | Claude | fait ; **recette Thomas** |
 | 8 | Page jour J | Claude | fait ; **recette Thomas** |
 | 9 | Fiches mécaniques + bibliothèque de composants (contenus) | **ChatGPT** (contenu) + Claude (éditeur) | fait (`site/prof.html`) ; **recette Thomas** |
-| 10 | Labo Blocs : parcours Escape Lab, partie libre | Claude | à faire |
+| 10 | Labo Blocs : parcours Escape Lab, partie libre | Claude | fait ; **recette Thomas** (et validation des plans de composants) |
 | 11 | Espace professeur, évaluation, exports | Claude | à faire |
 | 12 | Câblage v2, régie caméras (phase 2) | Claude | après décision |
 | 13 | Recette | Thomas + Claude | à faire |
@@ -248,6 +248,15 @@ fiches mécaniques et composants, activer, exporter, importer).
 3. Coefficients : 2 pour fiche énigme, câblage, programme, test croisé ; 1 ailleurs. D'accord ?
 
 ## Journal
+- 23/10/2026 — Claude : étape 10. Dans `labo-blocs` (branche `claude/parcours-escape-lab`, pas encore envoyée) :
+  parcours `escape-lab` (Uno) et `escape-lab-microbit`, 4 exercices libres chacun = les 4 emplacements, au format
+  de l’éditeur (contrôlés par `controler`) ; `docs/PLANS-COMPOSANTS-ESCAPE-LAB.md` (potentiomètre et relais sans
+  toucher au micrologiciel ; clavier 3×4 et LCD avec ; Grove UART en attente) **à valider avant tout code**.
+  Dans Escape Lab : module Labo Blocs 0.5.0 copié par `npm run vers-projet` (`site/vendor/labo-blocs/`, jamais
+  modifié ici) ; page Programmation : 4 emplacements nommables, carte Uno ou micro:bit (à valider par le
+  professeur), écran d’exercice de Labo Blocs en plein écran, enregistrement dans `programmation/<g>-<carte>` (un
+  fichier d’équipe Labo Blocs par carte), contrôle E1 (au moins une entrée et une sortie, signalé), autres groupes en
+  lecture seule. Les exercices guidés (C10) restent à créer dans l’éditeur. 46 tests verts.
 - 23/10/2026 — ChatGPT : C13 (7 mécaniques supplémentaires), C14 (Bien démarrer), C15 (mode d’emploi professeur).
 - 23/10/2026 — Claude : C13 chargée dans l’élève et le professeur (13 fiches, les 7 supplémentaires signalées), C14 et
   C15 rangées dans `docs/`. Tâches C16 (en cours), C17, mise à jour de C15.

@@ -1,0 +1,208 @@
+{
+  "enigme": {
+    "titre": "Le plan des réserves",
+    "membres": [
+      {
+        "prenom": "Zéluno",
+        "role": "chef de projet"
+      },
+      {
+        "prenom": "Maérix",
+        "role": "programmeur"
+      },
+      {
+        "prenom": "Soléva",
+        "role": "designer/constructeur"
+      },
+      {
+        "prenom": "Noryl",
+        "role": "rédacteur/reporter"
+      }
+    ],
+    "roleHistoire": "Exemple fictif : retrouver le premier fragment du protocole de réveil de la station Aurore.",
+    "scenario": "Exemple fictif. Les joueurs trouvent une grille et un rapport de positions. Ils placent les quatorze pions selon les coordonnées du rapport. La silhouette forme une lettre. Ils appuient sur le bouton pour révéler la règle de conversion cachée sous un volet. Ils transforment la lettre en code et ouvrent la boîte. Le fragment trouvé les conduit au poste des archives transparentes.",
+    "solution": "Exemple fictif : la silhouette forme A. Le volet révèle « Rang dans l’alphabet : A vaut 1, B vaut 2… Écris le nombre sur quatre chiffres en ajoutant des zéros devant. » A donne donc 0001. Cette solution est inventée uniquement pour la démonstration.",
+    "cadenas": "Cadenas à quatre chiffres — exemple fictif, non attribué au matériel réel",
+    "codeCadenas": "0001",
+    "contenuBoite": "Exemple fictif : fragment 1 du protocole et carte « Rejoins les archives transparentes, poste 2 ».",
+    "duree": 10,
+    "difficulte": "★★",
+    "matiere": "Mathématiques",
+    "lienMatiere": "Exemple fictif : nous utilisons le repérage dans un quadrillage. Une lettre indique la colonne et un nombre indique la ligne. Chaque coordonnée du rapport permet de placer un pion."
+  },
+  "fonctionnement": {
+    "texte": "Exemple fictif. La grille comporte cinq colonnes, de A à E de gauche à droite, et cinq lignes, de 1 à 5 du haut vers le bas. Le rapport donne : B1, C1, D1, A2, E2, A3, B3, C3, D3, E3, A4, E4, A5, E5. Un pion occupe chaque case indiquée. Les cases occupées dessinent A. Le bouton commande un servomoteur qui soulève un volet : la règle de conversion devient accessible. Le bouton ne contrôle pas le placement des pions ; les joueurs interprètent eux-mêmes la lettre. Le code fictif ouvre un cadenas indépendant du volet. Le groupe suivant exploite le fragment et l’indication du poste 2.",
+    "photos": []
+  },
+  "materiel": {
+    "lignes": [
+      {
+        "element": "Grille cinq par cinq et rapport de quatorze coordonnées — exemple fictif",
+        "quantite": 1,
+        "origine": "creer",
+        "machine": "Canva et impression papier",
+        "responsable": "Noryl",
+        "etat": "fait"
+      },
+      {
+        "element": "Plateau quadrillé — exemple fictif",
+        "quantite": 1,
+        "origine": "creer",
+        "machine": "Carton, assemblage selon consignes du professeur",
+        "responsable": "Soléva",
+        "etat": "fait"
+      },
+      {
+        "element": "Pions — exemple fictif",
+        "quantite": 14,
+        "origine": "creer",
+        "machine": "Carton",
+        "responsable": "Soléva",
+        "etat": "fait"
+      },
+      {
+        "element": "Boîte et volet révélateur — exemple fictif",
+        "quantite": 1,
+        "origine": "creer",
+        "machine": "Carton ; dimensions pédagogiques, réalisation à valider",
+        "responsable": "Zéluno",
+        "etat": "fait"
+      },
+      {
+        "element": "Cadenas à quatre chiffres — disponibilité réelle à vérifier",
+        "quantite": 1,
+        "origine": "trouver",
+        "machine": "À attribuer par le professeur",
+        "responsable": "Zéluno",
+        "etat": "à faire"
+      },
+      {
+        "element": "Carte Arduino Uno — référence et disponibilité à vérifier",
+        "quantite": 1,
+        "origine": "fourni",
+        "machine": "Montage seulement après validation du professeur",
+        "responsable": "Maérix",
+        "etat": "à faire"
+      },
+      {
+        "element": "Bouton — référence à vérifier",
+        "quantite": 1,
+        "origine": "fourni",
+        "machine": "Montage seulement après validation du professeur",
+        "responsable": "Maérix",
+        "etat": "à faire"
+      },
+      {
+        "element": "Servomoteur — référence à vérifier",
+        "quantite": 1,
+        "origine": "fourni",
+        "machine": "Montage seulement après validation du professeur",
+        "responsable": "Maérix",
+        "etat": "à faire"
+      },
+      {
+        "element": "Fragment 1, carte de liaison et règle sous volet — exemple fictif",
+        "quantite": 1,
+        "origine": "creer",
+        "machine": "Canva et impression papier",
+        "responsable": "Noryl",
+        "etat": "fait"
+      }
+    ]
+  },
+  "fabrication": {
+    "M1": {
+      "description": "Exemple fictif : grille, rapport, règle de conversion et carte de liaison prêts pour un essai papier.",
+      "machines": "Canva, imprimante et papier.",
+      "fichiers": "Exemple fictif : documents décrits dans cette fiche ; aucun fichier joint réel.",
+      "photos": [],
+      "pret": true
+    },
+    "M2": {
+      "description": "Exemple fictif : plateau et quatorze pions manipulables, avec repères de lignes et colonnes.",
+      "machines": "Carton ; fabrication selon consignes du professeur.",
+      "fichiers": "Exemple fictif : aucun fichier de fabrication ni photo joint.",
+      "photos": [],
+      "pret": true
+    },
+    "M3": {
+      "description": "Exemple fictif : boîte fermée par cadenas contenant le fragment et la carte ; volet séparé pour la règle.",
+      "machines": "Carton et assemblage validé par le professeur avant fabrication réelle.",
+      "dimensions": "Exemple fictif de conception : boîte de 20 × 15 × 10 cm ; à adapter au cadenas réel.",
+      "fichiers": "Exemple fictif : aucun plan de fabrication joint.",
+      "photos": [],
+      "pret": true
+    }
+  },
+  "electronique": {
+    "carte": "uno",
+    "role": "Exemple fictif : le bouton fait lever le volet par le servomoteur pour révéler la règle indispensable au calcul du code. Aucun placement de pion n’est détecté.",
+    "composants": [
+      "bouton",
+      "servomoteur"
+    ],
+    "branchements": [
+      {
+        "composant": "bouton",
+        "brocheComposant": "À vérifier sur le modèle réel",
+        "brocheCarte": "",
+        "fil": "À définir avec le professeur",
+        "verifie": false
+      },
+      {
+        "composant": "servomoteur",
+        "brocheComposant": "À vérifier sur le modèle réel",
+        "brocheCarte": "",
+        "fil": "À définir avec le professeur",
+        "verifie": false
+      }
+    ],
+    "tests": "Exemple fictif de comportement attendu : l’appui demande l’ouverture du volet. Le retour en position de départ est préparé selon le programme validé. Aucun essai électrique réel ni programme Labo Blocs n’est fourni.",
+    "boitier": "Exemple fictif : carte protégée dans un logement distinct de la boîte à cadenas ; accès aux commandes et mouvements à valider avec le professeur.",
+    "cableTeste": false,
+    "programmeOk": false
+  },
+  "indices": {
+    "n1": {
+      "texte": "Regarde les repères du quadrillage et le rapport de positions.",
+      "talkie": "Compare les repères de la grille avec le rapport."
+    },
+    "n2": {
+      "texte": "Place un pion par coordonnée : colonne indiquée par la lettre, ligne indiquée par le nombre.",
+      "talkie": "Pour chaque coordonnée, repère la colonne puis la ligne."
+    },
+    "n3": {
+      "texte": "La silhouette est un A. Utilise le bouton, puis applique la règle sous le volet.",
+      "talkie": "Tu as un A ; révèle la règle et écris son rang sur quatre chiffres."
+    }
+  },
+  "installation": {
+    "etapes": [
+      "Exemple fictif : installer le poste A avant les archives transparentes dans la frise.",
+      "Poser la grille, le rapport et quatorze pions à côté du plateau vide.",
+      "Préparer le volet fermé et cacher la règle de conversion dessous.",
+      "Placer le fragment 1 et la carte de liaison dans la boîte.",
+      "Régler le cadenas de démonstration sur le code fictif 0001, puis fermer la boîte.",
+      "Laisser le montage hors tension ; faire compléter le câblage et le programme par le professeur avant tout essai réel."
+    ],
+    "remiseAZero": [
+      "Récupérer les quatorze pions et vider le plateau.",
+      "Remettre le fragment 1 et la carte dans la boîte.",
+      "Fermer le cadenas puis brouiller son affichage.",
+      "Remettre le volet au repos seulement selon la procédure validée, sans forcer le servomoteur.",
+      "Replacer le rapport et contrôler le poste avant la partie suivante."
+    ],
+    "verifs": [
+      "Exemple fictif : quatorze pions présents ; aucune case occupée au départ.",
+      "Repères A à E et 1 à 5 lisibles ; rapport complet.",
+      "Fragment et carte présents ; boîte fermée ; code non affiché.",
+      "Règle cachée sous le volet et liaison vers le poste 2 lisible.",
+      "Trois indices et trois phrases talkie disponibles.",
+      "Ne pas déclarer le poste prêt pour un essai électrique : références, branchements et programme restent à valider."
+    ]
+  },
+  "tests": {
+    "dureeReelle": 10,
+    "modifications": "Exemple fictif de test papier : le groupe B a repéré une hésitation entre lignes et colonnes. Nous avons ajouté une flèche de lecture et vérifié les quatorze positions. Durée fictive : dix minutes. Essai électronique et essai complet avec cadenas réel non effectués."
+  }
+}

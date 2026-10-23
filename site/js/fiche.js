@@ -378,7 +378,7 @@
         champHtml({ cle: "cableTeste", type: "case", libelle: "Câblé et testé : le professeur peut valider" }, v) +
         champHtml({ cle: "validation", type: "validation", jalon: "cablage" }, v) +
         champHtml({ cle: "programmeOk", type: "case", libelle: "Le programme fonctionne" }, v) +
-        '<p class="petit">Le programme Labo Blocs du groupe s\'ouvrira ici (étape 10 du projet).</p>';
+        '<p class="petit">Les programmes Labo Blocs du groupe sont dans la page <a href="#programmation">Programmation</a>.</p>';
       return html;
     }
 

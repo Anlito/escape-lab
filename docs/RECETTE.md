@@ -65,3 +65,12 @@ Avec deux postes (ou deux onglets) sur le même dossier :
 - [ ] Exporter une fiche (.json), la réimporter : le formulaire se remplit.
 - [ ] Composant : remplir une fiche à partir du relevé du matériel, cocher « je la valide » ; côté élève, l'avertissement « pas encore vérifiée » disparaît.
 - [ ] Un composant qui contient encore « ⚠️ à vérifier » ne peut pas être validé.
+
+## Étape 10 — programmation (Labo Blocs)
+- [ ] Ouvrir l'éditeur de Labo Blocs, ouvrir les parcours « Escape Lab (Arduino Uno) » et « Escape Lab (micro:bit) », les vérifier et les publier.
+- [ ] Page Programmation : renommer un emplacement, ouvrir Labo Blocs, poser « si bouton… alors LED », revenir : ✓ E1.
+- [ ] Simuler le programme, puis l'envoyer dans l'Uno (câble USB) depuis l'écran de Labo Blocs.
+- [ ] Choisir la micro:bit pour un emplacement : le programme fait sur l'Uno est gardé si on revient à l'Uno.
+- [ ] Un autre groupe ouvre le programme : lecture seule, rien n'est enregistré.
+- [ ] Deux membres du groupe sur le même programme depuis deux postes : message « sa version reste dans l'historique ».
+- [ ] Lire et valider (ou corriger) `labo-blocs/docs/PLANS-COMPOSANTS-ESCAPE-LAB.md`.

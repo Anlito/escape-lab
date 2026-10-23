@@ -1,9 +1,7 @@
-# C15 — mode d’emploi professeur
+# C15 — mise à jour après l’étape 9
 
-Livré le 23/10/2026 : mode-emploi-professeur.md, deux pages logiques séparées par une rupture de page HTML compatible avec les lecteurs Markdown qui la conservent. La pagination physique devra être vérifiée au moment de l’impression ; aucun PDF validé n’est annoncé.
+Version actualisée le 23/10/2026. Le guide décrit désormais site/prof.html : plusieurs dossiers, cases de destination, fiches mécaniques/composants, activation, export/import JSON et ressources limitées à 50 Mo. La protection par code, le pilotage réel de la frise, les validations physiques, la synchronisation pilotée et les notes restent explicitement à venir à l’étape 11. La validation d’une fiche composant est distinguée de la validation d’un montage réel.
 
-Le guide distingue le code de stockage/synchronisation réalisé, les écrans élèves réalisés et le pilotage professeur non encore livré selon SUIVI.md. Frise en démonstration disponible ; commandes réelles du professeur, validation physique, écran de synchronisation, notes et exports explicitement « (étape 11, à venir) ». Ne pas présenter ces paragraphes comme des boutons déjà utilisables. Ne pas attribuer à l’historique une fonction de sauvegarde indépendante.
+Sources : SUIVI.md, étape 9 et demande C15 ; site/prof.html et champs de fiche.js consultés. Deux pages logiques avec rupture HTML, pagination physique à vérifier selon le moteur d’impression. Remplace la précédente contribution C15, sans modifier docs/ ni site/.
 
-Sources : SUIVI.md, C15 et journal des étapes 0 à 8 ; brief §§10.1–10.3 ; libellés d’accueil et frise existants. Une relecture de la version après intégration de l’étape 11 sera nécessaire. Aucun fichier du site modifié, aucune note ni donnée privée ajoutée.
-
-Suivi proposé : « C15 livrée : guide professeur en deux pages logiques, fonctions de l’étape 11 signalées à venir. »
+Suivi proposé : « C15 mise à jour : fonctions de l’étape 9 documentées ; relecture après étape 11 encore nécessaire. »
