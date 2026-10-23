@@ -86,9 +86,15 @@
     function champsEnEdition(valeur) {
       return options.champs.map(function (c) {
         var idChamp = "ch-" + options.collection + "-" + options.id + "-" + c.cle;
-        return '<label for="' + idChamp + '">' + e(c.libelle) + "</label>" +
-          (c.aide ? '<p class="petit">' + e(c.aide) + "</p>" : "") +
-          '<textarea id="' + idChamp + '" data-cle="' + c.cle + '" rows="' + (c.lignes || 4) + '">' + e(valeur[c.cle] || "") + "</textarea>";
+        // Aide du champ : celle de donnees/aides.js (c.idAide) en priorité, sinon c.aide.
+        var aide = c.idAide ? app().aide(c.idAide) : {};
+        var consigne = aide.consigne || c.aide;
+        var seul = options.champs.length === 1;   // le titre de la carte suffit : libellé gardé pour les lecteurs d'écran
+        return '<label for="' + idChamp + '"' + (seul ? ' class="cache-visuel"' : "") + ">" + e(c.libelle) + "</label>" +
+          (consigne ? '<p class="petit">' + e(consigne) + "</p>" : "") +
+          (aide.exemple ? '<p class="petit exemple">Exemple : ' + e(aide.exemple) + "</p>" : "") +
+          '<textarea id="' + idChamp + '" data-cle="' + c.cle + '" rows="' + (c.lignes || 4) + '"' +
+          (aide.phraseACompleter ? ' placeholder="' + e(aide.phraseACompleter) + '"' : "") + ">" + e(valeur[c.cle] || "") + "</textarea>";
       }).join("") + '<p class="petit">Mise en forme : **gras** · une ligne qui commence par « - » fait une liste · « ## » fait un titre.</p>';
     }
 

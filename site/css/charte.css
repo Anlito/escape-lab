@@ -24,6 +24,8 @@ h2 { font-size: 1.25rem; color: var(--or-clair); }
 h3 { font-size: 1.05rem; }
 .petit { font-size: .875rem; color: var(--texte-doux); }
 [hidden] { display: none !important; }
+.cache-visuel { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.exemple { font-style: italic; }
 
 /* Boutons et champs */
 button, .bouton {

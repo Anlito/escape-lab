@@ -11,6 +11,8 @@
   racine.definirJalons = function (j) { JALONS = j.jalons; };
   racine.definirMecaniques = function (m) { m.mecaniques.forEach(function (x) { MECANIQUES[x.id] = x; }); };
   racine.definirDemo = function (d) { DEMO = d; };
+  var AIDES = {};
+  racine.definirAides = function (a) { AIDES = a.champs || {}; };
 
   // Personne connectée et dossier ouvert.
   // prof : commandes du professeur (ordre de la frise…), données par prof.html ou essayées en démonstration.
@@ -327,6 +329,8 @@
     etat: etat, pages: {}, mecaniques: MECANIQUES, pastille: pastille, avancement: avancement,
     dateCourte: dateCourte, auteur: auteur, lettresGroupes: lettresGroupes,
     jalons: function () { return JALONS; },
+    // Texte d'aide d'un champ (donnees/aides.js) : { consigne, exemple, phraseACompleter }, ou {}.
+    aide: function (id) { return AIDES[id] || {}; },
     nombreGroupes: function () { return REGLAGES.nombreGroupes; },
     rafraichir: afficherPage
   };

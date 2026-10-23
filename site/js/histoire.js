@@ -21,7 +21,7 @@
 
     var cartes = SECTIONS.map(function (s) {
       return Ed.creerCarte({ collection: "histoire", id: s.id, titre: s.titre,
-        champs: [{ cle: "texte", libelle: s.titre, aide: s.aide, lignes: s.lignes }] });
+        champs: [{ cle: "texte", libelle: s.titre, aide: s.aide, idAide: "histoire." + s.id, lignes: s.lignes }] });
     });
 
     var groupes = await st.lister("groupes");

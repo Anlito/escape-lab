@@ -76,9 +76,9 @@ Claude « C4 livrée » : Claude relit, intègre et met à jour ce tableau.
 | C1 Fiches mécaniques | **intégrée** (`site/donnees/mecaniques.js`) ; ids et lettres de ChatGPT retenus ; **relecture de Thomas à faire** |
 | C2 Fiches composants | **rangée** (`site/donnees/composants.js`, clé `liés` → `lies`) ; 10 fiches sur 11 attendent les références réelles (C4) |
 | C3 Démonstration 3Z9 | **intégrée** (`site/donnees/demo.js`, convertie au format du stockage ; groupes g1–g5 → A–E) |
-| C4 Relevé du matériel | à faire |
-| C5 Textes d'aide des fiches | à faire |
-| C6 Grille d'évaluation | à faire |
+| C4 Relevé du matériel | **livré** (`docs/releve-materiel.md`) ; **Thomas le remplit au collège**, puis ChatGPT complète `composants.js` |
+| C5 Textes d'aide des fiches | **intégrée** (`site/donnees/aides.js`) : histoire et liaisons branchées ; fiche énigme et jour J aux étapes 7-8 ; relecture Thomas |
+| C6 Grille d'évaluation | **rangée** (`site/donnees/evaluation.js`, utilisée à l'étape 11) ; **décisions de Thomas attendues** (voir ci-dessous) |
 
 ### Tâche C4 — Relevé du matériel à remplir par Thomas au collège (brief §4, question 9)
 Un document imprimable (`releve-materiel.md`) : un tableau par composant de `composants.js` avec ce que Thomas
@@ -141,7 +141,16 @@ Chaque version est d'abord copiée dans `<collection>/historique/<id>/<version>.
 `<collection>/fichiers/`. Journal de synchronisation : `synchronisation/journal/`. Code : `site/js/stockage.js`
 (couche unique + synchronisation), `site/js/stockage-dossier.js` (accès au dossier dans Chrome/Edge).
 
+## Questions à Thomas (grille C6)
+1. Barème : A–D = 0, 1, 2, 3 points (tout en C donne 13,3/20). Garder, ou celui des grilles Excel existantes ?
+2. Couleurs : le brief dit rouge / jaune / vert clair / vert foncé, la règle commune dit « jamais de rouge ». Remplacer le rouge (par ex. gris) ?
+3. Coefficients : 2 pour fiche énigme, câblage, programme, test croisé ; 1 ailleurs. D'accord ?
+
 ## Journal
+- 23/10/2026 — ChatGPT : C4 (relevé vierge, 11 tableaux), C5 (42 textes d'aide), C6 (21 critères, 4 intitulés du BO
+  n° 9 du 29/02/2024 cités mot pour mot d'après ChatGPT).
+- 23/10/2026 — Claude : C4 à C6 relues et rangées ; aides branchées sur l'histoire et les liaisons (consigne,
+  exemple, phrase à compléter dans le champ vide). Vérifié dans le navigateur.
 - 23/10/2026 — Claude : étape 5. Histoire (7 sections, une carte modifiable chacune : présence « X modifie »,
   conflit → garder les deux textes, historique et restauration) et frise (début, énigmes, liaisons `liaisons/A-B`
   préremplies avec le contenu de la boîte, fin, durée totale, ordre par le professeur avec historique). Commandes du

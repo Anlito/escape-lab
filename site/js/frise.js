@@ -7,9 +7,9 @@
   var e = O.echapper;
 
   var CHAMPS_LIAISON = [
-    { cle: "donne", libelle: "Ce que l'énigme d'avant donne", aide: "Un objet, un code, un indice… (ce qui est dans sa boîte).", lignes: 2 },
-    { cle: "utilise", libelle: "Ce que l'énigme suivante en fait", lignes: 2 },
-    { cle: "lieu", libelle: "Où ça se trouve", lignes: 1 }
+    { cle: "donne", libelle: "Ce que l'énigme d'avant donne", aide: "Un objet, un code, un indice… (ce qui est dans sa boîte).", idAide: "liaison.donne", lignes: 2 },
+    { cle: "utilise", libelle: "Ce que l'énigme suivante en fait", idAide: "liaison.utilise", lignes: 2 },
+    { cle: "lieu", libelle: "Où ça se trouve", idAide: "liaison.lieu", lignes: 1 }
   ];
 
   racine.EscapeLab.pages.frise = async function (zone) {
