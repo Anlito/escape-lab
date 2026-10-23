@@ -95,7 +95,8 @@ Claude « C4 livrée » : Claude relit, intègre et met à jour ce tableau.
 | C21 Mode d’emploi professeur : étapes 10 et 11 | **rangée** (`docs/mode-emploi-professeur.md` remplacé) |
 | C22 Mise à jour « Bien démarrer » et mode d’emploi (étape 12) | **rangée** (`docs/bien-demarrer.md`, `docs/mode-emploi-professeur.md`) |
 | C23 Recette finale : étapes 10 à 12 | **rangée** (`docs/recette-finale.md`) : **à mener par Thomas au collège** |
-| C24 Relecture des textes lus par les élèves | **à faire** |
+| C24 Relecture des textes lus par les élèves | **intégrée** : 63 corrections sur 64 (celle de l’accueil ne s’applique plus depuis la nouvelle charte) |
+| C25 Guides à jour de la nouvelle navigation | **à faire** |
 | C6 Grille d'évaluation | **intégrée** (étape 11) ; barème validé par Thomas le 23/10 |
 
 ### Tâche C4 — Relevé du matériel à remplir par Thomas au collège (brief §4, question 9)
@@ -298,11 +299,22 @@ Relire `site/donnees/aides.js`, `messages.js`, `mecaniques.js`, `mecaniques-supp
 phrase trop longue pour un élève de 3e, tutoiement ou vouvoiement incohérent, mot technique non expliqué, reproche
 implicite). Ne garder que les vraies corrections ; ne rien proposer sur les valeurs matérielles.
 
+### Tâche C25 — Mettre `bien-demarrer.md` et `mode-emploi-professeur.md` à jour de la nouvelle navigation
+Depuis la nouvelle charte : l’accueil se fait avec de grandes touches (classe, groupe) puis le prénom ; un menu à
+gauche (en haut sur tablette) groupe les pages : **Ma classe** (Tableau de bord, Histoire, Frise, Bibliothèque,
+Jour J), **Mon groupe** (Mon énigme, Programmation), **Les autres** (Énigmes des autres) ; en bas du menu, le prénom,
+le groupe et « ● Enregistré à … ». Le tableau de bord montre « Ton groupe » avec **la prochaine étape** et un bouton
+« Y aller ». La fiche énigme a une colonne d’étapes (● fait, ◐ en cours, ○ à faire, ! à rattraper) et un bouton
+« Enregistrer et continuer ». Professeur : menu **Suivre** (Suivi des groupes, Fiches des groupes), **Piloter**
+(Réglages et annonces), **Évaluer** (Évaluation, Observation jour J, Exports et livret), **La classe** ; suivi avec
+chiffres clés et filtres en pastilles. Remplacer les anciennes descriptions (barre d’onglets, listes déroulantes).
+
 ## Décision de Thomas (grille C6, 23/10/2026)
 Barème validé : A à D = 0, 1, 2, 3 points ; coefficient 2 pour la fiche énigme, le câblage, le programme et le test
 croisé, 1 pour les autres critères ; **pas de rouge** (lettres A à D, sans couleur imposée).
 
 ## Journal
+- 23/10/2026 — ChatGPT : C24 (64 propositions de relecture) ; Claude en applique 63 et donne la tâche C25.
 - 23/10/2026 — Claude : nouvelle charte et navigation (maquette validée par Thomas, https://claude.ai/artifact/X5ddttfcPeL2UmuBt2nLpX) :
   anthracite et or, titres Space Grotesk (copiée dans `site/polices/`, licence OFL), texte Atkinson Hyperlegible
   (celle de Labo Blocs) ; menu latéral groupé (Ma classe · Mon groupe · Les autres ; professeur : Suivre · Piloter ·
