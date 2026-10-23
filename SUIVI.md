@@ -98,7 +98,8 @@ Claude « C4 livrée » : Claude relit, intègre et met à jour ce tableau.
 | C24 Relecture des textes lus par les élèves | **intégrée** : 63 corrections sur 64 (celle de l’accueil ne s’applique plus depuis la nouvelle charte) |
 | C25 Guides à jour de la nouvelle navigation | **rangée** (`docs/bien-demarrer.md`, `docs/mode-emploi-professeur.md`) |
 | C26 Affiche du projet pour la classe | **rangée** (`docs/affiche-projet.html` à imprimer en A3, `docs/affiche-projet.md`) |
-| C27 Guides : nouvelle frise et histoire en images | **rangée** (`docs/bien-demarrer.md`, `docs/mode-emploi-professeur.md`) ; ajouter les flèches ‹ › de la frise |
+| C27 Guides : nouvelle frise et histoire en images | **rangée** (`docs/bien-demarrer.md`, `docs/mode-emploi-professeur.md`) |
+| C28 Guides : flèches de la frise, nouvelle page Jour J | **à faire** |
 | C6 Grille d'évaluation | **intégrée** (étape 11) ; barème validé par Thomas le 23/10 |
 
 ### Tâche C4 — Relevé du matériel à remplir par Thomas au collège (brief §4, question 9)
@@ -326,11 +327,20 @@ personnages, lieu, déroulement, fin), chacune avec **une image** : « Ajouter u
 ou dessin, jamais d’élève reconnaissable) ou « Depuis la bibliothèque » ; « Retirer » garde l’ancienne dans
 l’historique. Deux ou trois lignes par guide, pas plus.
 
+### Tâche C28 — Deux ajouts courts aux guides (`bien-demarrer.md`, `mode-emploi-professeur.md`)
+1. Frise : quand elle ne tient pas sur l’écran, les flèches dorées ‹ › à gauche et à droite avancent d’une énigme ; sur
+tablette, on peut aussi la faire glisser au doigt. 2. Jour J : en haut, cinq chiffres (date du jeu, tâches faites,
+élèves sans rôle, étapes du planning faites, répétition) ; puis quatre parties en pastilles (1 Date et logistique,
+2 Rôles et textes, 3 Planning du jour en « Avant · Pendant · Après », 4 Répétition) : une seule s’affiche à la fois.
+Une ou deux phrases par point.
+
 ## Décision de Thomas (grille C6, 23/10/2026)
 Barème validé : A à D = 0, 1, 2, 3 points ; coefficient 2 pour la fiche énigme, le câblage, le programme et le test
 croisé, 1 pour les autres critères ; **pas de rouge** (lettres A à D, sans couleur imposée).
 
 ## Journal
+- 23/10/2026 — Claude : page Jour J remise en page (chiffres clés, parties en pastilles, planning avant / pendant / après,
+  vérifications et remises à zéro côte à côte). Tâche C28.
 - 23/10/2026 — ChatGPT : C26 (affiche A3) et C27 (guides : frise, histoire en images). Claude : frise adaptée à la largeur
   de l’écran, flèches ‹ › quand elle déborde.
 - 23/10/2026 — Claude : frise en « chaîne des cadenas » et histoire en storyboard (propositions B validées par Thomas) :

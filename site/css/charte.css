@@ -421,6 +421,18 @@ table.suivi thead th { font-size: .78rem; text-align: center; color: #a9a49a; }
   #impression .manque::before { content: "[ "; } #impression .manque::after { content: " ]"; }
 }
 
+/* Jour J : chiffres clés, une partie à la fois */
+.grille-deux { display: grid; gap: 18px; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-bottom: 18px; }
+.grille-deux > .carte { margin: 0; }
+.pastille-filtre .compte { font-weight: 400; color: var(--texte-doux); }
+.pastille-filtre[aria-pressed="true"] .compte { color: var(--texte); }
+.etapes-jour { display: flex; flex-direction: column; gap: 0; margin-bottom: 18px; }
+.etape-jour { position: relative; padding-left: 56px; }
+.etape-jour::before { content: ""; position: absolute; left: 16px; top: 44px; bottom: -6px; width: 2px; background: var(--bord-fort); }
+.etape-jour:last-child::before { display: none; }
+.etape-jour > .numero-case { top: 18px; left: 0; }
+.liste-partagee.carte { margin-bottom: 18px; }
+
 /* Jour J */
 .section-jourj > h2 { margin-top: 1.2em; font-size: 1.5rem; }
 .ligne-carte label { font-size: .9rem; margin-top: .4em; }
@@ -442,6 +454,7 @@ table.suivi thead th { font-size: .78rem; text-align: center; color: #a9a49a; }
   .accueil-hero { padding: 32px 20px; border-right: none; border-bottom: 1px solid #2f3239; }
   .accueil-formulaire { padding: 28px 16px; max-width: none; }
   .duo { grid-template-columns: 1fr; }
+  .grille-deux { grid-template-columns: 1fr; }
   .storyboard { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .fiche-corps { grid-template-columns: 1fr; }
   .etapes-fiche { position: static; flex-direction: row; overflow-x: auto; padding-bottom: 6px; }

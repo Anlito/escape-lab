@@ -57,7 +57,7 @@
     var taches = L.creerListe({ collection: "jourj-taches", titre: "Tâches à organiser", consigne: "Chaque tâche a un responsable et un état.",
       colonnes: [{ cle: "tache", libelle: "Tâche", type: "texte" }, { cle: "quand", libelle: "Pour quand", type: "texte" },
                  { cle: "responsable", libelle: "Responsable", type: "texte" }, { cle: "etat", libelle: "État", type: "choix", options: ETATS_TACHE }],
-      parDefaut: { etat: "à faire" }, vide: "Pas encore de tâche.",
+      parDefaut: { etat: "à faire" }, vide: "Pas encore de tâche.", apresChangement: function () { majResume(); },
       modeles: modeles.logistique.length ? [{ libelle: "Ajouter les tâches types", lignes: modeles.logistique.map(function (t) { return { tache: t.tache, quand: t.quand }; }) }] : [] });
 
     var listeRoles = L.creerListe({ collection: "jourj-roles", titre: "Rôles et textes", disposition: "cartes",
@@ -67,18 +67,18 @@
                  { cle: "accessoires", libelle: "Accessoires ou costume", type: "texte" }, { cle: "etat", libelle: "État", type: "choix", options: ETATS_ROLE }],
       parDefaut: { etat: "à écrire" }, vide: "Pas encore de rôle.",
       modeles: roles.length ? [{ libelle: "Ajouter les rôles types", lignes: roles.map(function (r) { return { role: r.nom, texte: "" }; }) }] : [],
-      apresChangement: function () { majControleRoles(); majJalons(); } });
+      apresChangement: function () { majControleRoles(); majJalons(); majResume(); } });
 
     function listePlanning(phase, titre, modele, consigne) {
-      return L.creerListe({ collection: "jourj-planning", titre: titre, consigne: consigne, filtre: function (v) { return v.phase === phase; },
+      return L.creerListe({ collection: "jourj-planning", titre: titre, consigne: consigne, filtre: function (v) { return v.phase === phase; }, apresChangement: function () { majResume(); },
         colonnes: [{ cle: "heure", libelle: "Heure", type: "heure" }, { cle: "quoi", libelle: "Quoi", type: "texte" },
                    { cle: "qui", libelle: "Qui", type: "texte" }, { cle: "fait", libelle: "Fait", type: "case" }],
         parDefaut: { phase: phase }, vide: "Pas encore d'étape.",
         modeles: (modele || []).length ? [{ libelle: "Ajouter les étapes types", lignes: modele.map(function (q) { return { quoi: q }; }) }] : [] });
     }
-    var miseEnPlace = listePlanning("miseEnPlace", "Mise en place", modeles.miseEnPlace, "Qui installe quoi, et à quelle heure.");
-    var deroule = listePlanning("deroule", "Déroulé du jeu", modeles.deroule);
-    var rangement = listePlanning("rangement", "Rangement", modeles.rangement, "Qui range quoi.");
+    var miseEnPlace = listePlanning("miseEnPlace", "Avant · la mise en place", modeles.miseEnPlace, "Qui installe quoi, et à quelle heure.");
+    var deroule = listePlanning("deroule", "Pendant · le déroulé du jeu", modeles.deroule, "Les grands moments de la partie, dans l'ordre.");
+    var rangement = listePlanning("rangement", "Après · le rangement", modeles.rangement, "Qui range quoi.");
     var verifications = listePlanning("verifications", "Tout est à sa place", modeles.verifications, "À cocher à la fin de la mise en place et du rangement.");
     var listes = [taches, listeRoles, miseEnPlace, deroule, rangement, verifications];
 
@@ -114,17 +114,28 @@
       majEnCours = false;
     }
 
-    // --- Mise en page ---
-    zone.innerHTML = '<p class="bandeau">La classe organise le jour J ; le professeur voit et complète. Tout est gardé dans l\'historique.</p>';
-    function section(titre, noeuds) {
-      var s = document.createElement("div");
-      s.className = "section-jourj";
-      s.innerHTML = "<h2>" + e(titre) + "</h2>";
-      noeuds.forEach(function (n) { s.appendChild(n); });
-      zone.appendChild(s);
+    // --- Mise en page : chiffres clés, puis une partie à la fois ---
+    var PARTIES = [["logistique", "Date et logistique"], ["roles", "Rôles et textes"], ["planning", "Planning du jour"], ["repetition", "Répétition"]];
+    var CLE = "escape-lab:jourj-partie", partie = "logistique";
+    try { partie = localStorage.getItem(CLE) || partie; } catch (err) { /* navigation privée */ }
+    zone.innerHTML = '<p class="bandeau">La classe organise le jour J ; le professeur voit et complète. Tout est gardé dans l\'historique.</p>' +
+      '<div class="chiffres" id="resumeJourJ"></div><div class="pastilles" role="tablist" aria-label="Parties du jour J">' + PARTIES.map(function (p, i) {
+        return '<button class="pastille-filtre" role="tab" data-partie="' + p[0] + '"><b>' + (i + 1) + "</b>&nbsp;· " + e(p[1]) + ' <span class="compte" data-compte="' + p[0] + '"></span></button>';
+      }).join("") + "</div>";
+    var blocs = {};
+    function partieBloc(id, noeuds, classe) {
+      var b = document.createElement("div");
+      b.className = "partie-jourj " + (classe || "");
+      b.setAttribute("role", "tabpanel");
+      noeuds.forEach(function (n) { b.appendChild(n); });
+      zone.appendChild(b);
+      blocs[id] = b;
     }
-    section("Date et logistique", [cartes[0].noeud, cartes[1].noeud, taches.noeud]);
-    section("Rôles et textes", [controle, listeRoles.noeud]);
+    var duo = document.createElement("div");
+    duo.className = "grille-deux";
+    duo.appendChild(cartes[0].noeud); duo.appendChild(cartes[1].noeud);
+    partieBloc("logistique", [duo, taches.noeud]);
+    partieBloc("roles", [controle, listeRoles.noeud]);
     var blocRemises = document.createElement("section");
     blocRemises.className = "carte";
     blocRemises.innerHTML = "<h3>Remise à zéro de chaque énigme</h3><p class=\"petit\">Écrite par chaque groupe dans l'onglet « Installation » de sa fiche.</p>" +
@@ -132,18 +143,63 @@
         return "<h4>" + e(r.nom) + ' <span class="petit">(groupe ' + e(r.id) + ")</span></h4>" +
           (r.etapes.length ? "<ol>" + r.etapes.map(function (x) { return "<li>☐ " + e(x) + "</li>"; }).join("") + "</ol>" : '<p class="petit vide">Pas encore écrite.</p>');
       }).join("");
-    section("Planning du jour", [miseEnPlace.noeud, deroule.noeud, rangement.noeud, verifications.noeud, blocRemises]);
-    section("Répétition", [cartes[2].noeud]);
+    var fin2 = document.createElement("div");
+    fin2.className = "grille-deux";
+    fin2.appendChild(verifications.noeud); fin2.appendChild(blocRemises);
+    var etapesJour = document.createElement("div");
+    etapesJour.className = "etapes-jour";
+    [miseEnPlace, deroule, rangement].forEach(function (l, i) {
+      var etape = document.createElement("div");
+      etape.className = "etape-jour";
+      etape.innerHTML = '<span class="numero-case" aria-hidden="true">' + (i + 1) + "</span>";
+      etape.appendChild(l.noeud);
+      etapesJour.appendChild(etape);
+    });
+    partieBloc("planning", [etapesJour, fin2]);
+    partieBloc("repetition", [cartes[2].noeud]);
+
+    function montrer(id) {
+      partie = blocs[id] ? id : "logistique";
+      try { localStorage.setItem(CLE, partie); } catch (err) { /* navigation privée */ }
+      Object.keys(blocs).forEach(function (k) { blocs[k].hidden = k !== partie; });
+      zone.querySelectorAll("[data-partie]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-partie") === partie)); b.setAttribute("aria-selected", String(b.getAttribute("data-partie") === partie)); });
+    }
+    zone.addEventListener("click", function (ev) {
+      var b = ev.target.closest("[data-partie]");
+      if (b) montrer(b.getAttribute("data-partie"));
+    });
+    montrer(partie);
+
+    // Chiffres clés, recalculés à chaque changement.
+    async function majResume() {
+      var d = await st.lire("jourj", "date"), rep = await st.lire("jourj", "repetition");
+      var t = taches.lignes().filter(function (x) { return x.tache; }), tFaites = t.filter(function (x) { return x.etat === "fait"; }).length;
+      var roles = listeRoles.lignes(), sans = eleves.length ? F.elevesSansRole(eleves, roles).length : null;
+      var plan = [miseEnPlace, deroule, rangement, verifications].reduce(function (a, l) { return a.concat(l.lignes()); }, []).filter(function (x) { return x.quoi; });
+      var pFaites = plan.filter(function (x) { return x.fait; }).length;
+      var repetee = rep && rep.valeur.faite && String(rep.valeur.faite).trim();
+      function chiffre(valeur, libelle, ecart) { return '<div class="chiffre' + (ecart ? " ecart-chiffre" : "") + '"><b>' + e(valeur) + "</b><span>" + e(libelle) + "</span></div>"; }
+      zone.querySelector("#resumeJourJ").innerHTML =
+        chiffre((d && d.valeur.date) || "à fixer", "date du jeu", !(d && d.valeur.date)) +
+        chiffre(tFaites + " / " + t.length, "tâches faites") +
+        chiffre(sans === null ? roles.length : sans === 0 ? "✓" : String(sans), sans === null ? "rôles" : sans === 0 ? "chaque élève a un rôle" : "élève" + (sans > 1 ? "s" : "") + " sans rôle", sans > 0) +
+        chiffre(pFaites + " / " + plan.length, "étapes du planning faites") +
+        chiffre(repetee ? "✓" : "à faire", "répétition", !repetee);
+      var comptes = { logistique: t.length ? tFaites + "/" + t.length : "", roles: roles.length ? String(roles.length) : "", planning: plan.length ? pFaites + "/" + plan.length : "", repetition: repetee ? "✓" : "" };
+      zone.querySelectorAll("[data-compte]").forEach(function (c) { var v = comptes[c.getAttribute("data-compte")]; c.textContent = v ? "(" + v + ")" : ""; });
+    }
 
     for (var j = 0; j < listes.length; j++) await listes[j].charger();
     majControleRoles();
     majJalons();
+    majResume();
 
     var arreterCartes = Ed.suivreCartes(cartes);
     var minuterie = setInterval(async function () {
       for (var k = 0; k < listes.length; k++) {
         try { if (await listes[k].rafraichir() && listes[k] === listeRoles) majControleRoles(); } catch (err) { /* relecture suivante */ }
       }
+      majResume();
     }, 20000);
     return function () { arreterCartes(); clearInterval(minuterie); };
   };
