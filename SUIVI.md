@@ -22,8 +22,8 @@ jour après. Le brief complet est dans `docs/BRIEF-CLAUDE-CODE-escape-lab.md`.
 | # | Étape | Qui | État |
 |---|---|---|---|
 | 1 | Plan court à valider | Claude | fait (validé le 23/10) |
-| 2 | Étape 0 : page de test du dossier partagé (2 dossiers sur le poste prof) | Claude | **page prête, recette par Thomas** (`site/test-dossier.html`) |
-| 3 | Couche de stockage + synchronisation 3C2D1 + tests | Claude | à faire |
+| 2 | Étape 0 : page de test du dossier partagé (2 dossiers sur le poste prof) | Claude | page prête ; **test sur les postes à la rentrée** (`site/test-dossier.html`) |
+| 3 | Couche de stockage + synchronisation 3C2D1 + tests | Claude | fait (10 tests `npm test`) ; recette Thomas |
 | 4 | Squelette : accueil, identification, tableau de bord, charte | Claude | à faire |
 | 5 | Histoire puis Frise | Claude | à faire |
 | 6 | Bibliothèque commune | Claude | à faire |
@@ -95,7 +95,17 @@ cablageType: ["phrase courte"], precautions: ["…"], liés: ["id"], source: "li
 ### Tâche C3 — Données de démonstration fictives
 Une équipe fictive « 3Z9 », 5 groupes, prénoms inventés, une histoire courte, 5 énigmes remplies à moitié.
 
+## Format des données dans un dossier de classe (étape 3)
+Un dossier par collection (`histoire`, `frise`, `liaisons`, `bibliotheque`, `groupes`, `annonces`, `jourj`), **un
+fichier par élément** (`histoire/pitch.json`) : deux élèves sur deux sections différentes ne se gênent jamais.
+Chaque version est d'abord copiée dans `<collection>/historique/<id>/<version>.json`. Fichiers déposés :
+`<collection>/fichiers/`. Journal de synchronisation : `synchronisation/journal/`. Code : `site/js/stockage.js`
+(couche unique + synchronisation), `site/js/stockage-dossier.js` (accès au dossier dans Chrome/Edge).
+
 ## Journal
+- 23/10/2026 — Claude : étape 3, couche de stockage (version attendue, refus sans écrasement, historique,
+  restauration, anciens fichiers lisibles) et synchronisation de deux dossiers (aperçu, copie, conflit gardé des
+  deux côtés, journal). 10 tests `node:test` verts. Test réel sur les postes reporté à la rentrée (vacances).
 - 23/10/2026 — Claude : étape 0, `site/test-dossier.html` (écriture, lecture croisée, délai, navigateur,
   deux dossiers + copie d'un fichier lourd). Testée seulement à la syntaxe : l'accès aux dossiers demande un clic
   sur un vrai poste. Résultats attendus de Thomas (bouton « Copier le résultat »).
