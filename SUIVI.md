@@ -352,6 +352,7 @@ Barème validé : A à D = 0, 1, 2, 3 points ; coefficient 2 pour la fiche énig
 croisé, 1 pour les autres critères ; **pas de rouge** (lettres A à D, sans couleur imposée).
 
 ## Journal
+- 04/11/2026 — Thomas : les élèves ouvrent l’outil par le raccourci Classe › classe › MATIERES › TECHNOLOGIE › TABLEAU › ESCAPE LAB. Claude : ce chemin remplace l’adresse GitHub dans la présentation, l’affiche et « Bien démarrer ». **Règle pour ChatGPT : dans les textes élèves, donner ce chemin, jamais l’adresse github.io.**
 - 03/11/2026 — Claude : présentation du projet pour la séance 1, `site/presentation.html` (14 diapositives, flèches, plein écran, lecture en liste sur téléphone, impression une diapositive par page), liée depuis le menu de prof.html. Tâche C31 laissée à ChatGPT.
 - 23/10/2026 — Claude : frise côté professeur, le bloc « Ordre des énigmes » est plié par défaut (résumé : nombre d’énigmes) et s’ouvre pour changer l’ordre. À ajouter dans C30 (mode d’emploi professeur).
 - 23/10/2026 — Claude : tous les composants reçoivent tous leurs fils (y compris les fiches anciennes : rôles retrouvés, lignes « à vérifier » remplacées, rien de branché n’est retiré) ; GND de la carte relié au rail −, 5 V (3 V micro:bit) au rail +, dessinés ; contrôles GND sur le +, VCC sur le −, signal sur un rail ; fils blancs cerclés de gris. C30 complétée.

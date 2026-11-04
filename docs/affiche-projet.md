@@ -46,4 +46,4 @@ Fais vérifier ton montage avant toute mise sous tension.
 
 ## RETROUVE TON ÉQUIPE
 
-[anlito.github.io/escape-lab/site/](https://anlito.github.io/escape-lab/site/)
+Raccourci **ESCAPE LAB** : Classe › ta classe › MATIERES › TECHNOLOGIE › TABLEAU › ESCAPE LAB

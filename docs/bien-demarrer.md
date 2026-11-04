@@ -2,7 +2,7 @@
 
 ## ☐ Ouvre ton espace
 
-1. Ouvre Escape Lab avec Chrome ou Edge.
+1. Ouvre le raccourci ESCAPE LAB avec Chrome ou Edge : Classe › ta classe › MATIERES › TECHNOLOGIE › TABLEAU › ESCAPE LAB.
 2. Touche la grande case de ta classe.
 3. Touche celle de ton groupe.
 4. Écris seulement ton prénom.

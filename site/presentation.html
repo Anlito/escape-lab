@@ -94,6 +94,11 @@
   .niveau p { margin: 0; color: var(--doux); }
 
   .adresse { font-family: var(--titres); font-size: 40px; color: var(--or-clair); word-break: break-all; }
+  .chemin { list-style: none; margin: 0; padding: 0; font-family: var(--titres); font-size: 26px; }
+  .chemin li { padding: 3px 0 3px 30px; position: relative; color: var(--doux); }
+  .chemin li + li::before { content: "›"; position: absolute; left: 8px; color: var(--or); }
+  .chemin li.fin { color: var(--or-clair); font-weight: 700; }
+  body.liste .chemin { font-size: 18px; }
   .etapes-ouvrir { counter-reset: e; list-style: none; padding: 0; margin: 0; }
   .etapes-ouvrir li { counter-increment: e; display: flex; gap: 16px; align-items: baseline; margin-bottom: 14px; }
   .etapes-ouvrir li::before { content: counter(e); font-family: var(--titres); font-weight: 700; color: var(--or); font-size: 26px; min-width: 26px; }
@@ -323,16 +328,17 @@
     <h2>Ouvrir <em>votre espace</em></h2>
     <div class="grille g2" style="align-items:start">
       <ol class="etapes-ouvrir">
-        <li>Ouvre Escape Lab avec Chrome ou Edge.</li>
+        <li>Ouvre le raccourci ESCAPE LAB avec Chrome ou Edge.</li>
         <li>Touche ta classe, puis ton groupe.</li>
         <li>Écris seulement ton prénom.</li>
         <li>« Ouvrir le dossier de la classe » : choisis le dossier indiqué.</li>
         <li>La fois suivante : « Reprendre ».</li>
       </ol>
       <div class="carte">
-        <p style="margin-bottom:10px">L'adresse</p>
-        <p class="adresse">anlito.github.io/<wbr>escape-lab/<wbr>site/</p>
-        <p style="margin-top:16px">Aussi sur la page de tous les outils : <b style="color:var(--texte)">anlito.github.io</b></p>
+        <p style="margin-bottom:12px">Le raccourci est dans le dossier de ta classe :</p>
+        <ol class="chemin" aria-label="Chemin du raccourci">
+          <li>Classe</li><li>ta classe (3C1, 3D2…)</li><li>MATIERES</li><li>TECHNOLOGIE</li><li>TABLEAU</li><li class="fin">ESCAPE LAB</li>
+        </ol>
       </div>
     </div>
   </section>
