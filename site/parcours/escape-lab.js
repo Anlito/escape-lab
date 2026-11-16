@@ -1,13 +1,13 @@
-// Parcours « Escape Lab (Arduino Uno) », version 1.0.0 (Labo Blocs).
+// Parcours « Escape Lab (Arduino Uno) », version 1.3.0 (Labo Blocs).
 // Ce fichier est écrit par « Mettre à jour les exercices » (outil du professeur) : ne pas le modifier à la main.
 definirParcours({
   "format": "labo-blocs/parcours",
   "version": 1,
   "id": "escape-lab",
   "titre": "Escape Lab (Arduino Uno)",
-  "versionParcours": "1.0.0",
-  "date": "2026-10-23",
-  "moteurMinimum": "0.4.0",
+  "versionParcours": "1.3.0",
+  "date": "2026-11-16",
+  "moteurMinimum": "0.5.0",
   "carte": "uno",
   "modes": [
     "simulateur",
@@ -54,7 +54,17 @@ definirParcours({
         "variable",
         "nombre",
         "quand_touche",
-        "touche_appuyee"
+        "touche_appuyee",
+        "ultrason_distance",
+        "afficheur4_nombre",
+        "afficheur4_effacer",
+        "ecran_texte",
+        "ecran_nombre",
+        "ecran_effacer",
+        "tactile_touche",
+        "tactile_valeur",
+        "tactile_oublier",
+        "mouvement_detecte"
       ],
       "blocsDepart": null,
       "scenarios": [
@@ -110,7 +120,17 @@ definirParcours({
         "variable",
         "nombre",
         "quand_touche",
-        "touche_appuyee"
+        "touche_appuyee",
+        "ultrason_distance",
+        "afficheur4_nombre",
+        "afficheur4_effacer",
+        "ecran_texte",
+        "ecran_nombre",
+        "ecran_effacer",
+        "tactile_touche",
+        "tactile_valeur",
+        "tactile_oublier",
+        "mouvement_detecte"
       ],
       "blocsDepart": null,
       "scenarios": [
@@ -166,7 +186,17 @@ definirParcours({
         "variable",
         "nombre",
         "quand_touche",
-        "touche_appuyee"
+        "touche_appuyee",
+        "ultrason_distance",
+        "afficheur4_nombre",
+        "afficheur4_effacer",
+        "ecran_texte",
+        "ecran_nombre",
+        "ecran_effacer",
+        "tactile_touche",
+        "tactile_valeur",
+        "tactile_oublier",
+        "mouvement_detecte"
       ],
       "blocsDepart": null,
       "scenarios": [
@@ -222,7 +252,17 @@ definirParcours({
         "variable",
         "nombre",
         "quand_touche",
-        "touche_appuyee"
+        "touche_appuyee",
+        "ultrason_distance",
+        "afficheur4_nombre",
+        "afficheur4_effacer",
+        "ecran_texte",
+        "ecran_nombre",
+        "ecran_effacer",
+        "tactile_touche",
+        "tactile_valeur",
+        "tactile_oublier",
+        "mouvement_detecte"
       ],
       "blocsDepart": null,
       "scenarios": [
