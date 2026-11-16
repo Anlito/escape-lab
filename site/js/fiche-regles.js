@@ -215,7 +215,7 @@
   var FILS_PAR_DEFAUT = {
     led: [S("signal"), GND], bouton: [S("signal"), GND], "buzzer-passif": [S("signal"), GND], ils: [S("signal"), GND],
     servomoteur: [VCC, GND, S("signal")], potentiometre: [VCC, GND, S("signal")], relais: [VCC, GND, S("signal")],
-    lcd: [VCC, GND, S("signal 1"), S("signal 2")], "clavier-grove": [VCC, GND, S("RX"), S("TX")],
+    lcd: [VCC, GND, S("signal 1"), S("signal 2")], "clavier-grove": [GND, VCC, S("RX"), S("TX")],
     "clavier-membrane": ["L1", "L2", "L3", "L4", "C1", "C2", "C3"].map(S),
     electroaimant: []   // jamais sur la carte : il est alimenté par le relais et l'alimentation 12 V séparée
   };
