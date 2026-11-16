@@ -181,8 +181,10 @@
   // --- Programme Labo Blocs (brief §11, point 3) : au moins une entrée et une sortie, signalé, jamais bloquant ---
 
   var BLOCS_ENTREE = ["bouton_etat", "joystick_direction", "joystick_position", "joystick_bouton", "touche_appuyee",
-    "mb_bouton", "mb_logo", "mb_geste", "mb_acceleration", "mb_temperature", "mb_lumiere"];
-  var BLOCS_SORTIE = ["led_etat", "servo_angle", "son", "mb_image", "mb_texte", "mb_dessin", "mb_pixel", "mb_note", "mb_nombre"];
+    "mb_bouton", "mb_logo", "mb_geste", "mb_acceleration", "mb_temperature", "mb_lumiere",
+    "mouvement_detecte", "ultrason_distance", "tactile_touche", "tactile_valeur"];
+  var BLOCS_SORTIE = ["led_etat", "servo_angle", "son", "mb_image", "mb_texte", "mb_dessin", "mb_pixel", "mb_note", "mb_nombre",
+    "relais_etat", "afficheur4_nombre", "ecran_texte", "ecran_nombre"];
   var QUAND_ENTREE = ["appui", "relache", "joystick", "touche"];
 
   // Parcourt un programme et range ce qu'il lit et ce qu'il commande. Deux formes : celle du noyau ({ bloc, quand })

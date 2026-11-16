@@ -1099,6 +1099,36 @@
       WORKSPACE_COMMENT_DEFAULT_TEXT: 'Écris ton commentaire ici…',
     });
     Blockly.common.defineBlocksWithJsonArray(DEFINITIONS);
+    // Broches imposées (l'élève ne les choisit pas) : écrites au bout du bloc, pour savoir où brancher les fils en plus
+    // de VCC et GND. A.joystickCourant (joystick de l'exercice) est réglé à l'ouverture de chaque exercice.
+    const ports = (A.PROFILS && A.PROFILS.mbot && A.PROFILS.mbot.ports) || {};
+    const BROCHES_IMPOSEES = {
+      joystick: () => {
+        const j = A.joystickCourant || (A.JOYSTICK_DEPART || {}).uno;
+        return j ? `X → ${j.broche} · Y → ${j.y} · bouton → ${j.bouton}` : '';
+      },
+      ecran: () => 'SDA → A4 · SCL → A5',
+      ultrasons: () => (ports.ultrasons ? `port ${ports.ultrasons}` : ''),
+      ligne: () => (ports.ligne ? `port ${ports.ligne}` : ''),
+      matrice: () => (ports.matrice ? `port ${ports.matrice}` : ''),
+    };
+    const BLOCS_IMPOSES = {
+      joystick_position: 'joystick', joystick_valeur: 'joystick', joystick_direction: 'joystick', joystick_bouton: 'joystick', quand_joystick: 'joystick',
+      ecran_texte: 'ecran', ecran_nombre: 'ecran', ecran_effacer: 'ecran',
+      mbot_distance: 'ultrasons', mbot_ligne: 'ligne', mbot_ligne_voit: 'ligne',
+      mbot_matrice_dessin: 'matrice', mbot_matrice_texte: 'matrice', mbot_matrice_nombre: 'matrice', mbot_matrice_heure: 'matrice',
+    };
+    for (const [type, quoi] of Object.entries(BLOCS_IMPOSES)) {
+      if (!Blockly.Blocks[type]) continue;
+      const init = Blockly.Blocks[type].init;
+      Blockly.Blocks[type].init = function () {
+        init.call(this);
+        const texte = BROCHES_IMPOSEES[quoi]();
+        // Dans la dernière ligne du bloc qui n'est pas une « bouche » (blocs « quand … » : avant les blocs à faire).
+        const entree = this.inputList.filter((i) => !i.connection || i.connection.type !== Blockly.NEXT_STATEMENT).pop();
+        if (texte && entree) entree.appendField(new Blockly.FieldLabel(`(${texte})`, 'broches-imposees'), 'BROCHES_IMPOSEES');
+      };
+    }
     // Menu HAUT/BAS du bloc LED : « : allumée / : éteinte » pendant les premiers exercices seulement
     // (A.aideLed est réglé à l'ouverture de chaque exercice, voir parametres.js).
     const initLed = Blockly.Blocks.led_etat.init;
@@ -1579,7 +1609,7 @@
   const XS = { GND: 144.5, D13: 154.5, D12: 164, D11: 174, D10: 183.5, D9: 193.5, D8: 203, D7: 219.5, D6: 229, D5: 239, D4: 248.5, D3: 258.5, D2: 268 };
   const PY = 57;
   const FILS = { D3: '#D32F2F', D4: '#1976D2', D5: '#F9A825', D6: '#7B1FA2', D8: '#2E7D32', D9: '#00838F', D10: '#455A64', D7: '#6D4C41', D11: '#AD1457', GND: '#7B4A2A' };
-  const FAMILLES = { led: '#FAB22B', bouton: '#1A6E8E', servo: '#C2185B', buzzer: '#6D4C41', joystick: '#00838F', mouvement: '#6A1B9A', ultrason: '#5E35B1', afficheur4: '#D84315', ecran: '#2E7D32', tactile: '#37474F' };
+  const FAMILLES = { led: '#FAB22B', bouton: '#1A6E8E', servo: '#C2185B', buzzer: '#6D4C41', joystick: '#00838F', relais: '#455A64', mouvement: '#6A1B9A', ultrason: '#5E35B1', afficheur4: '#D84315', ecran: '#2E7D32', tactile: '#37474F' };
   const COULEURS_LED = { PetiteDose: '#F5B800', GrandeDose: '#2F80ED', Trappe: '#E53935' };
 
   const echapper = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
@@ -1591,7 +1621,7 @@
     return c.couleur || COULEURS_LED[c.nom] || '#E53935';
   }
   function libelle(c) {
-    const type = { led: 'LED', bouton: 'BOUTON', servo: 'Servomoteur', buzzer: 'Buzzer', joystick: 'Joystick', mouvement: 'Capteur de mouvement', ultrason: 'Ultrason', afficheur4: 'Afficheur 4 chiffres', ecran: 'Écran', tactile: 'Clavier tactile' }[c.type] || c.type;
+    const type = { led: 'LED', bouton: 'BOUTON', servo: 'Servomoteur', buzzer: 'Buzzer', joystick: 'Joystick', relais: 'Relais', mouvement: 'Capteur de mouvement', ultrason: 'Ultrason', afficheur4: 'Afficheur 4 chiffres', ecran: 'Écran', tactile: 'Clavier tactile' }[c.type] || c.type;
     return c.nom ? `${type} ${c.nom}` : type;
   }
 
@@ -1742,6 +1772,7 @@
 
   // Modules de l'Uno : ultrason (curseur de distance), afficheur 4 chiffres, écran 16 × 2, clavier tactile 12 touches.
   const BROCHES_MODULE = {
+    relais: (c) => `IN ${c.broche}`,
     mouvement: (c) => `OUT ${c.broche}`,
     ultrason: (c) => `TRIG ${c.broche} · ECHO ${c.echo}`,
     afficheur4: (c) => `CLK ${c.broche} · DIO ${c.dio}`,
@@ -1750,7 +1781,9 @@
   };
   function carteModule(c, compact) {
     let corps = '';
-    if (c.type === 'mouvement') {
+    if (c.type === 'relais') {
+      corps = '<span class="pastille-etat" aria-live="polite">○ Désactivé : l’actionneur n’est pas alimenté</span>';
+    } else if (c.type === 'mouvement') {
       corps =
         `<button type="button" class="module-mouvement" aria-pressed="false">Mouvement devant le capteur</button>` +
         '<span class="pastille-etat" aria-live="polite">Rien ne bouge</span>';
@@ -2313,6 +2346,11 @@
     const texteTouche = (n) => (n === 10 ? '*' : n === 11 ? '#' : n >= 0 ? String(n) : 'aucune');
     function afficherModules(sim) {
       const e = (sim && sim.carte) || {};
+      for (const el of grille.querySelectorAll('.composant-relais')) {
+        const actif = !!(sim && sim.sorties[el.dataset.broche]);
+        el.classList.toggle('actif', actif);
+        el.querySelector('.pastille-etat').textContent = actif ? '● Activé (HAUT) : l’actionneur est alimenté' : '○ Désactivé (BAS) : l’actionneur n’est pas alimenté';
+      }
       for (const el of grille.querySelectorAll('.composant-mouvement')) {
         const vu = !!(sim && sim.entrees[el.dataset.broche]);
         el.classList.toggle('actif', vu);
@@ -5109,8 +5147,8 @@
     return html;
   }
 
-  const NOMS_COMPOSANTS = { led: 'LED', bouton: 'Bouton', servo: 'Servomoteur', buzzer: 'Buzzer', joystick: 'Joystick', mouvement: 'Capteur de mouvement', ultrason: 'Ultrason', afficheur4: 'Afficheur 4 chiffres', ecran: 'Écran I2C', tactile: 'Clavier tactile' };
-  const ICONES_COMPOSANTS = { led: 'lumiere', bouton: 'bouton', servo: 'moteur', buzzer: 'son', joystick: 'joystick', mouvement: 'puzzle', ultrason: 'puzzle', afficheur4: 'puzzle', ecran: 'puzzle', tactile: 'puzzle' };
+  const NOMS_COMPOSANTS = { led: 'LED', bouton: 'Bouton', servo: 'Servomoteur', buzzer: 'Buzzer', joystick: 'Joystick', relais: 'Relais', mouvement: 'Capteur de mouvement', ultrason: 'Ultrason', afficheur4: 'Afficheur 4 chiffres', ecran: 'Écran I2C', tactile: 'Clavier tactile' };
+  const ICONES_COMPOSANTS = { led: 'lumiere', bouton: 'bouton', servo: 'moteur', buzzer: 'son', joystick: 'joystick', relais: 'puzzle', mouvement: 'puzzle', ultrason: 'puzzle', afficheur4: 'puzzle', ecran: 'puzzle', tactile: 'puzzle' };
   // Broches d'un composant dans la liste « Composants » (le joystick en a trois).
   const AUTRES_BROCHES = { ultrason: ['TRIG', 'ECHO', 'echo'], afficheur4: ['CLK', 'DIO', 'dio'], ecran: ['SDA', 'SCL', 'scl'], tactile: ['RX', 'TX', 'tx'] };
   const brochesDuComposant = (c) =>
@@ -5221,6 +5259,8 @@
       if (!A.estDebloque(D, paquet, ex.id, opts)) return false;
       if (etat.exercice) A.noterProgramme(D, etat.exercice.id, editeur.sauvegarder());
       A.aideLed = !!ex.aideLed; // menu de la LED : « HAUT (1) : allumée » pendant les premiers exercices
+      // Broches du joystick écrites dans ses blocs : celles de l'exercice, sinon celles d'un exercice libre.
+      A.joystickCourant = A.joystickDe(ex.composants) || A.nouveauJoystick(ex.carte);
       arreter();
       fermerResultat();
       fermerBulle();

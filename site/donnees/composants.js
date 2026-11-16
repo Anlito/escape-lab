@@ -67,26 +67,49 @@ definirComposants({
     },
     {
       "id": "relais",
-      "nom": "Relais",
+      "nom": "Relais (module à SRD-05VDC-SL-C)",
       "type": "actionneur",
       "broches": [
         {
-          "nom": "⚠️ à vérifier",
-          "role": "⚠️ à vérifier : référence et brochage du composant réel."
+          "nom": "VCC",
+          "role": "Alimentation 5 V de la bobine du relais."
+        },
+        {
+          "nom": "GND",
+          "role": "Masse, reliée au GND de la carte."
+        },
+        {
+          "nom": "IN (ou S)",
+          "role": "Ordre de la carte : HAUT = relais enclenché (sens à vérifier à la recette)."
+        },
+        {
+          "nom": "COM",
+          "role": "Côté puissance : commun, relié à l’alimentation séparée de l’actionneur."
+        },
+        {
+          "nom": "NO",
+          "role": "Côté puissance : relié à COM seulement quand le relais est enclenché."
+        },
+        {
+          "nom": "NC",
+          "role": "Côté puissance : relié à COM quand le relais est au repos. Pas utilisé ici."
         }
       ],
-      "tension": "⚠️ à vérifier",
+      "tension": "Commande en 5 V. Côté puissance : 12 V au plus pour l’électro-aimant ou le bandeau LED, avec leur propre alimentation.",
       "cablageType": [
-        "⚠️ à vérifier : fiche technique du modèle réel nécessaire avant de renseigner un branchement."
+        "Côté carte : IN sur une broche numérique (D2 à D13), au choix de l’équipe ; VCC et GND sur les rails.",
+        "Côté puissance : l’alimentation séparée passe par COM et NO pour aller à l’actionneur (électro-aimant, bandeau LED). Le professeur fait ou vérifie ce câblage.",
+        "Dans Labo Blocs : bloc « activer / désactiver le relais … », avec la même broche."
       ],
       "precautions": [
-        "⚠️ à vérifier : caractéristiques et conditions d’utilisation à relever sur la fiche technique.",
-        "Règle de sécurité : alimentation 12 V séparée, commande par relais ; jamais de 12 V sur la carte ni sur la platine. Le professeur valide avant toute mise sous tension. Diode, courant et protections : ⚠️ à vérifier sur les références réelles."
+        "Règle de sécurité : alimentation 12 V séparée, commande par relais ; jamais de 12 V sur la carte ni sur la platine. Le professeur valide avant toute mise sous tension.",
+        "Débrancher l’alimentation 12 V avant de toucher aux bornes COM, NO et NC.",
+        "Électro-aimant : une diode de roue libre est nécessaire à ses bornes ; ⚠️ à vérifier sur le montage réel."
       ],
       "lies": [
         "electroaimant"
       ],
-      "source": "⚠️ à vérifier : fiche technique du modèle réel non identifiée."
+      "source": "Relais confirmé par Thomas le 16/11/2026 (SRD-05VDC-SL-C) ; Labo Blocs (HAUT = enclenché, à vérifier à la recette 29.8)."
     },
     {
       "id": "electroaimant",

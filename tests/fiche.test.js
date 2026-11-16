@@ -118,6 +118,8 @@ test("programme : une entrée et une sortie, E1 respecté", () => {
 
 test("programme : sortie seule, événement « quand appui », programme vide", () => {
   assert.equal(F.analyserProgramme({ boucle: [{ bloc: "led_etat", broche: "D3" }] }).e1, false);
+  // Blocs des modules de l'Uno : le capteur de mouvement est une entrée, le relais une sortie.
+  assert.equal(F.analyserProgramme({ boucle: [{ bloc: "si_alors", condition: { bloc: "mouvement_detecte", broche: "D3" }, alors: [{ bloc: "relais_etat", etat: "1", broche: "D8" }] }] }).e1, true);
   assert.equal(F.analyserProgramme([{ quand: "appui", broche: "D2", blocs: [{ bloc: "son" }] }]).e1, true);
   assert.equal(F.analyserProgramme(null).vide, true);
   assert.equal(F.analyserProgramme({ boucle: [{ bloc: "mb_lumiere" }, { bloc: "mb_image" }] }).e1, true);

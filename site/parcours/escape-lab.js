@@ -1,11 +1,11 @@
-// Parcours « Escape Lab (Arduino Uno) », version 1.3.0 (Labo Blocs).
+// Parcours « Escape Lab (Arduino Uno) », version 1.5.0 (Labo Blocs).
 // Ce fichier est écrit par « Mettre à jour les exercices » (outil du professeur) : ne pas le modifier à la main.
 definirParcours({
   "format": "labo-blocs/parcours",
   "version": 1,
   "id": "escape-lab",
   "titre": "Escape Lab (Arduino Uno)",
-  "versionParcours": "1.3.0",
+  "versionParcours": "1.5.0",
   "date": "2026-11-16",
   "moteurMinimum": "0.5.0",
   "carte": "uno",
@@ -64,7 +64,8 @@ definirParcours({
         "tactile_touche",
         "tactile_valeur",
         "tactile_oublier",
-        "mouvement_detecte"
+        "mouvement_detecte",
+        "relais_etat"
       ],
       "blocsDepart": null,
       "scenarios": [
@@ -130,7 +131,8 @@ definirParcours({
         "tactile_touche",
         "tactile_valeur",
         "tactile_oublier",
-        "mouvement_detecte"
+        "mouvement_detecte",
+        "relais_etat"
       ],
       "blocsDepart": null,
       "scenarios": [
@@ -196,7 +198,8 @@ definirParcours({
         "tactile_touche",
         "tactile_valeur",
         "tactile_oublier",
-        "mouvement_detecte"
+        "mouvement_detecte",
+        "relais_etat"
       ],
       "blocsDepart": null,
       "scenarios": [
@@ -262,7 +265,8 @@ definirParcours({
         "tactile_touche",
         "tactile_valeur",
         "tactile_oublier",
-        "mouvement_detecte"
+        "mouvement_detecte",
+        "relais_etat"
       ],
       "blocsDepart": null,
       "scenarios": [

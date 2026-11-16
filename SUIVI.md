@@ -353,6 +353,7 @@ Barème validé : A à D = 0, 1, 2, 3 points ; coefficient 2 pour la fiche énig
 croisé, 1 pour les autres critères ; **pas de rouge** (lettres A à D, sans couleur imposée).
 
 ## Journal
+- 16/11/2026 — Claude : relais (module à SRD-05VDC-SL-C : VCC, GND, IN ; HAUT = enclenché, à vérifier à la recette) dans l’atelier et dans Labo Blocs (parcours escape-lab 1.5.0) ; broches imposées écrites au bout des blocs (écran : SDA → A4, SCL → A5 ; joystick) ; la règle « une entrée et une sortie » connaît les nouveaux blocs.
 - 16/11/2026 — Claude : copie de Labo Blocs mise à jour (npm run vers-projet, parcours escape-lab 1.3.0) : la page Programmation propose Mouvement, Ultrason, Afficheur 4 chiffres, Écran et Clavier tactile. Programme de la carte Uno 0.4 à réinstaller une fois par carte.
 - 16/11/2026 — Claude : capteur de mouvement HC-SR501 (VCC, OUT, GND) dans l’atelier de câblage et dans Labo Blocs (bloc « le capteur de mouvement … détecte un mouvement »). Relais : en attente de la référence du module du collège.
 - 16/11/2026 — Claude : les quatre modules marchent aussi dans Labo Blocs (parcours Escape Lab Uno, version 1.2.0) : blocs, simulateur, mode « En direct » et programme de la carte Uno 0.4 (à réinstaller une fois sur chaque Uno). Ultrason HY-SRF05 : 4 fils (OUT libre). Écran : LCD 16×2 I2C sur A4 et A5. Fiches C32 écrites par Claude.
