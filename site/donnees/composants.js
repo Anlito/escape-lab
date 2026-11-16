@@ -425,6 +425,51 @@ definirComposants({
       ],
       "lies": [],
       "source": "Labo Blocs 0.4 (programme de la carte Uno) ; matériel confirmé par Thomas le 16/11/2026."
+    },
+    {
+      "id": "capteur-mouvement",
+      "nom": "Capteur de mouvement HC-SR501 (dôme blanc)",
+      "type": "capteur",
+      "fils": [
+        {
+          "nom": "VCC",
+          "role": "vcc"
+        },
+        {
+          "nom": "OUT",
+          "role": "signal"
+        },
+        {
+          "nom": "GND",
+          "role": "gnd"
+        }
+      ],
+      "broches": [
+        {
+          "nom": "VCC",
+          "role": "Alimentation 5 V."
+        },
+        {
+          "nom": "OUT",
+          "role": "Passe à HAUT quand le capteur voit un mouvement, puis revient à BAS."
+        },
+        {
+          "nom": "GND",
+          "role": "Masse, reliée au GND de la carte."
+        }
+      ],
+      "tension": "5 V.",
+      "cablageType": [
+        "OUT sur une broche numérique de la carte (D2 à D13), au choix de l’équipe.",
+        "Dans Labo Blocs : bloc « le capteur de mouvement … détecte un mouvement », avec la même broche."
+      ],
+      "precautions": [
+        "Après la mise sous tension, attendre environ une minute : le capteur se règle et peut se déclencher seul.",
+        "Il voit les mouvements de chaleur (une personne, une main), pas un objet froid.",
+        "Les deux vis orange règlent la distance et la durée du signal HAUT : les régler avec le professeur."
+      ],
+      "lies": [],
+      "source": "Matériel confirmé par Thomas le 16/11/2026 ; Labo Blocs (entrée sans résistance, HAUT = mouvement)."
     }
   ]
 });

@@ -162,6 +162,7 @@ test("fils : afficheur 4 chiffres, ultrason, écran I2C et clavier tactile, dans
   assert.equal(new Set(fils("ultrason").filter((x) => /signal/.test(x)).map((x) => x.split(":")[2])).size, 2);
   assert.deepEqual(fils("ecran-i2c").map((x) => x.split(":")[0]), ["GND", "VCC", "SDA", "SCL"]);
   assert.deepEqual(fils("clavier-grove").map((x) => x.split(":")[0]), ["GND", "VCC", "RX", "TX"]);
+  assert.deepEqual(fils("capteur-mouvement"), ["VCC:vcc:blanc", "OUT:signal:orange", "GND:gnd:noir"]);
 });
 
 test("contrôles des fils : GND ou VCC oubliés, mauvaise couleur, même couleur de signal", () => {

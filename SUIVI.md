@@ -353,6 +353,7 @@ Barème validé : A à D = 0, 1, 2, 3 points ; coefficient 2 pour la fiche énig
 croisé, 1 pour les autres critères ; **pas de rouge** (lettres A à D, sans couleur imposée).
 
 ## Journal
+- 16/11/2026 — Claude : capteur de mouvement HC-SR501 (VCC, OUT, GND) dans l’atelier de câblage et dans Labo Blocs (bloc « le capteur de mouvement … détecte un mouvement »). Relais : en attente de la référence du module du collège.
 - 16/11/2026 — Claude : les quatre modules marchent aussi dans Labo Blocs (parcours Escape Lab Uno, version 1.2.0) : blocs, simulateur, mode « En direct » et programme de la carte Uno 0.4 (à réinstaller une fois sur chaque Uno). Ultrason HY-SRF05 : 4 fils (OUT libre). Écran : LCD 16×2 I2C sur A4 et A5. Fiches C32 écrites par Claude.
 - 16/11/2026 — Claude : atelier de câblage, trois modules ajoutés : afficheur 4 chiffres (CLK, DIO, VCC, GND), ultrason (GND, OUT, TRIG, ECHO, VCC), écran I2C (GND, VCC, SDA, SCL) ; le clavier tactile 12 touches (ATtiny1616) V1.0 existait déjà (`clavier-grove`), ses fils suivent maintenant l'ordre GND, VCC, RX, TX. Fils dans le champ `fils` du catalogue ; tensions et rôles non connus laissés « à vérifier ». Tâche C32 laissée à ChatGPT.
 - 04/11/2026 — Thomas : les élèves ouvrent l’outil par le raccourci Classe › classe › MATIERES › TECHNOLOGIE › TABLEAU › ESCAPE LAB. Claude : ce chemin remplace l’adresse GitHub dans la présentation, l’affiche et « Bien démarrer ». **Règle pour ChatGPT : dans les textes élèves, donner ce chemin, jamais l’adresse github.io.**
