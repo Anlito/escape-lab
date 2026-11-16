@@ -215,33 +215,54 @@ definirComposants({
     {
       "id": "clavier-grove",
       "nom": "Clavier tactile 12 touches (ATtiny1616) V1.0 — Grove 101020636",
-      "fils": [{ "nom": "GND", "role": "gnd" }, { "nom": "VCC", "role": "vcc" }, { "nom": "RX", "role": "signal" }, { "nom": "TX", "role": "signal" }],
-      "type": "saisie",
-      "broches": [
+      "fils": [
+        {
+          "nom": "GND",
+          "role": "gnd"
+        },
+        {
+          "nom": "VCC",
+          "role": "vcc"
+        },
         {
           "nom": "RX",
-          "role": "Réception de la liaison série UART."
+          "role": "signal"
         },
         {
           "nom": "TX",
-          "role": "Émission de la liaison série UART."
-        },
-        {
-          "nom": "⚠️ à vérifier",
-          "role": "⚠️ à vérifier : repérage physique des contacts d’alimentation et de masse sur le module réel."
+          "role": "signal"
         }
       ],
-      "tension": "3,3 V / 5 V (fabricant).",
+      "type": "saisie",
+      "broches": [
+        {
+          "nom": "GND",
+          "role": "Masse, reliée au GND de la carte."
+        },
+        {
+          "nom": "VCC",
+          "role": "Alimentation."
+        },
+        {
+          "nom": "RX",
+          "role": "Réception de la liaison série : à brancher, même si Labo Blocs n’envoie rien au clavier."
+        },
+        {
+          "nom": "TX",
+          "role": "Envoie à la carte la touche appuyée (liaison série, 9600 bauds)."
+        }
+      ],
+      "tension": "3,3 V ou 5 V (fabricant).",
       "cablageType": [
-        "Utiliser l’interface UART du connecteur Grove à quatre contacts.",
-        "⚠️ à vérifier : ordre physique des quatre contacts et affectation des broches de la carte."
+        "RX et TX sur deux broches numériques de la carte (D2 à D13), au choix de l’équipe. Pas D0 ni D1 : elles servent au câble USB.",
+        "Dans Labo Blocs : blocs du clavier tactile, avec les mêmes broches RX et TX."
       ],
       "precautions": [
-        "⚠️ à vérifier : compatibilité de la liaison série avec le micrologiciel Uno de Labo Blocs.",
-        "La documentation du fabricant ne vaut pas validation du câblage réel par le professeur."
+        "La carte garde la dernière touche appuyée jusqu’au bloc « oublier la dernière touche ».",
+        "⚠️ à vérifier à la recette : les codes envoyés par le clavier réel (0xE1 à 0xEC d’après le fabricant)."
       ],
       "lies": [],
-      "source": "https://wiki.seeedstudio.com/Grove-12-Channel-Capacitive-Touch-Keypad-ATtiny1616-/"
+      "source": "https://wiki.seeedstudio.com/Grove-12-Channel-Capacitive-Touch-Keypad-ATtiny1616-/ ; Labo Blocs 0.4 (programme de la carte Uno) ; matériel confirmé par Thomas le 16/11/2026."
     },
     {
       "id": "afficheur-4-chiffres",
@@ -250,15 +271,15 @@ definirComposants({
       "broches": [
         {
           "nom": "CLK",
-          "role": "Horloge de la liaison avec la carte."
+          "role": "Horloge : rythme l’envoi des chiffres par la carte."
         },
         {
           "nom": "DIO",
-          "role": "Données de la liaison avec la carte."
+          "role": "Données : les chiffres à afficher."
         },
         {
           "nom": "VCC",
-          "role": "Alimentation du module."
+          "role": "Alimentation 5 V."
         },
         {
           "nom": "GND",
@@ -283,21 +304,21 @@ definirComposants({
           "role": "gnd"
         }
       ],
-      "tension": "⚠️ à vérifier : à relever sur le module réel.",
+      "tension": "5 V.",
       "cablageType": [
-        "Brancher chaque fil indiqué dans l’ordre du tableau, sans autre broche.",
-        "⚠️ à vérifier : broches de la carte à choisir avec le professeur."
+        "CLK et DIO sur deux broches numériques de la carte (D2 à D13), au choix de l’équipe.",
+        "Dans Labo Blocs : bloc « afficher le nombre … sur l’afficheur 4 chiffres », avec les mêmes broches CLK et DIO."
       ],
       "precautions": [
-        "⚠️ à vérifier : bloc correspondant dans Labo Blocs et micrologiciel Uno.",
-        "La documentation du fabricant ne vaut pas validation du câblage réel par le professeur."
+        "Affiche les nombres entiers de -999 à 9999. Au-delà, l’afficheur montre « ---- ».",
+        "Un nombre à virgule est arrondi."
       ],
       "lies": [],
-      "source": "⚠️ à vérifier : référence exacte du module réel."
+      "source": "Labo Blocs 0.4 (programme de la carte Uno) ; matériel confirmé par Thomas le 16/11/2026. Afficheurs à puce TM1637."
     },
     {
       "id": "ultrason",
-      "nom": "Ultrason — capteur de distance",
+      "nom": "Ultrason HY-SRF05 — capteur de distance",
       "type": "capteur",
       "broches": [
         {
@@ -306,29 +327,25 @@ definirComposants({
         },
         {
           "nom": "OUT",
-          "role": "⚠️ à vérifier : rôle de cette broche sur le module réel."
+          "role": "Ne pas brancher : le montage utilise seulement TRIG et ECHO."
         },
         {
           "nom": "TRIG",
-          "role": "Déclenche l’envoi de l’onde ultrason."
+          "role": "Reçoit l’ordre de la carte : le capteur envoie une onde ultrason."
         },
         {
           "nom": "ECHO",
-          "role": "Renvoie la durée de l’aller-retour de l’onde."
+          "role": "Renvoie à la carte la durée de l’aller-retour de l’onde."
         },
         {
           "nom": "VCC",
-          "role": "Alimentation du module."
+          "role": "Alimentation 5 V."
         }
       ],
       "fils": [
         {
           "nom": "GND",
           "role": "gnd"
-        },
-        {
-          "nom": "OUT",
-          "role": "signal"
         },
         {
           "nom": "TRIG",
@@ -343,22 +360,22 @@ definirComposants({
           "role": "vcc"
         }
       ],
-      "tension": "⚠️ à vérifier : à relever sur le module réel.",
+      "tension": "5 V.",
       "cablageType": [
-        "Brancher chaque fil indiqué dans l’ordre du tableau, sans autre broche.",
-        "⚠️ à vérifier : broches de la carte à choisir avec le professeur."
+        "TRIG et ECHO sur deux broches numériques de la carte (D2 à D13), au choix de l’équipe.",
+        "OUT reste libre.",
+        "Dans Labo Blocs : bloc « distance mesurée par l’ultrason », avec les mêmes broches TRIG et ECHO."
       ],
       "precautions": [
-        "⚠️ à vérifier : bloc correspondant dans Labo Blocs et micrologiciel Uno.",
-        "⚠️ à vérifier : la broche OUT est-elle à brancher sur ce module ?",
-        "La documentation du fabricant ne vaut pas validation du câblage réel par le professeur."
+        "Mesure de 2 cm à 4 m environ. Sans obstacle, le bloc donne 400.",
+        "Rien d’autre que l’obstacle à mesurer devant le capteur."
       ],
       "lies": [],
-      "source": "⚠️ à vérifier : référence exacte du module réel."
+      "source": "Labo Blocs 0.4 (programme de la carte Uno) ; matériel confirmé par Thomas le 16/11/2026."
     },
     {
       "id": "ecran-i2c",
-      "nom": "Écran I2C (SDA, SCL)",
+      "nom": "Écran LCD 16×2 I2C (SDA, SCL)",
       "type": "afficheur",
       "broches": [
         {
@@ -367,15 +384,15 @@ definirComposants({
         },
         {
           "nom": "VCC",
-          "role": "Alimentation du module."
+          "role": "Alimentation 5 V."
         },
         {
           "nom": "SDA",
-          "role": "Données de la liaison I2C."
+          "role": "Données de la liaison I2C : toujours sur A4 de l’Uno."
         },
         {
           "nom": "SCL",
-          "role": "Horloge de la liaison I2C."
+          "role": "Horloge de la liaison I2C : toujours sur A5 de l’Uno."
         }
       ],
       "fils": [
@@ -396,18 +413,18 @@ definirComposants({
           "role": "signal"
         }
       ],
-      "tension": "⚠️ à vérifier : à relever sur le module réel.",
+      "tension": "5 V.",
       "cablageType": [
-        "Brancher chaque fil indiqué dans l’ordre du tableau, sans autre broche.",
-        "⚠️ à vérifier : broches de la carte à choisir avec le professeur."
+        "SDA sur A4 et SCL sur A5 : ce sont les broches I2C de l’Uno, elles sont imposées.",
+        "Dans Labo Blocs : bloc « écrire … sur la ligne … de l’écran ». 2 lignes de 16 caractères."
       ],
       "precautions": [
-        "⚠️ à vérifier : bloc correspondant dans Labo Blocs et micrologiciel Uno.",
-        "⚠️ à vérifier : adresse I2C de l’écran réel.",
-        "La documentation du fabricant ne vaut pas validation du câblage réel par le professeur."
+        "La carte trouve seule l’adresse de l’écran (0x27 ou 0x3F).",
+        "Écran allumé mais rien d’écrit : tourner doucement la petite vis du réglage de contraste, au dos.",
+        "Les lettres accentuées sont écrites sans accent."
       ],
       "lies": [],
-      "source": "⚠️ à vérifier : référence exacte du module réel."
+      "source": "Labo Blocs 0.4 (programme de la carte Uno) ; matériel confirmé par Thomas le 16/11/2026."
     }
   ]
 });

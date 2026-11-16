@@ -158,8 +158,8 @@ test("fils : afficheur 4 chiffres, ultrason, écran I2C et clavier tactile, dans
   require("../site/donnees/composants.js");
   const fils = (id) => F.lignesDuComposant(catalogue[id], "uno", []).map((x) => x.brocheComposant + ":" + x.role + ":" + x.fil);
   assert.deepEqual(fils("afficheur-4-chiffres"), ["CLK:signal:orange", "DIO:signal:violet", "VCC:vcc:blanc", "GND:gnd:noir"]);
-  assert.deepEqual(fils("ultrason").map((x) => x.split(":").slice(0, 2).join(":")), ["GND:gnd", "OUT:signal", "TRIG:signal", "ECHO:signal", "VCC:vcc"]);
-  assert.equal(new Set(fils("ultrason").filter((x) => /signal/.test(x)).map((x) => x.split(":")[2])).size, 3);
+  assert.deepEqual(fils("ultrason").map((x) => x.split(":").slice(0, 2).join(":")), ["GND:gnd", "TRIG:signal", "ECHO:signal", "VCC:vcc"]);
+  assert.equal(new Set(fils("ultrason").filter((x) => /signal/.test(x)).map((x) => x.split(":")[2])).size, 2);
   assert.deepEqual(fils("ecran-i2c").map((x) => x.split(":")[0]), ["GND", "VCC", "SDA", "SCL"]);
   assert.deepEqual(fils("clavier-grove").map((x) => x.split(":")[0]), ["GND", "VCC", "RX", "TX"]);
 });
