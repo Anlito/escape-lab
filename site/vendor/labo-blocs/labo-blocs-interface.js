@@ -64,6 +64,8 @@
   <main class="colonne-programme">
     <div class="programme-tete">
       <h2>Mon programme</h2>
+      <button type="button" class="btn-onglet btn-reprendre-precedent" hidden><span data-icone="importer" data-epaisseur="2.4"></span><span class="texte-reprendre">Reprendre l’exercice précédent</span></button>
+      <button type="button" class="btn-onglet btn-repartir" title="Effacer ton programme et revenir aux blocs du début de l’exercice"><span data-icone="corbeille" data-epaisseur="2.4"></span>Repartir de zéro</button>
       <button type="button" class="btn-onglet btn-solution" hidden title="Remplacer le programme affiché par la solution de référence"><span data-icone="oeil" data-epaisseur="2.4"></span>Solution</button>
       <div class="niveaux" role="group" aria-label="Niveau">
         <span class="niveaux-libelle">Niveau</span>
@@ -1435,6 +1437,32 @@
       majHorsProgramme();
     }
 
+    // Un autre programme à la place de celui affiché (« Reprendre l'exercice … ») : c'est une modification de l'élève,
+    // enregistrée comme les autres, et « Annuler » ramène le programme d'avant en un clic.
+    function remplacer(sauvegarde) {
+      const noms = A.nomsDeSauvegarde(sauvegarde);
+      const variables = [...new Set(A.variablesConnues.concat(noms.variables))];
+      const listes = [...new Set(A.listesConnues.concat(noms.listes))];
+      const paletteChange = variables.length !== A.variablesConnues.length || listes.length !== A.listesConnues.length;
+      A.variablesConnues = variables;
+      A.listesConnues = listes;
+      if (paletteChange) ws.updateToolbox(A.palette(exerciceCourant.blocsAutorises, exerciceCourant.composants, optionsPalette()));
+      A.fonctionsConnues = noms.fonctions;
+      A.parametresConnus = noms.parametres;
+      Blockly.Events.setGroup(true);
+      try {
+        ws.clear();
+        Blockly.serialization.workspaces.load(sauvegarde, ws, { recordUndo: true });
+        for (const b of ws.getTopBlocks(false)) if (b.type === 'demarrage' || b.type === 'boucle') b.setDeletable(false);
+      } finally {
+        Blockly.Events.setGroup(false);
+        A.fonctionsConnues = [];
+        A.parametresConnus = [];
+      }
+      ws.scroll(0, 0);
+      majHorsProgramme();
+    }
+
     function sauvegarder() {
       return Blockly.serialization.workspaces.save(ws);
     }
@@ -1578,6 +1606,7 @@
     return {
       ws,
       charger,
+      remplacer,
       sauvegarder,
       lire,
       surligner,
@@ -5302,6 +5331,7 @@
       aides.changerExercice(ex);
       majIndices();
       majCode();
+      majReprise();
       if (avant.aReverifier) montrerRevoir();
       if (contexte.majBandeau) contexte.majBandeau(ex);
       // Rouvrir un exercice déjà commencé n'est pas un travail à enregistrer.
@@ -5923,6 +5953,40 @@
       majCode();
     });
 
+    // « Reprendre l'exercice … » : l'élève repart du programme qu'il a fait dans l'exercice juste avant, pour le
+    // compléter ou le modifier. Le professeur peut le retirer d'un exercice (« sansReprise », éditeur de parcours).
+    const btnReprendre = $('.btn-reprendre-precedent', ecran);
+    function majReprise() {
+      const p = etat.exercice && A.programmePrecedent(D, paquet, etat.exercice.id);
+      btnReprendre.hidden = !p;
+      if (!p) return;
+      const nom = `${p.exercice.defi ? 'le défi' : 'l’exercice'} ${p.exercice.numero}`;
+      $('.texte-reprendre', btnReprendre).textContent = `Reprendre ${p.exercice.defi ? 'le défi' : 'l’exercice'} ${p.exercice.numero}`;
+      btnReprendre.title = `Remplacer ton programme par celui que tu as fait dans ${nom} (« ${p.exercice.titre} »), pour le compléter`;
+    }
+    btnReprendre.addEventListener('click', () => {
+      const p = etat.exercice && A.programmePrecedent(D, paquet, etat.exercice.id);
+      if (!p) return majReprise();
+      const nom = `${p.exercice.defi ? 'du défi' : 'de l’exercice'} ${p.exercice.numero}`;
+      if (A.programmeNonVide(editeur.sauvegarder()) && !confirm(`Remplacer ton programme par celui ${nom} ?\nTu pourras revenir en arrière avec le bouton « Annuler ».`)) return;
+      arreter();
+      editeur.remplacer(JSON.parse(JSON.stringify(p.programme)));
+      majCode();
+      $('.simu-note', ecran).textContent = `Programme ${nom} repris : complète-le ou modifie-le. « Annuler » revient en arrière.`;
+    });
+
+    // « Repartir de zéro » : le programme du début de l'exercice (vide, ou le programme de départ du professeur).
+    // Une question avant d'effacer ; « Annuler » ramène le programme d'avant.
+    $('.btn-repartir', ecran).addEventListener('click', () => {
+      if (!etat.exercice) return;
+      const depart = A.versBlockly(etat.exercice.blocsDepart || { demarrage: [], boucle: [] });
+      if (A.programmeNonVide(editeur.sauvegarder()) && !confirm('Effacer ton programme et repartir de zéro ?\nTu pourras revenir en arrière avec le bouton « Annuler ».')) return;
+      arreter();
+      editeur.remplacer(depart);
+      majCode();
+      $('.simu-note', ecran).textContent = 'Programme effacé : tu repars de zéro. « Annuler » revient en arrière.';
+    });
+
     // ----- Outils de l'espace de travail -----
 
     $('.btn-annuler', ecran).addEventListener('click', editeur.annuler);
@@ -6057,14 +6121,15 @@
     // Un autre parcours du site : ses classes (tous les niveaux) et son dossier (nom du parcours) dans le dossier de la classe.
     if (autre) {
       const dossier = autre.titre.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase();
-      A.projet = Object.assign({}, A.projet, { id: autre.id, titre: autre.titre, parcours: autre.id, accent: '#2547D0', niveaux: null, classes: null, cheminSauvegarde: null, cheminProjet: [dossier] });
+      A.projet = Object.assign({}, A.projet, { id: autre.id, titre: autre.titre, parcours: autre.id, accent: '#2547D0', niveaux: autre.niveaux || null, classes: null, cheminSauvegarde: null, cheminProjet: [dossier] });
     }
     const brut = A.parcoursDefinis.find((p) => p.id === A.projet.parcours);
     if (!brut) return erreurFatale(`Le parcours « ${A.projet.parcours} » est introuvable.`);
     // Classes et dossier de l'équipe : réglages du collège (liste commune), sauf s'ils sont réglés dans le parcours
     // (éditeur › Réglages, sur le site de Labo Blocs) ; un projet qui garde ses propres réglages
     // (reglagesDuProjetPrioritaires) les garde. Recalculé quand la version en ligne des réglages du collège arrive.
-    const base = A.projet;
+    // Un parcours d'un niveau (« niveaux » : ['5']) ne propose que les classes de ce niveau.
+    const base = brut.niveaux && !A.projet.niveaux ? Object.assign({}, A.projet, { niveaux: brut.niveaux.map(String) }) : A.projet;
     const calculer = () => {
       let p = A.projetAvecCollege ? A.projetAvecCollege(base) : base;
       if (!base.reglagesDuProjetPrioritaires) {

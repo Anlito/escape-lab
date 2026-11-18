@@ -44,8 +44,9 @@
       installation: 'serie',
       broches: { led: D, bouton: D, servo: ['D5', 'D6'], buzzer: D, joystick: ['A0', 'A1', 'A2', 'A3', 'A4', 'A5'] },
       composants: ['led', 'bouton', 'servo', 'buzzer', 'joystick'],
-      // Programme de la carte 0.4 : modules (ultrason, afficheur 4 chiffres, écran I2C, clavier tactile).
-      version: '0.4',
+      // Programme de la carte 0.4 : modules (ultrason, afficheur 4 chiffres, écran I2C, clavier tactile) ;
+      // 0.5 : buzzer déclenché à l'état bas (réglage « buzzerEtatBas » du parcours).
+      version: '0.5',
     },
     mbot: {
       id: 'mbot',
@@ -1821,7 +1822,7 @@
 // Listes : le premier élément est le n° 1 (comme dans les blocs). Sans « capacite », les 48 places de la carte sont
 // partagées entre les listes du programme (1 liste : 48 nombres, 2 listes : 24…).
 // Fonctions : les paramètres sont des variables cachées ; une fonction ne s'appelle pas elle-même (même par une autre).
-// Options : { composants: [{ type, broche }], boutonsVersMasse: true }
+// Options : { composants: [{ type, broche, etatBas (buzzer) }], boutonsVersMasse: true }
 // Sortie : { octets: Uint8Array, erreurs: [], carte: [[adresse, idBloc], …] (pour surligner le bloc en cours),
 //           noms: { variables: [nom par n°], broches: { n°: nom écrit dans le programme } } }
 
@@ -1834,7 +1835,8 @@
   const FORMAT = 1;
   const MAX_LISTES = 4; // comme la carte (vm.c : LB_MAX_LISTES, LB_MAX_ELEMENTS)
   const PLACES_LISTES = 48;
-  const BROCHE = { sortie: 1, boutonMasse: 2, boutonHaut: 3, servo: 4, son: 5, analogique: 6, pwm: 7 };
+  // sonBas : buzzer qui sonne quand sa broche est à 0 V (au repos, la carte la laisse à 5 V ; programme de la carte 0.5).
+  const BROCHE = { sortie: 1, boutonMasse: 2, boutonHaut: 3, servo: 4, son: 5, analogique: 6, pwm: 7, sonBas: 8 };
   const FIL = { demarrage: 0, boucle: 1, appui: 2, relache: 3 };
   const OP = {
     FIN: 0x00, NOMBRE: 0x01, ENTIER: 0x02, LIRE_VAR: 0x03, ECRIRE_VAR: 0x04,
@@ -1900,7 +1902,7 @@
     const typeBouton = opts.boutonsVersMasse === false ? BROCHE.boutonHaut : BROCHE.boutonMasse;
     const TYPES_COMPOSANTS = { led: BROCHE.sortie, bouton: typeBouton, servo: BROCHE.servo, buzzer: BROCHE.son, potentiometre: BROCHE.analogique, capteur: BROCHE.analogique, pwm: BROCHE.pwm };
     for (const c of opts.composants || []) {
-      if (TYPES_COMPOSANTS[c.type]) broches.set(numeroBroche(c.broche), TYPES_COMPOSANTS[c.type]);
+      if (TYPES_COMPOSANTS[c.type]) broches.set(numeroBroche(c.broche), c.type === 'buzzer' && c.etatBas ? BROCHE.sonBas : TYPES_COMPOSANTS[c.type]);
     }
     const nomsBroches = {};
     for (const c of opts.composants || []) nomsBroches[numeroBroche(c.broche)] = c.broche;
@@ -3316,6 +3318,8 @@
     const depart = ['OFF'];
     for (const b of boutons) depart.push(`M ${numero(b.broche)} ${aLaMasse(b) ? 'P' : 'I'}`);
     if (boutons.length) depart.push('W ' + boutons.map((b) => numero(b.broche)).join(' '));
+    // Buzzer déclenché à l'état bas : la carte garde sa broche à 5 V entre les notes (programme de la carte 0.5).
+    for (const c of o.composants || []) if (c.type === 'buzzer' && c.etatBas && /^D\d+$/.test(c.broche)) depart.push(`M ${numero(c.broche)} B`);
 
     let lu = 0; // entrées du journal déjà traduites en commandes
     function avancer(t) {
@@ -4079,7 +4083,10 @@
     })(v1.fils.concat(v1.fonctions || []));
     const fonctions = v1.fonctions || [];
     // Les fonctions de l'élève gardent leur nom, sans toucher aux noms déjà pris par le programme écrit ici.
-    const nomFonction = (nom) => (/^(setup|loop|attendre|bouton|reste|reetalonner|element|remplacer|ajouter|vider|positionJoystick|quand\d*|quandJoystick\d*)$/.test(nomC(nom)) ? 'f_' + nomC(nom) : nomC(nom));
+    // Buzzer déclenché à l'état bas (réglage du parcours) : la note finie, la broche revient à HAUT (silence).
+    const sonsBas = new Set((o.composants || []).filter((c) => c.type === 'buzzer' && c.etatBas).map((c) => numero(c.broche)));
+    const avecSonBas = [...sons].some((n) => sonsBas.has(n));
+    const nomFonction = (nom) => (/^(setup|loop|attendre|bouton|reste|jouerNote|finirNote|reetalonner|element|remplacer|ajouter|vider|positionJoystick|quand\d*|quandJoystick\d*)$/.test(nomC(nom)) ? 'f_' + nomC(nom) : nomC(nom));
 
     const lignes = [];
     const carte = {};
@@ -4165,7 +4172,8 @@
             ajouter(`${r}servo${numero(i.broche)}.write(constrain((int)(${expression(i.angle)}), 0, 180));`);
             break;
           case 'son':
-            ajouter(`${r}tone(${numero(i.broche)}, ${expression(i.frequence)}, (unsigned long)(${expression(i.duree)} * 1000));`);
+            if (sonsBas.has(numero(i.broche))) ajouter(`${r}jouerNote(${numero(i.broche)}, ${expression(i.frequence)}, ${expression(i.duree)});`);
+            else ajouter(`${r}tone(${numero(i.broche)}, ${expression(i.frequence)}, (unsigned long)(${expression(i.duree)} * 1000));`);
             break;
           case 'affecter':
             ajouter(`${r}${nomC(i.variable)} = ${expression(i.valeur)};`);
@@ -4285,10 +4293,34 @@
       ajouter('}');
       ajouter('');
     }
-    ajouter('// « attendre » en secondes (les nombres à virgule sont acceptés).');
-    ajouter('void attendre(float secondes) {');
-    ajouter('  if (secondes > 0) delay((unsigned long)(secondes * 1000.0));');
-    ajouter('}');
+    if (avecSonBas) {
+      ajouter('// Buzzer déclenché à l’état bas : il sonne quand sa broche est à LOW. Entre les notes, la broche reste HIGH.');
+      ajouter('int brocheNote = -1;');
+      ajouter('unsigned long finNote = 0;');
+      ajouter('void jouerNote(int broche, float frequence, float secondes) {');
+      ajouter('  tone(broche, frequence);');
+      ajouter('  brocheNote = broche;');
+      ajouter('  finNote = millis() + (unsigned long)(secondes * 1000.0);');
+      ajouter('}');
+      ajouter('void finirNote() {');
+      ajouter('  if (brocheNote >= 0 && (long)(millis() - finNote) >= 0) {');
+      ajouter('    noTone(brocheNote);');
+      ajouter('    digitalWrite(brocheNote, HIGH);');
+      ajouter('    brocheNote = -1;');
+      ajouter('  }');
+      ajouter('}');
+      ajouter('');
+      ajouter('// « attendre » en secondes (les nombres à virgule sont acceptés) ; la note en cours s’arrête à l’heure.');
+      ajouter('void attendre(float secondes) {');
+      ajouter('  unsigned long fin = millis() + (unsigned long)(secondes > 0 ? secondes * 1000.0 : 0);');
+      ajouter('  do finirNote(); while ((long)(millis() - fin) < 0);');
+      ajouter('}');
+    } else {
+      ajouter('// « attendre » en secondes (les nombres à virgule sont acceptés).');
+      ajouter('void attendre(float secondes) {');
+      ajouter('  if (secondes > 0) delay((unsigned long)(secondes * 1000.0));');
+      ajouter('}');
+    }
     ajouter('');
     if (boutons.size) {
       ajouter(versMasse ? '// État du bouton : HAUT quand il est appuyé (il relie alors la broche à la masse).' : '// État du bouton : HAUT quand il est appuyé.');
@@ -4352,7 +4384,10 @@
       ajouter(`  digitalWrite(${n}, LOW);`);
     }
     for (const n of trier(boutons)) ajouter(`  pinMode(${n}, ${versMasse ? 'INPUT_PULLUP' : 'INPUT'});`);
-    for (const n of trier(sons)) ajouter(`  pinMode(${n}, OUTPUT);`);
+    for (const n of trier(sons)) {
+      ajouter(`  pinMode(${n}, OUTPUT);`);
+      if (sonsBas.has(n)) ajouter(`  digitalWrite(${n}, HIGH); // buzzer silencieux au repos`);
+    }
     // Bouton du joystick : il relie la broche à la masse quand on enfonce le manche.
     if (J && joystickUtilise) ajouter(`  pinMode(${numero(J.bouton)}, INPUT_PULLUP);`);
     if (hasard) ajouter('  randomSeed(analogRead(A5));');
@@ -4385,7 +4420,7 @@
     commentaire(fil('boucle'), '  ');
     instructions(fil('boucle').corps, 2);
     // Un tour de boucle dure au moins 1 ms, comme dans le simulateur.
-    ajouter('  delay(1);');
+    ajouter(avecSonBas ? '  attendre(0.001);' : '  delay(1);');
     ajouter('}');
     for (const f of fonctions) {
       ajouter('');
@@ -4416,7 +4451,9 @@
 //     (noms donnés aux élèves ; absent : ['CHOIX']), variablesLibres (bouton « Créer une variable »), listes (noms des
 //     listes données aux élèves ; « Créer une liste » dès qu'un bloc de liste est proposé), ouvertApres (id d'un exercice
 //     placé avant : celui-ci s'ouvre dès que cet exercice est réussi, sans attendre les précédents), … } ],
-//     fiches, lexique, classes (facultatif : classes proposées aux élèves), cheminSauvegarde (facultatif : dossier de
+//     fiches, lexique, buzzerEtatBas (facultatif : module buzzer qui sonne quand sa broche est à 0 V),
+//     classes (facultatif : classes proposées aux élèves), niveaux (facultatif : parcours d'un niveau,
+//     ex. ['5'] : seules les classes de 5e du collège sont proposées), cheminSauvegarde (facultatif : dossier de
 //     l'équipe, ex. ['{classe}', 'COMMUN', 'TECHNOLOGIE', 'ROBOT', '{equipe}']) }
 //
 // L'« empreinte » d'un exercice résume ce qui décide de sa réussite (consigne, composants, blocs, scénarios,
@@ -4521,6 +4558,9 @@
     if (paquet.classes !== undefined && !(Array.isArray(paquet.classes) && paquet.classes.length && paquet.classes.every((c) => typeof c === 'string' && c.trim()))) {
       pb.push('Classes du parcours : une liste de noms de classes (ex. 4A, 4B).');
     }
+    if (paquet.niveaux !== undefined && !(Array.isArray(paquet.niveaux) && paquet.niveaux.length && paquet.niveaux.every((n) => /^\d$/.test(String(n))))) {
+      pb.push('Niveaux du parcours : une liste de niveaux (ex. 5 pour la 5e).');
+    }
     if (paquet.cheminSauvegarde !== undefined && !(Array.isArray(paquet.cheminSauvegarde) && paquet.cheminSauvegarde.includes('{equipe}'))) {
       pb.push('Dossier de l’équipe du parcours : il doit contenir {equipe}.');
     }
@@ -4538,6 +4578,9 @@
       if (x.boutonsVersMasse === undefined) x.boutonsVersMasse = paquet.boutonsVersMasse !== false;
       // Carte du parcours (après l'empreinte : les exercices existants gardent la leur).
       if (!x.carte) x.carte = paquet.carte || 'uno';
+      // Buzzer déclenché à l'état bas (module « 低电平触发 », ex. MH-FMD) : réglage du parcours, porté par chaque
+      // buzzer (après l'empreinte : rien n'est « modifié » chez les élèves). Au repos, la carte laisse sa broche à 5 V.
+      if (paquet.buzzerEtatBas) x.composants = (x.composants || []).map((c) => (c.type === 'buzzer' ? Object.assign({}, c, { etatBas: true }) : c));
       return x;
     });
     return Object.assign({}, paquet, { exercices, parametres });
@@ -4856,6 +4899,28 @@
     return ouvert ? ouvert.id : ids[ids.length - 1];
   }
 
+  // Bouton « Reprendre l'exercice … » : le programme que l'équipe a fait dans l'exercice juste avant (même carte),
+  // s'il n'est pas vide, pour le compléter ou le modifier. Le professeur peut le retirer d'un exercice (sansReprise).
+  //   → { exercice, programme (sauvegarde Blockly) } ou null
+  const BLOCS_DE_DEPART = ['demarrage', 'boucle'];
+  function nonVide(x) {
+    if (!x || typeof x !== 'object') return false;
+    if (Array.isArray(x)) return x.some(nonVide);
+    if (typeof x.type === 'string' && !BLOCS_DE_DEPART.includes(x.type)) return true;
+    if (Array.isArray(x.workspaceComments) && x.workspaceComments.length) return true;
+    return Object.values(x).some(nonVide);
+  }
+  function programmePrecedent(d, paquet, id) {
+    const liste = paquet.exercices;
+    const i = liste.findIndex((e) => e.id === id);
+    if (i <= 0 || liste[i].sansReprise) return null;
+    const avant = liste[i - 1];
+    const carte = (e) => e.carte || paquet.carte || 'uno';
+    if (carte(avant) !== carte(liste[i])) return null;
+    const e = d.programmation && d.programmation.exercices[avant.id];
+    return e && nonVide(e.programme) ? { exercice: avant, programme: e.programme } : null;
+  }
+
   // Avancement : exercices obligatoires réussis (les défis sont comptés à part).
   function avancement(d, paquet) {
     const obligatoires = paquet.exercices.filter((e) => !e.defi);
@@ -4915,6 +4980,8 @@
     estDebloque,
     etat,
     exerciceAReprendre: aReprendre,
+    programmePrecedent,
+    programmeNonVide: nonVide,
     avancement,
   };
   if (typeof module === 'object' && module.exports) module.exports = api;
