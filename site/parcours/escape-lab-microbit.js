@@ -1,13 +1,13 @@
-// Parcours « Escape Lab (micro:bit) », version 1.0.0 (Labo Blocs).
+// Parcours « Escape Lab (micro:bit) », version 1.1.0 (Labo Blocs).
 // Ce fichier est écrit par « Mettre à jour les exercices » (outil du professeur) : ne pas le modifier à la main.
 definirParcours({
   "format": "labo-blocs/parcours",
   "version": 1,
   "id": "escape-lab-microbit",
   "titre": "Escape Lab (micro:bit)",
-  "versionParcours": "1.0.0",
+  "versionParcours": "1.1.0",
   "date": "2026-10-23",
-  "moteurMinimum": "0.3.0",
+  "moteurMinimum": "0.5.0",
   "carte": "microbit",
   "modes": [
     "simulateur",
